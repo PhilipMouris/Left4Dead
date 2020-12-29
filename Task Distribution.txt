@@ -1,0 +1,30 @@
+Youssef Sherif
+[Player, Weapon 1 , Rage Meter]
+
+
+
+
+Youssef Abdelrahman
+[Environment, Normal]
+
+
+
+Nael
+[Gernades, Crafts, Companion 2]
+
+
+Philip
+[Companion 1, Special Infectants] 
+
+
+
+Farah
+[Ingredients,Ingredient Manager,Weapon 2,Companion 3]
+
+
+Laithy
+[Ammo Pack, Ammo Pack manager, Weapon 3, Companion 4]
+
+
+Nadeen
+[Health Pack, Health Pack manager, Weapon 4]
