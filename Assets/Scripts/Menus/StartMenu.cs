@@ -104,7 +104,7 @@ public class StartMenu : MonoBehaviour
     private void onStart()
     {   soundManager.PlayButtonClick();
         Time.timeScale = 1;
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene(MenuConstants.GAME_SCENE);
     }
 
     private void onQuit()

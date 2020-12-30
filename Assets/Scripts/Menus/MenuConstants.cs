@@ -28,10 +28,13 @@ public class MenuConstants
      public const string GUIDE_SCREEN = "GuideScreen";
 
 
-     public const string GAME_SCENE = "Game";
+     public const string GAME_SCENE = "Level1";
 
 
      public const string AUDIO_MANAGER = "AudioManager";
+
+
+     public const string MENU_SCENE = "StartMenu";
 
 
 }

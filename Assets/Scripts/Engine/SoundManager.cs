@@ -55,7 +55,7 @@ public class SoundManager : MonoBehaviour
     
     private void PlayBackGround(){
         Scene scene = SceneManager.GetActiveScene();
-        if(scene.name == "Game"){
+        if(scene.name == MenuConstants.GAME_SCENE){
             this.GameBackroundAudio.Play();
             return;
         }
