@@ -10,6 +10,16 @@ public class Player : MonoBehaviour
 
     private Animator animator;
 
+    private int HP;
+
+    private Weapon[] weapons;
+
+    private Companion companion;
+
+    private Gernade[] gernades;
+
+    private RageMeter rageMeter;
+
 
 
 

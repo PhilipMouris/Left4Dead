@@ -16,4 +16,12 @@ public class Utils
         double verticalDistance = Math.Pow((positionA.z - positionB.z), 2);
         return Math.Sqrt(horizontalDistance + verticalDistance);
     }
+
+
+    public static BoxCollider AddBoxCollider(GameObject gameObject){
+         gameObject.AddComponent<BoxCollider>();
+         BoxCollider collider = gameObject.GetComponent<BoxCollider>();
+         collider.isTrigger = true;
+         return collider;
+    }
 }

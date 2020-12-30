@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Level3Manager : ScriptableObject
+public class HealthPack : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -14,5 +14,9 @@ public class Level3Manager : ScriptableObject
     void Update()
     {
         
+    }
+
+    public void Initialize() {
+        Utils.AddBoxCollider(gameObject);
     }
 }

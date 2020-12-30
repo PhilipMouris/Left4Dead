@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Level3Manager : ScriptableObject
+public class NewBehaviourScript : MonoBehaviour
 {
     // Start is called before the first frame update
+
+    private int HP;
+    private int dps;
+
+
     void Start()
     {
         
@@ -15,4 +20,11 @@ public class Level3Manager : ScriptableObject
     {
         
     }
+
+    public void initialize(int HP,int dps){
+        this.HP = HP;
+        this.dps = dps;
+    }
+
+
 }
