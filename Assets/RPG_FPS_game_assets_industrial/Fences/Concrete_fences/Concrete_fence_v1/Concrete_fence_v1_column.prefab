@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 33000014143242630}
   - component: {fileID: 23000011945749940}
   - component: {fileID: 65000012194722020}
+  - component: {fileID: 8153832343812228627}
   m_Layer: 0
   m_Name: Concrete_fence_v1_column
   m_TagString: Untagged
@@ -95,3 +96,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.71984005, y: 3.297325, z: 0.7262564}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &8153832343812228627
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000011366982336}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.36, y: 1.649, z: 0.363}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 33000011057328418}
   - component: {fileID: 23000014094639036}
   - component: {fileID: 65000010804722738}
+  - component: {fileID: 7750632137716507548}
   m_Layer: 0
   m_Name: UNIConcrete_fence_v1_end
   m_TagString: Untagged
@@ -95,3 +96,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.50379944, y: 2.4834805, z: 0.23467255}
   m_Center: {x: -0.0000019073486, y: 0, z: -0.0000019073486}
+--- !u!208 &7750632137716507548
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000010154774544}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.252, y: 1.2420001, z: 0.117000006}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5

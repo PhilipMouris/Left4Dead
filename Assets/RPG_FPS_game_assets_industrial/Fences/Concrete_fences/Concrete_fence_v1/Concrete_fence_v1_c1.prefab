@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 33000010964995494}
   - component: {fileID: 23000011651308668}
   - component: {fileID: 64000011663991468}
+  - component: {fileID: 5029168447701080452}
   m_Layer: 0
   m_Name: Concrete_fence_v1_c1
   m_TagString: Untagged
@@ -96,3 +97,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300026, guid: 3a8f58244ff42dd4687b2e136c464c50, type: 3}
+--- !u!208 &5029168447701080452
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000010827190078}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.215, y: 1.4970001, z: 1.215}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.32000002, y: 0, z: 0.32000002}
+  m_TimeToStationary: 0.5
