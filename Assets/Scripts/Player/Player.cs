@@ -22,12 +22,21 @@ public class Player : MonoBehaviour
 
 
 
-
+    void OnTriggerEnter(Collider other){
+        if(other.gameObject.CompareTag("NormalInfected")){
+            other.gameObject.GetComponent<NormalInfectant>().Chase();
+        }
+    }
+    void OnTriggerExit(Collider other){
+        if(other.gameObject.CompareTag("NormalInfected")){
+            other.gameObject.GetComponent<NormalInfectant>().UnChase();
+        }
+    }
     
     
     void Awake()
     {
-         this.camera = GameObject.Find(PlayerConstants.MAIN_CAMERA);
+        //  this.camera = GameObject.Find(PlayerConstants.MAIN_CAMERA);
          // animator = GetComponent<Animator>();
     }
     
@@ -41,15 +50,15 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleMovement();
+        // HandleMovement();
     }
 
 
     private void HandleMovement()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        // float horizontalInput = Input.GetAxis("Horizontal");
+        // float verticalInput = Input.GetAxis("Vertical");
 
-         this.transform.Translate(new Vector3(horizontalInput, 0, verticalInput) * moveSpeed * Time.deltaTime);
+        //  this.transform.Translate(new Vector3(horizontalInput, 0, verticalInput) * moveSpeed * Time.deltaTime);
     }
 }
