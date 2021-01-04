@@ -61,4 +61,7 @@ public class Player : MonoBehaviour
 
         //  this.transform.Translate(new Vector3(horizontalInput, 0, verticalInput) * moveSpeed * Time.deltaTime);
     }
+    public void ResetHealth(){
+        
+    }
 }
