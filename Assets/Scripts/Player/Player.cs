@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     // Start is called before the first frame update
     private float moveSpeed = 2.5f;
-    private GameObject camera;
+    private Camera camera;
 
     private Animator animator;
 
@@ -20,7 +20,10 @@ public class Player : MonoBehaviour
 
     private RageMeter rageMeter;
 
-
+    void Start()
+    {
+        camera = GetComponentInChildren<Camera>();
+    }
 
     void OnTriggerEnter(Collider other){
         if(other.gameObject.CompareTag("NormalInfected")){
@@ -39,13 +42,23 @@ public class Player : MonoBehaviour
         //  this.camera = GameObject.Find(PlayerConstants.MAIN_CAMERA);
          // animator = GetComponent<Animator>();
     }
-    
-    
-    
-    void Start()
+    void FixedUpdate()
     {
-        
+        CheckShoot();
     }
+    void CheckShoot(){
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, transform.forward, out hit)){
+            NormalInfectant hit_member =  hit.collider.gameObject.GetComponent<NormalInfectant>();
+            if(hit_member)
+                if(Input.GetMouseButtonDown(0))
+                    hit_member.GetShot(36); //Dummy Placholder of Damage- Should be replaced with Damage from Current Weapon
+        }
+    }
+    
+    
+  
 
     // Update is called once per frame
     void Update()
