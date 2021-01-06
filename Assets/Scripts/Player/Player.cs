@@ -24,6 +24,10 @@ public class Player : MonoBehaviour
 
     private bool isWeaponDrawn;
 
+    private GameObject pistol;
+
+    private GameObject weaponCamera;
+
 
 
 
@@ -42,12 +46,28 @@ public class Player : MonoBehaviour
     void Awake()
     {
         //  this.camera = GameObject.Find(PlayerConstants.MAIN_CAMERA);
+        weaponCamera = GameObject.Find("WeaponCamera");
         animator = GetComponent<Animator>();
-        pistolAnimator = GameObject.Find(PlayerConstants.EQUIPPED).GetComponent<Animator>();
+        pistol = GameObject.Find(PlayerConstants.EQUIPPED);
+        pistolAnimator = pistol.GetComponent<Animator>();
         Debug.Log(pistolAnimator);
 
         Debug.Log("PISTOLLL");
         isWeaponDrawn = false;
+    }
+
+    void FixedUpdate(){
+        //Debug.Log(Input.mousePosition);
+        //Debug.Log("MOUSEEE");
+       // Debug.Log(pistol.transform.position);
+        // Debug.Log("PISTOL");
+
+        //Ray ray = Camera.main.ScreenPointToRay(pistol.transform.position);
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5F, 0.7F, 0));
+        RaycastHit hit;
+        if (Physics.Raycast(ray,out hit, 100))
+            Debug.Log("Hit something!");
+            Debug.DrawLine(ray.origin, hit.point);
     }
     
     
