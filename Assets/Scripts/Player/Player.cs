@@ -16,7 +16,9 @@ public class Player : MonoBehaviour
 
     private Companion companion;
 
-    private Gernade[] gernades;
+    private List<Gernade> gernades = new List<Gernade>();
+
+    private Gernade currentGernade;
 
     private RageMeter rageMeter;
 
@@ -56,6 +58,26 @@ public class Player : MonoBehaviour
                     hit_member.GetShot(36); //Dummy Placholder of Damage- Should be replaced with Damage from Current Weapon
         }
     }
+    public void CollectGernade(Gernade gernade){
+        gernades.Add(gernade); //Need to Check for Type of Gernade and If max Limit is Exceeded
+    }
+    public void ThrowGrenade()
+    {
+        if(gernades.Count>0){
+            Debug.Log("Throwing");
+            currentGernade = gernades[0];
+            currentGernade.gameObject.SetActive(true);
+            currentGernade.gameObject.transform.position = transform.position - new Vector3(0,0,1.5f);
+            currentGernade.gameObject.transform.rotation = transform.rotation;
+            Rigidbody grenadeRigidbody =currentGernade.gameObject.AddComponent<Rigidbody>();
+            grenadeRigidbody.useGravity=true;
+            grenadeRigidbody.AddForce((transform.forward+transform.up) * 10, ForceMode.Impulse);
+            gernades.RemoveAt(0);
+        }else{
+            Debug.Log("No Gernade Available");
+        }
+        
+    }
     
     
   
@@ -63,7 +85,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // HandleMovement();
+        if(Input.GetMouseButtonDown(1)){
+            ThrowGrenade();
+        }
     }
 
 

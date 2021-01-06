@@ -52,10 +52,19 @@ public class NormalInfectant : MonoBehaviour
     public void GetShot(int damage){
         HP = HP - damage;
         if(HP<=0){
+            Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
+            float duration = 3.34f;
+            if(rigidbody){
+                Destroy(rigidbody,duration);
+            }
             animator.SetBool("Dead",true);
             dead=true;
             manager.UpdateDeadMembers(gameObject);
             agent.isStopped=true;
+            
+            
+            
+ 
         }else{
             animator.SetTrigger("GetShot");
         }
