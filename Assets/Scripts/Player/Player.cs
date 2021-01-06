@@ -32,6 +32,10 @@ public class Player : MonoBehaviour
 
     private bool isEnemyInAimRange;
 
+    private GameObject normalInfectantInRange;
+
+
+
 
 
     void OnTriggerEnter(Collider other){
@@ -73,12 +77,14 @@ public class Player : MonoBehaviour
                    if(!isEnemyInAimRange) {
                         SetCrossHairGreen();
                         isEnemyInAimRange = true;
+                        normalInfectantInRange = collided;
                    }
              }
              else {
                  if(isEnemyInAimRange) {
                     SetCrossHairRed();
                     isEnemyInAimRange = false;
+                    normalInfectantInRange = null;
                  }
              }
             // Debugging purposes only
@@ -89,6 +95,7 @@ public class Player : MonoBehaviour
               if(isEnemyInAimRange) {
                     SetCrossHairRed();
                     isEnemyInAimRange = false;
+                     normalInfectantInRange = null;
                  }
 
         }
@@ -101,12 +108,16 @@ public class Player : MonoBehaviour
             animator.SetBool(PlayerConstants.DRAW_PISTOL, isWeaponDrawn);
         }
         
-    }
+    }    
 
     void HandleFire(){
         if(Input.GetButtonDown("Fire1") && isWeaponDrawn){
             animator.SetTrigger(PlayerConstants.SHOOT);
             pistolAnimator.SetTrigger(PlayerConstants.FIRE);
+            if(normalInfectantInRange){
+                Debug.Log("HEREEEEE");
+                normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(1000);
+            }
         }
     }
     
