@@ -13,7 +13,16 @@ public class PlayerConstants
 
  public const string PISTOL = "pistol";
 
-public const string EQUIPPED = "equipped";
+ public const string EQUIPPED = "equipped";
+
+ public const string FIRE = "Fire";
+
+ public const int PISTOL_RANGE = 20;
+
+ public const string CROSS_HAIR = "CrossHair";
+
+
+
 
 
 

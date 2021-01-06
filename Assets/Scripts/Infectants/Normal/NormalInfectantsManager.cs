@@ -31,12 +31,12 @@ public class NormalInfectantsManager : MonoBehaviour
     // NormalInfectant infectant = gameObject.GetComponent<NormalInfectant>();
     // infectant.Initialize(....)
     public void Spawn(){
-        // for(int i =0;i<infected_members.Length;i++){
-        //     GameObject instantiated = Instantiate(model,locations_list[i].position,Quaternion.identity);
-        //     NormalInfectant infectant = instantiated.GetComponent<NormalInfectant>();
-        //     infectant.initialize(10,10,locations_list,player);
+        for(int i =0;i<infected_members.Length;i++){
+            GameObject instantiated = Instantiate(model,locations_list[i].position,Quaternion.identity);
+            NormalInfectant infectant = instantiated.GetComponent<NormalInfectant>();
+            infectant.initialize(10,10,locations_list,player);
 
 
-        // }
+        }
     }
 }

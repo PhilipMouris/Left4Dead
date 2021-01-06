@@ -18,7 +18,7 @@ public class SimpleShoot : MonoBehaviour
     [Header("Settings")]
     [Tooltip("Specify time to destory the casing object")] [SerializeField] private float destroyTimer = 100f;
     [Tooltip("Bullet Speed")] [SerializeField] private float shotPower = 500f;
-    [Tooltip("Casing Ejection Speed")] [SerializeField] private float ejectPower = 150f;
+    //[Tooltip("Casing Ejection Speed")] [SerializeField] private float ejectPower = 150f;
 
 
     void Start()
@@ -70,11 +70,11 @@ public class SimpleShoot : MonoBehaviour
     void CasingRelease()
     {   return;
         //Cancels function if ejection slot hasn't been set or there's no casing
-        if (!casingExitLocation || !casingPrefab)
-        { return; }
+        // if (!casingExitLocation || !casingPrefab)
+        // { return; }
 
         //Create the casing
-        GameObject tempCasing;
+       // GameObject tempCasing;
         // tempCasing = Instantiate(casingPrefab, casingExitLocation.position, casingExitLocation.rotation) as GameObject;
         //Add force on casing to push it out
         // tempCasing.GetComponent<Rigidbody>().AddExplosionForce(Random.Range(ejectPower * 0.7f, ejectPower), (casingExitLocation.position - casingExitLocation.right * 0.3f - casingExitLocation.up * 0.6f), 1f);

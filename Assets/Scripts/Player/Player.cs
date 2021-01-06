@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
-    private float moveSpeed = 2.5f;
-    // private GameObject camera;
+ 
 
     private Animator animator;
 
@@ -28,76 +26,111 @@ public class Player : MonoBehaviour
 
     private GameObject weaponCamera;
 
+    private Vector3 rayCenter;
+
+    private GameObject crossHair;
+
+    private bool isEnemyInAimRange;
 
 
 
     void OnTriggerEnter(Collider other){
-        if(other.gameObject.CompareTag("NormalInfected")){
+        if(other.gameObject.CompareTag(NormalInfectantConstants.TAG)){
             other.gameObject.GetComponent<NormalInfectant>().Chase();
         }
     }
     void OnTriggerExit(Collider other){
-        if(other.gameObject.CompareTag("NormalInfected")){
+        if(other.gameObject.CompareTag(NormalInfectantConstants.TAG)){
             other.gameObject.GetComponent<NormalInfectant>().UnChase();
         }
     }
     
     
     void Awake()
-    {
-        //  this.camera = GameObject.Find(PlayerConstants.MAIN_CAMERA);
-        weaponCamera = GameObject.Find("WeaponCamera");
+    {  
+        rayCenter = new Vector3(0.5F, 0.7F, 0);
         animator = GetComponent<Animator>();
         pistol = GameObject.Find(PlayerConstants.EQUIPPED);
         pistolAnimator = pistol.GetComponent<Animator>();
-        Debug.Log(pistolAnimator);
-
-        Debug.Log("PISTOLLL");
+        crossHair = GameObject.Find(PlayerConstants.CROSS_HAIR);
         isWeaponDrawn = false;
+        isEnemyInAimRange = false;
     }
 
     void FixedUpdate(){
-        //Debug.Log(Input.mousePosition);
-        //Debug.Log("MOUSEEE");
-       // Debug.Log(pistol.transform.position);
-        // Debug.Log("PISTOL");
-
-        //Ray ray = Camera.main.ScreenPointToRay(pistol.transform.position);
-        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5F, 0.7F, 0));
+        HandleRayCast();
+      
+    }
+    
+    
+    void HandleRayCast() {
+        if(!isWeaponDrawn) return;
+        Ray ray = Camera.main.ViewportPointToRay(rayCenter);
         RaycastHit hit;
-        if (Physics.Raycast(ray,out hit, 100))
-            Debug.Log("Hit something!");
-            Debug.DrawLine(ray.origin, hit.point);
-    }
-    
-    
-    
-    void Start()
-    {
-        
-    }
+        if (Physics.Raycast(ray, out hit, PlayerConstants.PISTOL_RANGE)) {
+            GameObject collided = hit.collider.gameObject;
+             if(collided.CompareTag(NormalInfectantConstants.TAG)){
+                   if(!isEnemyInAimRange) {
+                        SetCrossHairGreen();
+                        isEnemyInAimRange = true;
+                   }
+             }
+             else {
+                 if(isEnemyInAimRange) {
+                    SetCrossHairRed();
+                    isEnemyInAimRange = false;
+                 }
+             }
+            // Debugging purposes only
+            // Debug.DrawLine(ray.origin, hit.point);
+          
+        }
+        else {
+              if(isEnemyInAimRange) {
+                    SetCrossHairRed();
+                    isEnemyInAimRange = false;
+                 }
 
-    // Update is called once per frame
-    void Update()
-    {
+        }
+
+    }
+    
+     void HandleDrawWeapon(){
         if(Input.GetButtonDown(PlayerConstants.DRAW_WEAPON_INPUT)){
             this.isWeaponDrawn = !isWeaponDrawn;
             animator.SetBool(PlayerConstants.DRAW_PISTOL, isWeaponDrawn);
         }
+        
+    }
+
+    void HandleFire(){
         if(Input.GetButtonDown("Fire1") && isWeaponDrawn){
             animator.SetTrigger(PlayerConstants.SHOOT);
-            pistolAnimator.SetTrigger("Fire");
+            pistolAnimator.SetTrigger(PlayerConstants.FIRE);
         }
     }
-
-
-    private void HandleMovement()
-    {
-        // float horizontalInput = Input.GetAxis("Horizontal");
-        // float verticalInput = Input.GetAxis("Vertical");
-
-        //  this.transform.Translate(new Vector3(horizontalInput, 0, verticalInput) * moveSpeed * Time.deltaTime);
+    
+    void SetCrossHairGreen(){
+        SpriteRenderer sprite = crossHair.GetComponent<SpriteRenderer>();
+        sprite.color = new Color (0, 255, 0, 1); 
     }
+
+    void SetCrossHairRed() {
+         SpriteRenderer sprite = crossHair.GetComponent<SpriteRenderer>();
+         sprite.color = new Color (255, 0, 0, 1); 
+    }
+
+
+    // Update is called once per frame
+    void Update()
+    {   
+
+        HandleDrawWeapon();
+        HandleFire();
+        
+    }
+
+
     public void ResetHealth(){
         
     }
