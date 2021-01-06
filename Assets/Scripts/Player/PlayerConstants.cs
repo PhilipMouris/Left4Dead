@@ -6,7 +6,15 @@ public class PlayerConstants
  public const string DRAW_PISTOL = "drawPistol";
 
  public const string SHOOT = "shoot";
+
  public const string DRAW_WEAPON_INPUT = "drawWeapon";
+
+ public const string WEAPON = "weapon";
+
+ public const string PISTOL = "pistol";
+
+public const string EQUIPPED = "equipped";
+
 
 
 }

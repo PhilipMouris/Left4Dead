@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
 
     private Animator animator;
 
+    private Animator pistolAnimator;
+
     private int HP;
 
     private Weapon[] weapons;
@@ -41,7 +43,10 @@ public class Player : MonoBehaviour
     {
         //  this.camera = GameObject.Find(PlayerConstants.MAIN_CAMERA);
         animator = GetComponent<Animator>();
-        Debug.Log(animator);
+        pistolAnimator = GameObject.Find(PlayerConstants.EQUIPPED).GetComponent<Animator>();
+        Debug.Log(pistolAnimator);
+
+        Debug.Log("PISTOLLL");
         isWeaponDrawn = false;
     }
     
@@ -59,8 +64,9 @@ public class Player : MonoBehaviour
             this.isWeaponDrawn = !isWeaponDrawn;
             animator.SetBool(PlayerConstants.DRAW_PISTOL, isWeaponDrawn);
         }
-        if(Input.GetButtonDown("Fire1")){
+        if(Input.GetButtonDown("Fire1") && isWeaponDrawn){
             animator.SetTrigger(PlayerConstants.SHOOT);
+            pistolAnimator.SetTrigger("Fire");
         }
     }
 
