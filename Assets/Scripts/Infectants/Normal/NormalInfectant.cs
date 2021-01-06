@@ -50,10 +50,8 @@ public class NormalInfectant : MonoBehaviour
         }
     }
     public void GetShot(int damage){
-        Debug.Log("SHOTTTTT");
         HP = HP - damage;
         if(HP<=0){
-            Debug.Log("KKK???");
             animator.SetBool("Dead",true);
             dead=true;
             manager.UpdateDeadMembers(gameObject);

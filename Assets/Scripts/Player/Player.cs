@@ -70,21 +70,24 @@ public class Player : MonoBehaviour
     void HandleRayCast() {
         if(!isWeaponDrawn) return;
         Ray ray = Camera.main.ViewportPointToRay(rayCenter);
+        normalInfectantInRange = null;
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, PlayerConstants.PISTOL_RANGE)) {
             GameObject collided = hit.collider.gameObject;
              if(collided.CompareTag(NormalInfectantConstants.TAG)){
+                   normalInfectantInRange = collided;
                    if(!isEnemyInAimRange) {
                         SetCrossHairGreen();
                         isEnemyInAimRange = true;
-                        normalInfectantInRange = collided;
+                      
                    }
              }
              else {
+               
                  if(isEnemyInAimRange) {
                     SetCrossHairRed();
                     isEnemyInAimRange = false;
-                    normalInfectantInRange = null;
+                  
                  }
              }
             // Debugging purposes only
@@ -95,7 +98,6 @@ public class Player : MonoBehaviour
               if(isEnemyInAimRange) {
                     SetCrossHairRed();
                     isEnemyInAimRange = false;
-                     normalInfectantInRange = null;
                  }
 
         }
@@ -115,7 +117,6 @@ public class Player : MonoBehaviour
             animator.SetTrigger(PlayerConstants.SHOOT);
             pistolAnimator.SetTrigger(PlayerConstants.FIRE);
             if(normalInfectantInRange){
-                Debug.Log("HEREEEEE");
                 normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(1000);
             }
         }
