@@ -14,7 +14,6 @@ public class NormalInfectantsManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("ALO0");
         infected_members = new GameObject[20];
         locations_list  = locations.GetComponentsInChildren<Transform>();
         

@@ -60,7 +60,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         // Update is called once per frame
         private void Update()
-        {
+        {  
             RotateView();
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
@@ -191,12 +191,17 @@ namespace UnityStandardAssets.Characters.FirstPerson
                                       (speed*(m_IsWalking ? 1f : m_RunstepLenghten)));
                 newCameraPosition = m_Camera.transform.localPosition;
                 newCameraPosition.y = m_Camera.transform.localPosition.y - m_JumpBob.Offset();
+                newCameraPosition.z +=0.19f;
+                   
             }
             else
             {
                 newCameraPosition = m_Camera.transform.localPosition;
                 newCameraPosition.y = m_OriginalCameraPosition.y - m_JumpBob.Offset();
+                //newCameraPosition.z +=0.5f;
+                 
             }
+         
             m_Camera.transform.localPosition = newCameraPosition;
         }
 

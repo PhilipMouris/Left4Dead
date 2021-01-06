@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
-    private float moveSpeed = 2.5f;
-    private Camera camera;
+ 
 
     private Animator animator;
+
+    private Animator pistolAnimator;
 
     private int HP;
 
@@ -20,60 +20,129 @@ public class Player : MonoBehaviour
 
     private RageMeter rageMeter;
 
-    void Start()
-    {
-        camera = GetComponentInChildren<Camera>();
-    }
+    private bool isWeaponDrawn;
+
+    private GameObject pistol;
+
+    private GameObject weaponCamera;
+
+    private Vector3 rayCenter;
+
+    private GameObject crossHair;
+
+    private bool isEnemyInAimRange;
+
+    private GameObject normalInfectantInRange;
+
+
+
+
 
     void OnTriggerEnter(Collider other){
-        if(other.gameObject.CompareTag("NormalInfected")){
+        if(other.gameObject.CompareTag(NormalInfectantConstants.TAG)){
             other.gameObject.GetComponent<NormalInfectant>().Chase();
         }
     }
     void OnTriggerExit(Collider other){
-        if(other.gameObject.CompareTag("NormalInfected")){
+        if(other.gameObject.CompareTag(NormalInfectantConstants.TAG)){
             other.gameObject.GetComponent<NormalInfectant>().UnChase();
         }
     }
     
     
     void Awake()
-    {
-        //  this.camera = GameObject.Find(PlayerConstants.MAIN_CAMERA);
-         // animator = GetComponent<Animator>();
+    {  
+        rayCenter = new Vector3(0.5F, 0.7F, 0);
+        animator = GetComponent<Animator>();
+        pistol = GameObject.Find(PlayerConstants.EQUIPPED);
+        pistolAnimator = pistol.GetComponent<Animator>();
+        crossHair = GameObject.Find(PlayerConstants.CROSS_HAIR);
+        isWeaponDrawn = false;
+        isEnemyInAimRange = false;
     }
-    void FixedUpdate()
-    {
-        CheckShoot();
-    }
-    void CheckShoot(){
-        RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, transform.forward, out hit)){
-            NormalInfectant hit_member =  hit.collider.gameObject.GetComponent<NormalInfectant>();
-            if(hit_member)
-                if(Input.GetMouseButtonDown(0))
-                    hit_member.GetShot(36); //Dummy Placholder of Damage- Should be replaced with Damage from Current Weapon
+    void FixedUpdate(){
+        HandleRayCast();
+      
+    }
+    
+    
+    void HandleRayCast() {
+        if(!isWeaponDrawn) return;
+        Ray ray = Camera.main.ViewportPointToRay(rayCenter);
+        normalInfectantInRange = null;
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, PlayerConstants.PISTOL_RANGE)) {
+            GameObject collided = hit.collider.gameObject;
+             if(collided.CompareTag(NormalInfectantConstants.TAG)){
+                   normalInfectantInRange = collided;
+                   if(!isEnemyInAimRange) {
+                        SetCrossHairGreen();
+                        isEnemyInAimRange = true;
+                      
+                   }
+             }
+             else {
+               
+                 if(isEnemyInAimRange) {
+                    SetCrossHairRed();
+                    isEnemyInAimRange = false;
+                  
+                 }
+             }
+            // Debugging purposes only
+            // Debug.DrawLine(ray.origin, hit.point);
+          
+        }
+        else {
+              if(isEnemyInAimRange) {
+                    SetCrossHairRed();
+                    isEnemyInAimRange = false;
+                 }
+
+        }
+
+    }
+    
+     void HandleDrawWeapon(){
+        if(Input.GetButtonDown(PlayerConstants.DRAW_WEAPON_INPUT)){
+            this.isWeaponDrawn = !isWeaponDrawn;
+            animator.SetBool(PlayerConstants.DRAW_PISTOL, isWeaponDrawn);
+        }
+        
+    }    
+
+    void HandleFire(){
+        if(Input.GetButtonDown("Fire1") && isWeaponDrawn){
+            animator.SetTrigger(PlayerConstants.SHOOT);
+            pistolAnimator.SetTrigger(PlayerConstants.FIRE);
+            if(normalInfectantInRange){
+                normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(1000);
+            }
         }
     }
     
-    
-  
+    void SetCrossHairGreen(){
+        SpriteRenderer sprite = crossHair.GetComponent<SpriteRenderer>();
+        sprite.color = new Color (0, 255, 0, 1); 
+    }
+
+    void SetCrossHairRed() {
+         SpriteRenderer sprite = crossHair.GetComponent<SpriteRenderer>();
+         sprite.color = new Color (255, 0, 0, 1); 
+    }
+
 
     // Update is called once per frame
     void Update()
-    {
-        // HandleMovement();
+    {   
+
+        HandleDrawWeapon();
+        HandleFire();
+        
     }
 
 
-    private void HandleMovement()
-    {
-        // float horizontalInput = Input.GetAxis("Horizontal");
-        // float verticalInput = Input.GetAxis("Vertical");
-
-        //  this.transform.Translate(new Vector3(horizontalInput, 0, verticalInput) * moveSpeed * Time.deltaTime);
-    }
     public void ResetHealth(){
         
     }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - QuitButton
   - NormalInfected
+  - WeaponCamera
   layers:
   - Default
   - TransparentFX
@@ -15,8 +16,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - HandWeapon
+  - Hidden
   - 
   - 
   - 
