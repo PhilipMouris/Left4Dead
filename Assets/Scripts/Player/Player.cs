@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     // Start is called before the first frame update
     private float moveSpeed = 2.5f;
-    private GameObject camera;
+    // private GameObject camera;
 
     private Animator animator;
 
@@ -19,6 +19,9 @@ public class Player : MonoBehaviour
     private Gernade[] gernades;
 
     private RageMeter rageMeter;
+
+    private bool isWeaponDrawn;
+
 
 
 
@@ -37,7 +40,9 @@ public class Player : MonoBehaviour
     void Awake()
     {
         //  this.camera = GameObject.Find(PlayerConstants.MAIN_CAMERA);
-         // animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
+        Debug.Log(animator);
+        isWeaponDrawn = false;
     }
     
     
@@ -50,7 +55,13 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // HandleMovement();
+        if(Input.GetButtonDown(PlayerConstants.DRAW_WEAPON_INPUT)){
+            this.isWeaponDrawn = !isWeaponDrawn;
+            animator.SetBool(PlayerConstants.DRAW_PISTOL, isWeaponDrawn);
+        }
+        if(Input.GetButtonDown("Fire1")){
+            animator.SetTrigger(PlayerConstants.SHOOT);
+        }
     }
 
 
