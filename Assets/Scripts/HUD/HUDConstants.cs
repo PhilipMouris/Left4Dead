@@ -12,4 +12,10 @@ public class HUDConstants {
 
     public const int MAX_WEAPONS = 8; 
 
+    public const string HEALTH = "Health";
+    public const string HEALTH_BAR = "HealthBar";
+
+
+
+
 }

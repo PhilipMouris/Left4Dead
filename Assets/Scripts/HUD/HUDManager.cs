@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class HUDManager : MonoBehaviour
 {   
@@ -21,6 +23,29 @@ public class HUDManager : MonoBehaviour
 
     private bool isSelectedWeaponRight;
 
+    private GameObject healthBar;
+
+    private Image healthBarImage;
+
+    private TextMeshProUGUI health;
+
+    private Color textGreen = new Color(22,130,15,255);
+
+    private Color healthGreen = new Color(0.147f, 0.566f, 0.142f, 1.000f);
+
+    private Color orange = new Color(255,126,0,255);
+
+
+    private Color red = new Color (134, 0, 0,255);
+
+
+    private int healthPercentage = 100;
+
+    private int previousHealth;
+
+    private bool increaseHealthBar;
+
+    private bool deacreaseHealthBar;
 
     // Start is called before the first frame update
     
@@ -28,9 +53,13 @@ public class HUDManager : MonoBehaviour
     void Awake(){
         weaponUI = Resources.Load(HUDConstants.WEAPON_UI_PATH) as GameObject;
         equipmentContainer = GameObject.Find(HUDConstants.EQUIPMENT_CONTAINER);
+        health = GameObject.Find(HUDConstants.HEALTH).GetComponent<TextMeshProUGUI>();;
+        healthBar = GameObject.Find(HUDConstants.HEALTH_BAR);
+        healthBarImage = healthBar.GetComponent<Image>();
         isLastAddedRight = false;
         rightAddedCount = 0;
         leftAddedCount = 0;
+
     }
 
     public Weapon SwitchWeapon(){
@@ -103,6 +132,46 @@ public class HUDManager : MonoBehaviour
         this.isLastAddedRight = !isLastAddedRight;
 
     }
+
+    public void SetHealth(int health) {
+        this.health.text = "+" + health;
+        if(health > 60) this.health.color = textGreen;
+        if(health<=60 && health >= 30) this.health.color = orange;
+        if(health<30) this.health.color = red;
+        this.healthPercentage = health;
+        if(previousHealth > health) {
+            this.increaseHealthBar = true;
+            this.deacreaseHealthBar = false;
+        }
+        else {
+            this.increaseHealthBar = false;
+            this.deacreaseHealthBar = true;
+        }
+        // previousHealth = health;
+    }
+
+    public void HandleHealthBar(){
+          // Debug.Log(this.healthBar.GetComponent<Image>().fillAmount + "FILL" );
+        float fillAmount =  healthBarImage.fillAmount;
+        if(this.increaseHealthBar || this.deacreaseHealthBar) {
+            if(fillAmount > 0.6) healthBarImage.color = healthGreen;
+            if(fillAmount<=0.6 && fillAmount >= 0.3) healthBarImage.color = orange;
+            if(fillAmount<0.3) healthBarImage.color = red;
+        }
+        float updateAmount =  1f / 2 * Time.deltaTime;
+        if(this.increaseHealthBar && fillAmount < healthPercentage/100.0){
+            this.healthBar.GetComponent<Image>().fillAmount += updateAmount;
+        }
+        else {
+            if(this.deacreaseHealthBar && fillAmount > healthPercentage/100.0){
+            healthBarImage.fillAmount -= updateAmount;
+            }
+            else{
+                this.increaseHealthBar = false;
+                this.deacreaseHealthBar = false;
+            }
+        }
+    }
     
     void Start()
     {
@@ -110,7 +179,7 @@ public class HUDManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        
+    {   
+      HandleHealthBar();
     }
 }

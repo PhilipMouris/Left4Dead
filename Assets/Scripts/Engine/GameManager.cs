@@ -68,6 +68,7 @@ public class GameManager : MonoBehaviour
 
     private void HandleSwitchWeapons() {
         if(Input.GetButtonDown(PlayerConstants.DRAW_WEAPON_INPUT)){
+            hudManager.SetHealth(50);
             if(!player.GetIsweaponDrawn()) {
                 player.HandleDrawWeapon();
             } else {
