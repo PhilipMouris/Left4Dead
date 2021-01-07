@@ -10,8 +10,12 @@ public class Weapon : MonoBehaviour
     private int clipCapacity;
     private int rateOfFire;
     private int maxAmmo;
-
+    private int  currentAmmo;
+    private GameObject weapon;
+    private Animator animator;
+    private int totalAmmo;
     private string type;
+
 
     void Start()
     {
@@ -25,32 +29,52 @@ public class Weapon : MonoBehaviour
     }
 
 
-    public void Initialize(string type, int dmg, int clipCapacity,int rateOfFire, int maxAmmo) {
+
+    public void Shoot() {
+        // SHOOT LOGIC HERE
+
+    }
+
+
+    public void Initialize(string type, int dmg, int clipCapacity,int rateOfFire, int maxAmmo, GameObject weapon) {
         this.type = type;
         this.dmg = dmg;
         this.clipCapacity = clipCapacity;
         this.rateOfFire = rateOfFire;
+        this.currentAmmo = clipCapacity;
         this.maxAmmo = maxAmmo;
+        this.weapon = weapon;
+        this.animator = GetComponent<Animator>();
+        this.totalAmmo = maxAmmo;
+        
     }
 
-    public int getDmg(){
+    public int GetDmg(){
         return dmg;
     }
 
-    public int getClipCapacity(){
+    public int GetClipCapacity(){
         return  clipCapacity;
     }
 
-    public int getRateOfFire(){
+    public int GetRateOfFire(){
         return rateOfFire;
     }
 
 
-    public int getMaxAmmo(){
+    public int GetMaxAmmo(){
         return maxAmmo;
     }
 
-    public string getType(){
+    public int GetTotalAmmo(){
+        return totalAmmo;
+    }
+
+    public int GetCurrentAmmo() {
+        return currentAmmo;
+    }
+
+    public string GetType(){
         return type;
     }
 }

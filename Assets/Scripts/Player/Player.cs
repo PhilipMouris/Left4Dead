@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
 
     private int HP;
 
-    private Weapon[] weapons;
+    //private List<Weapon> weapons =  new List<Weapon>();
 
     private Companion companion;
 
@@ -33,6 +33,8 @@ public class Player : MonoBehaviour
     private bool isEnemyInAimRange;
 
     private GameObject normalInfectantInRange;
+
+    private Weapon currentWeapon;
 
 
 
@@ -59,6 +61,7 @@ public class Player : MonoBehaviour
         crossHair = GameObject.Find(PlayerConstants.CROSS_HAIR);
         isWeaponDrawn = false;
         isEnemyInAimRange = false;
+        //this.weapons = new List<Weapon>();
     }
 
     void FixedUpdate(){
@@ -72,7 +75,7 @@ public class Player : MonoBehaviour
         Ray ray = Camera.main.ViewportPointToRay(rayCenter);
         normalInfectantInRange = null;
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, PlayerConstants.PISTOL_RANGE)) {
+        if (Physics.Raycast(ray, out hit, 20)) {
             GameObject collided = hit.collider.gameObject;
              if(collided.CompareTag(NormalInfectantConstants.TAG)){
                    normalInfectantInRange = collided;
@@ -104,18 +107,23 @@ public class Player : MonoBehaviour
 
     }
     
-     void HandleDrawWeapon(){
-        if(Input.GetButtonDown(PlayerConstants.DRAW_WEAPON_INPUT)){
-            this.isWeaponDrawn = !isWeaponDrawn;
-            animator.SetBool(PlayerConstants.DRAW_PISTOL, isWeaponDrawn);
+     public void HandleDrawWeapon(){
+            this.isWeaponDrawn = true;
+            animator.SetBool(WeaponsConstants.DRAW_PISTOL, isWeaponDrawn);
         }
-        
-    }    
+    
+    public void HandlePutDownWeapon() {
+        if(Input.GetButtonDown(PlayerConstants.PUT_DOWN_WEAPON_INPUT)){
+           this.isWeaponDrawn = false;
+           animator.SetBool(WeaponsConstants.DRAW_PISTOL, false);
+        }
+    }
+  
 
-    void HandleFire(){
+    private void HandleFire(){
         if(Input.GetButtonDown("Fire1") && isWeaponDrawn){
-            animator.SetTrigger(PlayerConstants.SHOOT);
-            pistolAnimator.SetTrigger(PlayerConstants.FIRE);
+            animator.SetTrigger(WeaponsConstants.SHOOT);
+            pistolAnimator.SetTrigger(WeaponsConstants.FIRE);
             if(normalInfectantInRange){
                 normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(1000);
             }
@@ -137,13 +145,18 @@ public class Player : MonoBehaviour
     void Update()
     {   
 
-        HandleDrawWeapon();
+        HandlePutDownWeapon();
         HandleFire();
         
     }
 
 
-    public void ResetHealth(){
-        
+    public void SetWeapon(Weapon weapon) {
+        this.currentWeapon = weapon;
     }
+
+    public bool GetIsweaponDrawn() {
+        return isWeaponDrawn;
+    }
+  
 }

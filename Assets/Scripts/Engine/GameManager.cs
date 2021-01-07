@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     private GameObject pauseScreen;
 
     private SoundManager soundManager;
+    
     private bool isPaused;
 
     private Level1Manager level1Manager;
@@ -19,21 +20,27 @@ public class GameManager : MonoBehaviour
     private Level2Manager level2Manager;
 
     private Level3Manager level3Manager;
+    
+    private WeaponsManager weaponsManager;
+
+    private Player player;
 
     private int level;
 
+    private HUDManager hudManager;
+
 
     // Start is called before the first frame update
-    void Awake()
-    {   
-        level = 1;
-        isPaused = false;
-        pauseScreen = GameObject.Find(EngineConstants.PAUSE);
-        SetButtonListeners();
-        pauseScreen.SetActive(false);
-        this.soundManager = GameObject.Find(MenuConstants.AUDIO_MANAGER).GetComponent<SoundManager>();
-        InitializeLevelManagers();
-        InitializeScene();
+    // void Awake()
+    // {   
+      
+    // }
+
+    void InitializeWeapon((string,int,int,int,int,int,string) weaponData, bool isSelected) {
+        Weapon weapon = weaponsManager.InitializeWeapon(weaponData);
+        if(isSelected)
+            player.SetWeapon(weapon);
+        hudManager.AddWeapon(weapon, isSelected);
     }
 
 
@@ -57,12 +64,46 @@ public class GameManager : MonoBehaviour
 
         }
     }
+
+
+    private void HandleSwitchWeapons() {
+        if(Input.GetButtonDown(PlayerConstants.DRAW_WEAPON_INPUT)){
+            hudManager.SetHealth(50);
+            if(!player.GetIsweaponDrawn()) {
+                player.HandleDrawWeapon();
+            } else {
+                  Weapon weapon = hudManager.SwitchWeapon();
+                  player.SetWeapon(weapon);
+            }
+        }
+    }
+
+
+
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+
+
+        HandleSwitchWeapons();
+        if (Input.GetKeyDown("1"))
         {
-            HandlePause();
+            InitializeWeapon(WeaponsConstants.SHOT_GUN_DATA,false);
         }
+        if (Input.GetKeyDown("2"))
+        {
+            InitializeWeapon(WeaponsConstants.SMG_DATA,false);
+        }
+
+        if (Input.GetKeyDown("3"))
+        {
+            InitializeWeapon(WeaponsConstants.HUNTING_RIFLE_DATA,false);
+        }
+
+        if (Input.GetKeyDown("4"))
+        {
+            InitializeWeapon(WeaponsConstants.ASSAULT_RIFLE_DATA,false);
+        }
+
     }
 
     private void HandlePause()
@@ -83,7 +124,19 @@ public class GameManager : MonoBehaviour
     void Start()
     {
        
-
+        player = GameObject.Find(EngineConstants.PLAYER).GetComponent<Player>();
+        hudManager = GameObject.Find(EngineConstants.HUD).GetComponent<HUDManager>();
+        weaponsManager = GameObject.Find(EngineConstants.WEAPONS_MANAGER).GetComponent<WeaponsManager>();
+        //level = 1;
+        //isPaused = false;
+        //pauseScreen = GameObject.Find(EngineConstants.PAUSE);
+        //SetButtonListeners();
+        //pauseScreen.SetActive(false);
+        //this.soundManager = GameObject.Find(MenuConstants.AUDIO_MANAGER).GetComponent<SoundManager>();
+        //InitializeLevelManagers();
+        //InitializeScene();
+        //InitializePistol();
+        InitializeWeapon(WeaponsConstants.PISTOL_DATA, true);
     }
 
     private void onQuit()
