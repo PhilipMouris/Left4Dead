@@ -136,7 +136,7 @@ public class GameManager : MonoBehaviour
         //InitializeLevelManagers();
         //InitializeScene();
         //InitializePistol();
-        InitializeWeapon(WeaponsConstants.PISTOL_DATA,true, WeaponsConstants.PISTOL_TRANSFORMATIONS);
+        //InitializeWeapon(WeaponsConstants.PISTOL_DATA,true, WeaponsConstants.PISTOL_TRANSFORMATIONS);
     }
 
     private void onQuit()
