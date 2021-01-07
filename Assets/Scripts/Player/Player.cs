@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
 
     private int HP;
 
-    private List<Weapon> weapons =  new List<Weapon>();
+    //private List<Weapon> weapons =  new List<Weapon>();
 
     private Companion companion;
 
@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
         Ray ray = Camera.main.ViewportPointToRay(rayCenter);
         normalInfectantInRange = null;
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, WeaponsConstants.PISTOL_RANGE)) {
+        if (Physics.Raycast(ray, out hit, 20)) {
             GameObject collided = hit.collider.gameObject;
              if(collided.CompareTag(NormalInfectantConstants.TAG)){
                    normalInfectantInRange = collided;
@@ -146,8 +146,11 @@ public class Player : MonoBehaviour
     }
 
 
-    public void AddWeapon(Weapon weapon, bool isCurrent) {
-        weapons.Add(weapon);
-        if(isCurrent) this.currentWeapon = weapon;
+    public void SetWeapon(Weapon weapon) {
+        this.currentWeapon = weapon;
     }
+    // public void AddWeapon(Weapon weapon, bool isCurrent) {
+    //     weapons.Add(weapon);
+    //     if(isCurrent) this.currentWeapon = weapon;
+    // }
 }

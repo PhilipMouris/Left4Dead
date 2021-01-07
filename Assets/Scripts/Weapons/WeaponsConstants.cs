@@ -1,25 +1,95 @@
 public class WeaponsConstants
 { 
-  public  string[] WEAPON_TYPES = {"tacticalShotgun", "assaultRifle", "huntingRifle", "submachinGun", "pistol"};
+ // public  string[] WEAPON_TYPES = {"tacticalShotgun", "assaultRifle", "huntingRifle", "submachinGun", "pistol"};
   
   public const string FIRE = "Fire";
 
   public const string SHOOT = "shoot";
 
-  public const int PISTOL_RANGE = 20;
-
-  public const string PISTOL = "pistol";
-
   public const string DRAW_PISTOL = "drawPistol";
 
-  public const int PISTOL_DAMAGE = 36;
+  // PISTOL DATA
+  public static (string TYPE,  
+                int RANGE, 
+                int DAMAGE, 
+                int RATE_OF_FIRE, 
+                int CLIP_CAPACITY, 
+                int MAX_AMMO, 
+                string PATH) PISTOL_DATA = ( "pistol",
+                                             20, 
+                                             36, 
+                                             300, 
+                                             15, 
+                                             -1, 
+                                             "Prefabs/Weapons/Pistol/Modern Guns - Handgun/_Prefabs/Handgun Black/PistolShooting"
+                                             );
+  
+  // SHOT GUN DATA
+  public static (string TYPE,  
+                int RANGE, 
+                int DAMAGE, 
+                int RATE_OF_FIRE, 
+                int CLIP_CAPACITY, 
+                int MAX_AMMO, 
+                string PATH) SHOT_GUN_DATA = ( "shotGun",
+                                             20, 
+                                             350, 
+                                             200, 
+                                             10, 
+                                             130, 
+                                             "Prefabs/Weapons/Pistol/Modern Guns - Handgun/_Prefabs/Handgun Black/PistolShooting"
+                                             );
+  
+  // SMG DATA
+  public static (string TYPE,  
+                int RANGE, 
+                int DAMAGE, 
+                int RATE_OF_FIRE, 
+                int CLIP_CAPACITY, 
+                int MAX_AMMO, 
+                string PATH) SMG_DATA = ( "smg",
+                                             20, 
+                                             20, 
+                                             900, 
+                                             50, 
+                                             70, 
+                                             "Prefabs/Weapons/Pistol/Modern Guns - Handgun/_Prefabs/Handgun Black/PistolShooting"
+                                             );
+  
 
-  public const int PISTOL_RATE_OF_FIRE = 300;
+  
 
-  public const int PISTOL_CLIP_CAPACITY = 15;
+  // HUNTING RIFLE DATA
+  public static (string TYPE,  
+                int RANGE, 
+                int DAMAGE, 
+                int RATE_OF_FIRE, 
+                int CLIP_CAPACITY, 
+                int MAX_AMMO, 
+                string PATH) HUNTING_RIFLE_DATA = ( "huntingRifle",
+                                             20, 
+                                             90, 
+                                             240, 
+                                             15, 
+                                             165, 
+                                             "Prefabs/Weapons/Pistol/Modern Guns - Handgun/_Prefabs/Handgun Black/PistolShooting"
+                                             );
+  // ASSAULT RIFLE DATA
+  public static (string TYPE,  
+                int RANGE, 
+                int DAMAGE, 
+                int RATE_OF_FIRE, 
+                int CLIP_CAPACITY, 
+                int MAX_AMMO, 
+                string PATH) ASSAULT_RIFLE_DATA = ("assaultRifle",
+                                             20, 
+                                             33, 
+                                             600, 
+                                             50, 
+                                             450, 
+                                             "Prefabs/Weapons/Pistol/Modern Guns - Handgun/_Prefabs/Handgun Black/PistolShooting"
+                                             );
 
-  public const int PISTOL_MAX_AMMO = -1;
 
-  public const string PISTOL_PATH = "Prefabs/Weapons/Pistol/Modern Guns - Handgun/_Prefabs/Handgun Black/PistolShooting";
 
 }

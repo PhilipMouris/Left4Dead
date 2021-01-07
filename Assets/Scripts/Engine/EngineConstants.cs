@@ -8,5 +8,9 @@ public class EngineConstants
 
     public const string PLAYER = "Player";
 
+    public const string HUD = "HUD";
+
+    public const string WEAPONS_MANAGER = "WeaponsManager";
+
 
 }
