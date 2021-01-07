@@ -6,5 +6,7 @@ public class EngineConstants
 
     public const string RESUME = "Resume";
 
+    public const string PLAYER = "Player";
+
 
 }

@@ -20,20 +20,41 @@ public class GameManager : MonoBehaviour
 
     private Level3Manager level3Manager;
 
+    private Player player;
+
     private int level;
 
 
     // Start is called before the first frame update
     void Awake()
     {   
-        level = 1;
-        isPaused = false;
-        pauseScreen = GameObject.Find(EngineConstants.PAUSE);
-        SetButtonListeners();
-        pauseScreen.SetActive(false);
-        this.soundManager = GameObject.Find(MenuConstants.AUDIO_MANAGER).GetComponent<SoundManager>();
-        InitializeLevelManagers();
-        InitializeScene();
+        player = GameObject.Find(EngineConstants.PLAYER).GetComponent<Player>();
+        //level = 1;
+        //isPaused = false;
+        //pauseScreen = GameObject.Find(EngineConstants.PAUSE);
+        //SetButtonListeners();
+        //pauseScreen.SetActive(false);
+        //this.soundManager = GameObject.Find(MenuConstants.AUDIO_MANAGER).GetComponent<SoundManager>();
+        //InitializeLevelManagers();
+        //InitializeScene();
+        InitializePistol();
+    }
+
+
+    // Initialize(int dmg, int clipCapacity,int rateOfFire, int maxAmmo, GameObject weapon);
+    void InitializePistol() {
+        GameObject pistol = Resources.Load(WeaponsConstants.PISTOL_PATH) as GameObject;
+        pistol.AddComponent<Weapon>();
+        Weapon weapon = pistol.GetComponent<Weapon>();
+        weapon.Initialize(WeaponsConstants.PISTOL_DAMAGE,
+                          WeaponsConstants.PISTOL_CLIP_CAPACITY,
+                          WeaponsConstants.PISTOL_RATE_OF_FIRE,
+                          WeaponsConstants.PISTOL_MAX_AMMO,
+                          pistol
+                          );
+        player.AddWeapon(weapon, true);
+        //Debug.Log(weapon.getDmg() + "PISTOLLLL");
+        
     }
 
 
@@ -61,7 +82,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            HandlePause();
+            // HandlePause();
         }
     }
 
