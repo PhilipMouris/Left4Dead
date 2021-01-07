@@ -67,10 +67,18 @@ public class GameManager : MonoBehaviour
 
 
     private void HandleSwitchWeapons() {
-        if(Input.GetKeyDown("5")){
-            Weapon weapon = hudManager.SwitchWeapon();
+        if(Input.GetButtonDown(PlayerConstants.DRAW_WEAPON_INPUT)){
+            if(!player.GetIsweaponDrawn()) {
+                player.HandleDrawWeapon();
+            } else {
+                  Weapon weapon = hudManager.SwitchWeapon();
+                  player.SetWeapon(weapon);
+            }
         }
     }
+
+
+
     void Update()
     {
 

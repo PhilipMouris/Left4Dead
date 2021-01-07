@@ -11,6 +11,7 @@ public class PlayerConstants
 
  public const string CROSS_HAIR = "CrossHair";
 
+ public const string PUT_DOWN_WEAPON_INPUT = "putDownWeapon";
 
 
 

@@ -107,15 +107,20 @@ public class Player : MonoBehaviour
 
     }
     
-     void HandleDrawWeapon(){
-        if(Input.GetButtonDown(PlayerConstants.DRAW_WEAPON_INPUT)){
-            this.isWeaponDrawn = !isWeaponDrawn;
+     public void HandleDrawWeapon(){
+            this.isWeaponDrawn = true;
             animator.SetBool(WeaponsConstants.DRAW_PISTOL, isWeaponDrawn);
         }
-        
-    }    
+    
+    public void HandlePutDownWeapon() {
+        if(Input.GetButtonDown(PlayerConstants.PUT_DOWN_WEAPON_INPUT)){
+           this.isWeaponDrawn = false;
+           animator.SetBool(WeaponsConstants.DRAW_PISTOL, false);
+        }
+    }
+  
 
-    void HandleFire(){
+    private void HandleFire(){
         if(Input.GetButtonDown("Fire1") && isWeaponDrawn){
             animator.SetTrigger(WeaponsConstants.SHOOT);
             pistolAnimator.SetTrigger(WeaponsConstants.FIRE);
@@ -140,7 +145,7 @@ public class Player : MonoBehaviour
     void Update()
     {   
 
-        HandleDrawWeapon();
+        HandlePutDownWeapon();
         HandleFire();
         
     }
@@ -149,8 +154,9 @@ public class Player : MonoBehaviour
     public void SetWeapon(Weapon weapon) {
         this.currentWeapon = weapon;
     }
-    // public void AddWeapon(Weapon weapon, bool isCurrent) {
-    //     weapons.Add(weapon);
-    //     if(isCurrent) this.currentWeapon = weapon;
-    // }
+
+    public bool GetIsweaponDrawn() {
+        return isWeaponDrawn;
+    }
+  
 }

@@ -27,7 +27,6 @@ public class HUDManager : MonoBehaviour
     
     void Awake(){
         weaponUI = Resources.Load(HUDConstants.WEAPON_UI_PATH) as GameObject;
-        Debug.Log(weaponUI.name + " NAME");
         equipmentContainer = GameObject.Find(HUDConstants.EQUIPMENT_CONTAINER);
         isLastAddedRight = false;
         rightAddedCount = 0;
