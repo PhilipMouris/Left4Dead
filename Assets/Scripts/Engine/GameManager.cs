@@ -36,8 +36,8 @@ public class GameManager : MonoBehaviour
       
     // }
 
-    void InitializeWeapon((string,int,int,int,int,int,string) weaponData, bool isSelected) {
-        Weapon weapon = weaponsManager.InitializeWeapon(weaponData);
+    void InitializeWeapon((string,int,int,int,int,int,string) weaponData, bool isSelected,(Vector3,Vector3,Vector3) transformationData) {
+        Weapon weapon = weaponsManager.InitializeWeapon(weaponData,transformationData);
         if(isSelected)
             player.SetWeapon(weapon);
         hudManager.AddWeapon(weapon, isSelected);
@@ -85,24 +85,24 @@ public class GameManager : MonoBehaviour
 
 
         HandleSwitchWeapons();
-        if (Input.GetKeyDown("1"))
-        {
-            InitializeWeapon(WeaponsConstants.SHOT_GUN_DATA,false);
-        }
-        if (Input.GetKeyDown("2"))
-        {
-            InitializeWeapon(WeaponsConstants.SMG_DATA,false);
-        }
+        // if (Input.GetKeyDown("1"))
+        // {
+        //     InitializeWeapon(WeaponsConstants.SHOT_GUN_DATA,false);
+        // }
+        // if (Input.GetKeyDown("2"))
+        // {
+        //     InitializeWeapon(WeaponsConstants.SMG_DATA,false);
+        // }
 
-        if (Input.GetKeyDown("3"))
-        {
-            InitializeWeapon(WeaponsConstants.HUNTING_RIFLE_DATA,false);
-        }
+        // if (Input.GetKeyDown("3"))
+        // {
+        //     InitializeWeapon(WeaponsConstants.HUNTING_RIFLE_DATA,false);
+        // }
 
-        if (Input.GetKeyDown("4"))
-        {
-            InitializeWeapon(WeaponsConstants.ASSAULT_RIFLE_DATA,false);
-        }
+        // if (Input.GetKeyDown("4"))
+        // {
+        //     InitializeWeapon(WeaponsConstants.ASSAULT_RIFLE_DATA,false);
+        // }
 
     }
 
@@ -136,7 +136,7 @@ public class GameManager : MonoBehaviour
         //InitializeLevelManagers();
         //InitializeScene();
         //InitializePistol();
-        InitializeWeapon(WeaponsConstants.PISTOL_DATA, true);
+        InitializeWeapon(WeaponsConstants.PISTOL_DATA,true, WeaponsConstants.PISTOL_TRANSFORMATIONS);
     }
 
     private void onQuit()

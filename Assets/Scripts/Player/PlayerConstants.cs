@@ -13,6 +13,8 @@ public class PlayerConstants
 
  public const string PUT_DOWN_WEAPON_INPUT = "putDownWeapon";
 
+ public const string WEAPON_EQ = "WeaponEQ";
+
 
 
 

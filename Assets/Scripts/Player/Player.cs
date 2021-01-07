@@ -56,8 +56,8 @@ public class Player : MonoBehaviour
     {  
         rayCenter = new Vector3(0.5F, 0.7F, 0);
         animator = GetComponent<Animator>();
-        pistol = GameObject.Find(PlayerConstants.EQUIPPED);
-        pistolAnimator = pistol.GetComponent<Animator>();
+        //pistol = GameObject.Find(PlayerConstants.EQUIPPED);
+        //pistolAnimator = pistol.GetComponent<Animator>();
         crossHair = GameObject.Find(PlayerConstants.CROSS_HAIR);
         isWeaponDrawn = false;
         isEnemyInAimRange = false;
@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
         Ray ray = Camera.main.ViewportPointToRay(rayCenter);
         normalInfectantInRange = null;
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 20)) {
+        if (Physics.Raycast(ray, out hit, currentWeapon.GetRange())) {
             GameObject collided = hit.collider.gameObject;
              if(collided.CompareTag(NormalInfectantConstants.TAG)){
                    normalInfectantInRange = collided;
@@ -122,10 +122,11 @@ public class Player : MonoBehaviour
 
     private void HandleFire(){
         if(Input.GetButtonDown("Fire1") && isWeaponDrawn){
-            animator.SetTrigger(WeaponsConstants.SHOOT);
-            pistolAnimator.SetTrigger(WeaponsConstants.FIRE);
+            //animator.SetTrigger(WeaponsConstants.SHOOT);
+            //pistolAnimator.SetTrigger(WeaponsConstants.FIRE);
+            currentWeapon.Shoot();
             if(normalInfectantInRange){
-                normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(1000);
+                normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(currentWeapon.GetDmg());
             }
         }
     }

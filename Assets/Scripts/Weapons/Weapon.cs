@@ -16,6 +16,8 @@ public class Weapon : MonoBehaviour
     private int totalAmmo;
     private string type;
 
+    private int range;
+
 
     void Start()
     {
@@ -31,12 +33,12 @@ public class Weapon : MonoBehaviour
 
 
     public void Shoot() {
-        // SHOOT LOGIC HERE
+        animator.SetTrigger(WeaponsConstants.FIRE);
 
     }
 
 
-    public void Initialize(string type, int dmg, int clipCapacity,int rateOfFire, int maxAmmo, GameObject weapon) {
+    public void Initialize(string type, int dmg, int clipCapacity,int rateOfFire, int maxAmmo, GameObject weapon, int range) {
         this.type = type;
         this.dmg = dmg;
         this.clipCapacity = clipCapacity;
@@ -44,8 +46,9 @@ public class Weapon : MonoBehaviour
         this.currentAmmo = clipCapacity;
         this.maxAmmo = maxAmmo;
         this.weapon = weapon;
-        this.animator = GetComponent<Animator>();
+        this.animator = weapon.GetComponentsInChildren<Animator>()[0];
         this.totalAmmo = maxAmmo;
+        this.range = range;
         
     }
 
@@ -76,5 +79,9 @@ public class Weapon : MonoBehaviour
 
     public string GetType(){
         return type;
+    }
+
+    public int GetRange() {
+        return range;
     }
 }

@@ -1,3 +1,4 @@
+using UnityEngine;
 public class WeaponsConstants
 { 
  // public  string[] WEAPON_TYPES = {"tacticalShotgun", "assaultRifle", "huntingRifle", "submachinGun", "pistol"};
@@ -23,6 +24,14 @@ public class WeaponsConstants
                                              -1, 
                                              "Prefabs/Weapons/Pistol/Modern Guns - Handgun/_Prefabs/Handgun Black/PistolShooting"
                                              );
+
+public static  (Vector3 position, 
+                Vector3 scale, 
+                Vector3 rotation) PISTOL_TRANSFORMATIONS = (new Vector3(0.08407628f,-0.02758249f,-0.03026863f),
+                                                            new Vector3(1.7f,1f,1f),
+                                                            new Vector3(13.166f,96.78f,91.854f)
+                                                          
+                                                        );
   
   // SHOT GUN DATA
   public static (string TYPE,  
