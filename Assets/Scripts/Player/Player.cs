@@ -113,7 +113,6 @@ public class Player : MonoBehaviour
      public void HandleDrawWeapon(){
             this.isWeaponDrawn = true;
             //animator.SetBool(WeaponsConstants.DRAW_PISTOL, isWeaponDrawn);
-            Debug.Log(currentWeapon.GetType() + " TYPE");
             animator.SetTrigger($"draw{currentWeapon.GetType()}");
         }
     
