@@ -36,8 +36,8 @@ public class GameManager : MonoBehaviour
       
     // }
 
-    void InitializeWeapon((string,int,int,int,int,int,string) weaponData, bool isSelected) {
-        Weapon weapon = weaponsManager.InitializeWeapon(weaponData);
+    void InitializeWeapon((string,int,int,int,int,int,string) weaponData, bool isSelected,(Vector3,Vector3,Vector3) transformationData, (Vector3,Vector3) cameraData) {
+        Weapon weapon = weaponsManager.InitializeWeapon(weaponData,transformationData,cameraData);
         if(isSelected)
             player.SetWeapon(weapon);
         hudManager.AddWeapon(weapon, isSelected);
@@ -85,24 +85,24 @@ public class GameManager : MonoBehaviour
 
 
         HandleSwitchWeapons();
-        if (Input.GetKeyDown("1"))
-        {
-            InitializeWeapon(WeaponsConstants.SHOT_GUN_DATA,false);
-        }
-        if (Input.GetKeyDown("2"))
-        {
-            InitializeWeapon(WeaponsConstants.SMG_DATA,false);
-        }
+        // if (Input.GetKeyDown("1"))
+        // {
+        //     InitializeWeapon(WeaponsConstants.SHOT_GUN_DATA,false);
+        // }
+        // if (Input.GetKeyDown("2"))
+        // {
+        //     InitializeWeapon(WeaponsConstants.SMG_DATA,false);
+        // }
 
-        if (Input.GetKeyDown("3"))
-        {
-            InitializeWeapon(WeaponsConstants.HUNTING_RIFLE_DATA,false);
-        }
+        // if (Input.GetKeyDown("3"))
+        // {
+        //     InitializeWeapon(WeaponsConstants.HUNTING_RIFLE_DATA,false);
+        // }
 
-        if (Input.GetKeyDown("4"))
-        {
-            InitializeWeapon(WeaponsConstants.ASSAULT_RIFLE_DATA,false);
-        }
+        // if (Input.GetKeyDown("4"))
+        // {
+        //     InitializeWeapon(WeaponsConstants.ASSAULT_RIFLE_DATA,false);
+        // }
 
     }
 
@@ -136,7 +136,16 @@ public class GameManager : MonoBehaviour
         //InitializeLevelManagers();
         //InitializeScene();
         //InitializePistol();
-        InitializeWeapon(WeaponsConstants.PISTOL_DATA, true);
+        InitializeWeapon(WeaponsConstants.PISTOL_DATA, true, WeaponsConstants.PISTOL_TRANSFORMATIONS, WeaponsConstants.PISTOL_CAMERA_DATA);
+        InitializeWeapon(WeaponsConstants.ASSAULT_RIFLE_DATA, false, WeaponsConstants.RIFLE_TRANSFORMATIONS, WeaponsConstants.RIFLE_CAMERA_DATA);
+        InitializeWeapon(WeaponsConstants.SHOT_GUN_DATA, false, WeaponsConstants.SHOT_GUN_TRANSFORMATIONS, WeaponsConstants.RIFLE_CAMERA_DATA);
+        InitializeWeapon(WeaponsConstants.HUNTING_RIFLE_DATA, false, WeaponsConstants.HUNTING_RIFLE_TRANSFORMATIONS, WeaponsConstants.RIFLE_CAMERA_DATA);
+    
+    
+    
+    
+    
+    
     }
 
     private void onQuit()
