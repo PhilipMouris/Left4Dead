@@ -36,6 +36,8 @@ public class Player : MonoBehaviour
 
     private Weapon currentWeapon;
 
+    //private Camera weaponCamera;
+
 
 
 
@@ -59,6 +61,7 @@ public class Player : MonoBehaviour
         //pistol = GameObject.Find(PlayerConstants.EQUIPPED);
         //pistolAnimator = pistol.GetComponent<Animator>();
         crossHair = GameObject.Find(PlayerConstants.CROSS_HAIR);
+        weaponCamera = GameObject.Find(PlayerConstants.WEAPON_CAMERA);
         isWeaponDrawn = false;
         isEnemyInAimRange = false;
         //this.weapons = new List<Weapon>();
@@ -109,13 +112,15 @@ public class Player : MonoBehaviour
     
      public void HandleDrawWeapon(){
             this.isWeaponDrawn = true;
-            animator.SetBool(WeaponsConstants.DRAW_PISTOL, isWeaponDrawn);
+            //animator.SetBool(WeaponsConstants.DRAW_PISTOL, isWeaponDrawn);
+            Debug.Log(currentWeapon.GetType() + " TYPE");
+            animator.SetTrigger($"draw{currentWeapon.GetType()}");
         }
     
     public void HandlePutDownWeapon() {
         if(Input.GetButtonDown(PlayerConstants.PUT_DOWN_WEAPON_INPUT)){
            this.isWeaponDrawn = false;
-           animator.SetBool(WeaponsConstants.DRAW_PISTOL, false);
+           animator.SetTrigger(PlayerConstants.SWITCH);
         }
     }
   
@@ -125,8 +130,10 @@ public class Player : MonoBehaviour
             //animator.SetTrigger(WeaponsConstants.SHOOT);
             //pistolAnimator.SetTrigger(WeaponsConstants.FIRE);
             currentWeapon.Shoot();
+            animator.SetTrigger(WeaponsConstants.FIRE);
             if(normalInfectantInRange){
-                normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(currentWeapon.GetDmg());
+                normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(1000);
+
             }
         }
     }
@@ -153,7 +160,17 @@ public class Player : MonoBehaviour
 
 
     public void SetWeapon(Weapon weapon) {
+        animator.SetTrigger(PlayerConstants.SWITCH);
+        if(currentWeapon && isWeaponDrawn){
+            currentWeapon.Hide();
+        }
+        var(position,rotation) = weapon.GetCameraData();
+        weaponCamera.transform.localPosition = position;
+        weaponCamera.transform.localRotation = Quaternion.Euler(rotation);
         this.currentWeapon = weapon;
+        currentWeapon.UnHide();
+        if(isWeaponDrawn) HandleDrawWeapon();
+    
     }
 
     public bool GetIsweaponDrawn() {

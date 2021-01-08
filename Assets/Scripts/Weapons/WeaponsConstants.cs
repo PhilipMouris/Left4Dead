@@ -33,6 +33,16 @@ public static  (Vector3 position,
                                                           
                                                         );
   
+
+public static (Vector3 position, 
+               Vector3 rotation 
+               ) PISTOL_CAMERA_DATA = (
+                                        new Vector3(0.05913162f,1.538786f,0.2859898f),
+                                        new Vector3(18.599f,-5.792f,-0.117f)
+               );
+
+
+
   // SHOT GUN DATA
   public static (string TYPE,  
                 int RANGE, 
@@ -96,8 +106,29 @@ public static  (Vector3 position,
                                              600, 
                                              50, 
                                              450, 
-                                             "Prefabs/Weapons/Pistol/Modern Guns - Handgun/_Prefabs/Handgun Black/PistolShooting"
+                                             "Prefabs/Weapons/Rifle/Prefabs/RifleShooting"
                                              );
+                                         
+
+    public static  (Vector3 position, 
+                    Vector3 scale, 
+                    Vector3 rotation) RIFLE_TRANSFORMATIONS = (new Vector3(0.25f,-0.026f,0.015f),
+                                                            new Vector3(0.57f,0.5f,0.5f),
+                                                            new Vector3(0.517f,-79.043f,-90.019f)
+                                                          
+                                                        );
+
+
+    
+public static (Vector3 position, 
+               Vector3 rotation 
+               ) RIFLE_CAMERA_DATA = (
+                                        new Vector3(0.1358f,1.6335f,-0.0219f),
+                                        new Vector3(5.88f,-5.67f,0.006f)
+                                        // new Vector3(0.05913162f,1.538786f,0.2859898f),
+                                        // new Vector3(18.599f,-5.792f,-0.117f)
+               );
+
 
 
 

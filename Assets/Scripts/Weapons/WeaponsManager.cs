@@ -17,7 +17,7 @@ public class WeaponsManager : MonoBehaviour
             trans.gameObject.layer = layerNumber;
         }
     }
-   public Weapon InitializeWeapon((string,int,int,int,int,int,string) weaponData, (Vector3, Vector3,Vector3) transformationData ) {
+   public Weapon InitializeWeapon((string,int,int,int,int,int,string) weaponData, (Vector3, Vector3,Vector3) transformationData,(Vector3,Vector3) cameraData ) {
         var (TYPE,RANGE,DAMAGE,RATE_OF_FIRE,CLIP_CAPACITY,MAX_AMMO,PATH) = weaponData;
         var (position,scale,rotation) = transformationData;
         GameObject weaponObject = Resources.Load(PATH) as GameObject;
@@ -37,8 +37,10 @@ public class WeaponsManager : MonoBehaviour
                           RATE_OF_FIRE,
                           MAX_AMMO,
                           weaponObjectInstance,
-                          RANGE
+                          RANGE,
+                          cameraData
                           );
+        weapon.Hide();
         return weapon;
    } 
    

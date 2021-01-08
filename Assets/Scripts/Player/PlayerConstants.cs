@@ -15,6 +15,9 @@ public class PlayerConstants
 
  public const string WEAPON_EQ = "WeaponEQ";
 
+ public const string WEAPON_CAMERA = "WeaponCamera";
+
+ public const string SWITCH = "switch";
 
 
 

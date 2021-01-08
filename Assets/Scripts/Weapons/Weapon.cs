@@ -18,6 +18,7 @@ public class Weapon : MonoBehaviour
 
     private int range;
 
+    private (Vector3,Vector3) cameraData;
 
     void Start()
     {
@@ -33,12 +34,14 @@ public class Weapon : MonoBehaviour
 
 
     public void Shoot() {
-        animator.SetTrigger(WeaponsConstants.FIRE);
+        if(animator){
+            animator.SetTrigger(WeaponsConstants.FIRE);
+        }
 
     }
 
 
-    public void Initialize(string type, int dmg, int clipCapacity,int rateOfFire, int maxAmmo, GameObject weapon, int range) {
+    public void Initialize(string type, int dmg, int clipCapacity,int rateOfFire, int maxAmmo, GameObject weapon, int range,(Vector3,Vector3) cameraData) {
         this.type = type;
         this.dmg = dmg;
         this.clipCapacity = clipCapacity;
@@ -49,6 +52,8 @@ public class Weapon : MonoBehaviour
         this.animator = weapon.GetComponentsInChildren<Animator>()[0];
         this.totalAmmo = maxAmmo;
         this.range = range;
+        this.cameraData = cameraData;
+
         
     }
 
@@ -83,5 +88,17 @@ public class Weapon : MonoBehaviour
 
     public int GetRange() {
         return range;
+    }
+
+    public (Vector3,Vector3) GetCameraData(){
+        return cameraData;
+    }
+
+    public void Hide() {
+        weapon.SetActive(false);
+    }
+
+    public void UnHide() {
+        weapon.SetActive(true);
     }
 }

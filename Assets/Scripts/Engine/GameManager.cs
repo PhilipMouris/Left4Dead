@@ -36,8 +36,8 @@ public class GameManager : MonoBehaviour
       
     // }
 
-    void InitializeWeapon((string,int,int,int,int,int,string) weaponData, bool isSelected,(Vector3,Vector3,Vector3) transformationData) {
-        Weapon weapon = weaponsManager.InitializeWeapon(weaponData,transformationData);
+    void InitializeWeapon((string,int,int,int,int,int,string) weaponData, bool isSelected,(Vector3,Vector3,Vector3) transformationData, (Vector3,Vector3) cameraData) {
+        Weapon weapon = weaponsManager.InitializeWeapon(weaponData,transformationData,cameraData);
         if(isSelected)
             player.SetWeapon(weapon);
         hudManager.AddWeapon(weapon, isSelected);
@@ -136,7 +136,14 @@ public class GameManager : MonoBehaviour
         //InitializeLevelManagers();
         //InitializeScene();
         //InitializePistol();
-        //InitializeWeapon(WeaponsConstants.PISTOL_DATA,true, WeaponsConstants.PISTOL_TRANSFORMATIONS);
+        InitializeWeapon(WeaponsConstants.PISTOL_DATA, true, WeaponsConstants.PISTOL_TRANSFORMATIONS, WeaponsConstants.PISTOL_CAMERA_DATA);
+         InitializeWeapon(WeaponsConstants.ASSAULT_RIFLE_DATA, false, WeaponsConstants.RIFLE_TRANSFORMATIONS, WeaponsConstants.RIFLE_CAMERA_DATA);
+    
+    
+    
+    
+    
+    
     }
 
     private void onQuit()
