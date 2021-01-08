@@ -101,8 +101,29 @@ public static (Vector3 position,
                                              240, 
                                              15, 
                                              165, 
-                                             "Prefabs/Weapons/Pistol/Modern Guns - Handgun/_Prefabs/Handgun Black/PistolShooting"
+                                            "Prefabs/Weapons/HuntingRifle/Prefab/Scar"
                                              );
+ 
+   public static  (Vector3 position, 
+                    Vector3 scale, 
+                    Vector3 rotation) HUNTING_RIFLE_TRANSFORMATIONS = (new Vector3(0.2712f,-0.0371f,0.0665f),
+                                                            new Vector3(0.8f,0.8f,0.8f),
+                                                            new Vector3(-90f,0f,-180f)
+                                                          
+                                                        );
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
   // ASSAULT RIFLE DATA
   public static (string TYPE,  
                 int RANGE, 
