@@ -50,14 +50,23 @@ public static (Vector3 position,
                 int RATE_OF_FIRE, 
                 int CLIP_CAPACITY, 
                 int MAX_AMMO, 
-                string PATH) SHOT_GUN_DATA = ( "shotGun",
+                string PATH) SHOT_GUN_DATA = ( "shotgun",
                                              20, 
                                              350, 
                                              200, 
                                              10, 
                                              130, 
-                                             "Prefabs/Weapons/Pistol/Modern Guns - Handgun/_Prefabs/Handgun Black/PistolShooting"
+                                             "Prefabs/Weapons/shotgun/MARMO3"
                                              );
+  
+ public static  (Vector3 position, 
+                    Vector3 scale, 
+                    Vector3 rotation) SHOT_GUN_TRANSFORMATIONS = (new Vector3(0.25f,-0.026f,0.015f),
+                                                            new Vector3(0.1f,0.1f,0.1f),
+                                                            new Vector3(-90f,180f,0f)
+                                                          
+                                                        );
+
   
   // SMG DATA
   public static (string TYPE,  
@@ -74,6 +83,7 @@ public static (Vector3 position,
                                              70, 
                                              "Prefabs/Weapons/Pistol/Modern Guns - Handgun/_Prefabs/Handgun Black/PistolShooting"
                                              );
+
   
 
   
