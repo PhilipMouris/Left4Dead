@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class SpecialInfected : MonoBehaviour
 {
     private SpecialInfectedManager manager;
+    private GameManager gameManager;
     private int HP;
     private int dps;
     private int attackInterval;
@@ -13,15 +14,20 @@ public class SpecialInfected : MonoBehaviour
     private float walkingUpperBound;
     private Animator animator;
     private NavMeshAgent agent;
+    private GameObject player;
+    private bool isChasing = false;
+    private bool isAttacking = false;
 
     // Start is called before the first frame update
     void Start()
     {
         manager = FindObjectOfType<SpecialInfectedManager>();
+        gameManager = FindObjectOfType<GameManager>();
         walkingLowerBound = transform.position.z;
         walkingUpperBound = transform.position.z + 10;
         animator = gameObject.GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        player = GameObject.FindGameObjectsWithTag("Player")[0];
         if (gameObject.tag == "Tank")
         {
             HP = 1000;
@@ -33,10 +39,74 @@ public class SpecialInfected : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        AlternatePosition();
+        if (!isAttacking && !isChasing)
+            AlternatePosition();
+        if (PlayerInRange() && !isChasing && !isAttacking)
+            StartChasing();
+        if (PlayerAtStoppingDistance() && isChasing && !isAttacking)
+            Attack();
+        if (PlayerOutsideStoppingDistance() && !isChasing && isAttacking)
+            UnAttack();
+        if (isChasing)
+            Chase();
         // for testing purposes
         if (Input.GetKeyDown("m"))
-            GetShot(500);
+            GetShot(50);
+    }
+
+    public void UnAttack()
+    {
+        isChasing = true;
+        isAttacking = false;
+        animator.SetBool("Attack", false);
+        animator.SetBool("Run", true);
+        agent.ResetPath();
+        agent.destination = player.transform.position;
+        agent.stoppingDistance = 5;
+        CancelInvoke();
+    }
+
+    public bool PlayerOutsideStoppingDistance()
+    {
+        return Vector3.Distance(transform.position, player.transform.position) > 5;
+    }
+
+    public void StartChasing()
+    {
+        isChasing = true;
+        animator.SetBool("Run", true);
+        animator.SetBool("Attack", false);
+    }
+
+    public void Attack()
+    {
+        isChasing = false;
+        isAttacking = true;
+        animator.SetBool("Attack", true);
+        animator.SetBool("Run", false);
+        agent.Stop();
+        InvokeRepeating("DecreaseHealth", attackInterval, attackInterval);
+    }
+
+    public void DecreaseHealth()
+    {
+        gameManager.SetHealth(gameManager.GetHealth() - dps);
+    }
+
+    public bool PlayerAtStoppingDistance()
+    {
+        return agent.remainingDistance <= agent.stoppingDistance;
+    }
+
+    public bool PlayerInRange()
+    {
+        return Vector3.Distance(transform.position, player.transform.position) <= 10;
+    }
+
+    public void Chase()
+    {
+        agent.destination = player.transform.position;
+        agent.stoppingDistance = 5;
     }
 
     public void AlternatePosition()
@@ -61,15 +131,4 @@ public class SpecialInfected : MonoBehaviour
             animator.SetTrigger("GetShot");
         }
     }
-
-
-
-    /**public void initialize(int HP, int dps, int attackInterval, Transform[] locations, GameObject player)
-    {
-        this.HP = HP;
-        this.dps = dps;
-        this.attackInterval = attackInterval;
-        this.locations = locations;
-        this.mainPlayer = player;
-    }**/
 }
