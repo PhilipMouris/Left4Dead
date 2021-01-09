@@ -43,6 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a56bbaf0c7b19d488d34ad2c362bfa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  model: {fileID: 4265706303153413660, guid: 050dafb5a2617a54a93c901f22b6c0a9, type: 3}
+  molotov: {fileID: 4265706303153413660, guid: 050dafb5a2617a54a93c901f22b6c0a9, type: 3}
+  stun: {fileID: 3495633441417750768, guid: a355037faf6db314da54cf677901cc7e, type: 3}
+  pipe: {fileID: 852644773599337361, guid: 8c97ca335cb96b64d83d3868dffaff8a, type: 3}
   locations: {fileID: 7859743461445527113, guid: 897b0567e88177043a8b159a71e59662, type: 3}
   player: {fileID: 1352683324928362578, guid: 603ca1e08ca3aeb4fb8f08f86cf569b0, type: 3}
+  source: {fileID: 6699674535552494260, guid: c328304e4c75aeb478405d809ba4bee4, type: 3}

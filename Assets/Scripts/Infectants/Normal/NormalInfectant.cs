@@ -13,16 +13,18 @@ public class NormalInfectant : MonoBehaviour
     private Animator animator;
     private GameObject mainPlayer;
     private bool walking = false;
-    int random_timer ;
+    int random_timer;
     private int HP;
     private int dps;
-    
+
     private bool dead = false;
     private float speed;
     private bool chasing = false;
 
     private bool attacking = false;
+    private bool isAttracted;
     private NormalInfectantsManager manager;
+    private Transform previousDestination;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -33,51 +35,105 @@ public class NormalInfectant : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ( !chasing)
+        if (!chasing & !isAttracted)
         {
             UpdateDestination();
-        }else{
+        }
+        else if (!isAttracted)
+        {
             CheckAttack();
         }
     }
-    public void CheckAttack(){
-        agent.destination = mainPlayer.transform.position;
-        if(agent.remainingDistance<=agent.stoppingDistance){
-            Attack();
-        }else{
-            UnAttack();
-            Chase();
+    public Transform GetPreviousDestination()
+    {
+        return previousDestination;
+    }
+    public bool isDead()
+    {
+        return dead;
+    }
+    public void CheckAttack()
+    {
+        if (!isAttracted)
+        {
+            previousDestination = mainPlayer.transform;
+            agent.destination = mainPlayer.transform.position;
+            if (agent.remainingDistance <= agent.stoppingDistance)
+            {
+                Attack();
+            }
+            else
+            {
+                UnAttack();
+                Chase();
+            }
         }
     }
-    public void GetShot(int damage){
+    public void GetStunned()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
+        animator.SetBool("Stun", true);
+        agent.isStopped = true;
+    }
+
+    public void GetShot(int damage)
+    {
         HP = HP - damage;
-        if(HP<=0){
-            Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
-            float duration = 3.34f;
-            if(rigidbody){
-                Destroy(rigidbody,duration);
-            }
-            animator.SetBool("Dead",true);
-            dead=true;
+        if (HP <= 0)
+        {
+            animator.SetBool("Dead", true);
+            dead = true;
             manager.UpdateDeadMembers(gameObject);
-            agent.isStopped=true;
-            
-            
-            
- 
-        }else{
+            agent.isStopped = true;
+        }
+        else
+        {
             animator.SetTrigger("GetShot");
+        }
+    }
+    public void GetAttracted(Transform grenadeLocation)
+    {
+        Debug.Log("Grenade");
+        Debug.Log(grenadeLocation.position);
+        Debug.Log("Player");
+        Debug.Log(mainPlayer.transform.position);
+        isAttracted = true;
+        UnAttack();
+        // UnChase();
+        ChaseGrenade(grenadeLocation);
+    }
+    public void GetUnAttracted()
+    {
+        isAttracted = false;
+        UnChase();
+    }
+    public void GetBurned(int damage)
+    {
+        HP = HP - damage;
+        if (HP <= 0)
+        {
+            animator.SetBool("Dead", true);
+            dead = true;
+            manager.UpdateDeadMembers(gameObject);
+            agent.isStopped = true;
+        }
+        else
+        {
+            animator.SetBool("Burn", true);
         }
     }
     private void CheckWalking()
     {
-        if (random_timer==0)
+        if (random_timer == 0)
         {
             walking = true;
-            animator.SetBool("Walking",true);
-            
-            agent.isStopped=false;
-        }else{
+            animator.SetBool("Walking", true);
+
+            agent.isStopped = false;
+        }
+        else
+        {
             random_timer--;
         }
     }
@@ -90,42 +146,67 @@ public class NormalInfectant : MonoBehaviour
     {
         if (agent.remainingDistance <= agent.stoppingDistance)
         {
-            agent.destination = GetRandomLocation().position;
+            previousDestination = GetRandomLocation();
+            agent.destination = previousDestination.position;
         }
     }
-    public void initialize(int HP, int dps, Transform[] locations,GameObject player)
+    public void initialize(int HP, int dps, Transform[] locations, GameObject player)
     {
         this.HP = HP;
         this.dps = dps;
         this.locations = locations;
         this.mainPlayer = player;
     }
-    public void UnChase(){
+    public void UnChase()
+    {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        animator.SetBool("Chase",false);
-        agent.destination = GetRandomLocation().position;
+        animator.SetBool("Chase", false);
+        previousDestination = GetRandomLocation();
+        agent.destination = previousDestination.position;
         agent.speed = 0.1f;
-        chasing=false;
+        chasing = false;
     }
     public void Chase()
     {
+        if (!isAttracted)
+        {
+           
+            agent = GetComponent<NavMeshAgent>();
+            animator = GetComponent<Animator>();
+            animator.SetBool("Chase", true);
+            previousDestination = mainPlayer.transform;
+            agent.destination = mainPlayer.transform.position;
+            agent.speed = 0.5f;
+            chasing = true;
+        }
+    }
+    public void ChaseGrenade(Transform grenadeDestination)
+    {
+
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        animator.SetBool("Chase",true);
-        agent.destination = mainPlayer.transform.position;
+        animator.SetBool("Chase", true);
+        previousDestination = grenadeDestination;
+        agent.destination = grenadeDestination.position;
+        Debug.Log("Agent Destination");
+        Debug.Log(agent.destination);
         agent.speed = 0.5f;
-        chasing=true;
+        chasing = true;
+
     }
     public void Attack()
     {
-        attacking=true;
-        animator.SetBool("Attack",true);
+        if (!isAttracted)
+        {
+            attacking = true;
+            animator.SetBool("Attack", true);
+        }
     }
     public void UnAttack()
     {
-        attacking=false;
-        animator.SetBool("Attack",false);
+        attacking = false;
+        animator.SetBool("Attack", false);
     }
 
 

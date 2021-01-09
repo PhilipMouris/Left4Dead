@@ -12,13 +12,14 @@ public class MolotovCocktail : Gernade
     private float SecondDelay = 1f;
     private bool isExploded = false;
     private GameObject createdFire;
-
+    private bool inside = false;
+   
     void Update()
     {
         // Debug.Log(inside);
         if (inside == true)
         {
-            // Debug.Log("INSIDEEe2");
+            Debug.Log("INSIDEEe2");
             if (Input.GetKeyDown(KeyCode.E))
             {
                 manager.UpdateLocations(gameObject);
@@ -40,10 +41,31 @@ public class MolotovCocktail : Gernade
         {
             Destroy(createdFire);
             Destroy(gameObject);
+            UnBurnAll();
+            Debug.Log("Destroyed");
         }
 
     }
-
+    void OnTriggerEnter(Collider collidedPlayer)
+    {
+        
+        if (collidedPlayer.gameObject.CompareTag("Player"))
+        {
+            // Debug.Log("INSIDEE");
+            inside=true;
+            player = collidedPlayer.GetComponent<Player>();
+        }
+    }
+    void OnTriggerExit(Collider collidedPlayer)
+    {
+        
+        if (collidedPlayer.gameObject.CompareTag("Player"))
+        {
+            // Debug.Log("INSIDEE");
+            inside=false;
+            player = collidedPlayer.GetComponent<Player>();
+        }
+    }
     void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.CompareTag("Ground") && !isExploded)
@@ -51,7 +73,9 @@ public class MolotovCocktail : Gernade
             Explode(other.gameObject);
         }
     }
-
+    public void UnBurnAll(){
+        infectantManager.UnBurnAll();
+    }
     void incurDamage()
     {
         Collider[] touchedObjects = Physics.OverlapSphere(transform.position, GrenadeRadius);
@@ -64,7 +88,7 @@ public class MolotovCocktail : Gernade
 
                 var target = touchedObject.gameObject.GetComponent<NormalInfectant>();
 
-                target.GetShot(DamageRate);
+                target.GetBurned(DamageRate);
 
             }
         }
@@ -75,7 +99,7 @@ public class MolotovCocktail : Gernade
         isExploded = true;
 
         GameObject explosion = Instantiate(particleEffect, transform.position, transform.rotation);
-
+        GetAudioSource().PlayOneShot(explosionSound);
         createdFire = Instantiate(fire, transform.position, transform.rotation);
         Collider[] touchedObjects = Physics.OverlapSphere(transform.position, GrenadeRadius);
 
@@ -84,6 +108,7 @@ public class MolotovCocktail : Gernade
             if (touchedObject.CompareTag("NormalInfected"))
             {
                 Rigidbody rigidbody = touchedObject.gameObject.AddComponent<Rigidbody>();
+                rigidbody.mass = 5;
                 if (rigidbody != null)
                 {
                     rigidbody.AddExplosionForce(ExplosionForce, transform.position, GrenadeRadius);
@@ -91,8 +116,8 @@ public class MolotovCocktail : Gernade
 
                 var target = touchedObject.gameObject.GetComponent<NormalInfectant>();
 
-                target.GetShot(DamageRate);
-                Destroy(rigidbody,1.5f);
+                target.GetBurned(DamageRate);
+                Destroy(rigidbody,2.1f);
 
             }
 

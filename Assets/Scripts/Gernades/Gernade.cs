@@ -6,28 +6,26 @@ public class Gernade : MonoBehaviour
 {
     
     public GameObject particleEffect;
+    public AudioClip explosionSound;
      protected GernadeManager manager;
-     protected bool inside = false;
+     
      protected Player player;
+     protected NormalInfectantsManager infectantManager;
+     
+     
     
     // Start is called before the first frame update
     
     void Start()
     {
         manager = FindObjectOfType<GernadeManager>();
+        infectantManager = FindObjectOfType<NormalInfectantsManager>();
         
     }
-    void OnTriggerEnter(Collider collidedPlayer)
-    {
-        
-        if (collidedPlayer.gameObject.CompareTag("Player"))
-        {
-            // Debug.Log("INSIDEE");
-            inside=true;
-            player = collidedPlayer.GetComponent<Player>();
-        }
+   
+    public AudioSource GetAudioSource(){
+        return manager.source;
     }
-
     // Update is called once per frame
 
 }

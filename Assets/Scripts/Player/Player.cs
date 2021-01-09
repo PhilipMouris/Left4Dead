@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
-    private float moveSpeed = 2.5f;
-    private Camera camera;
-
+ 
+    
     private Animator animator;
+
+    private Animator pistolAnimator;
 
     private int HP;
 
@@ -16,53 +16,122 @@ public class Player : MonoBehaviour
 
     private Companion companion;
 
+
+    private RageMeter rageMeter;
+
+    private bool isWeaponDrawn;
+
+    private GameObject pistol;
+
+    private GameObject weaponCamera;
+
+    private Vector3 rayCenter;
+
+    private GameObject crossHair;
+
+    private bool isEnemyInAimRange;
+
+    private GameObject normalInfectantInRange;
     private List<Gernade> gernades = new List<Gernade>();
 
     private Gernade currentGernade;
 
-    private RageMeter rageMeter;
+    private bool thrown= false;
 
-    void Start()
-    {
-        camera = GetComponentInChildren<Camera>();
-    }
+    private float throwingPower = 3f;
 
-    void OnTriggerEnter(Collider other){
-        if(other.gameObject.CompareTag("NormalInfected")){
+
+
+    void OnTriggerStay(Collider other){
+        
+        if(other.gameObject.CompareTag(NormalInfectantConstants.TAG)){
+            Debug.Log("CHASE IN");
             other.gameObject.GetComponent<NormalInfectant>().Chase();
         }
     }
     void OnTriggerExit(Collider other){
-        if(other.gameObject.CompareTag("NormalInfected")){
+        if(other.gameObject.CompareTag(NormalInfectantConstants.TAG)){
             other.gameObject.GetComponent<NormalInfectant>().UnChase();
         }
     }
     
     
     void Awake()
-    {
-        //  this.camera = GameObject.Find(PlayerConstants.MAIN_CAMERA);
-         // animator = GetComponent<Animator>();
+    {  
+        rayCenter = new Vector3(0.5F, 0.7F, 0);
+        animator = GetComponentInChildren<Animator>();
+        pistol = GameObject.Find(PlayerConstants.EQUIPPED);
+        pistolAnimator = pistol.GetComponent<Animator>();
+        crossHair = GameObject.Find(PlayerConstants.CROSS_HAIR);
+        isWeaponDrawn = false;
+        isEnemyInAimRange = false;
     }
-    void FixedUpdate()
-    {
-        CheckShoot();
-    }
-    void CheckShoot(){
-        RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, transform.forward, out hit)){
-            NormalInfectant hit_member =  hit.collider.gameObject.GetComponent<NormalInfectant>();
-            if(hit_member)
-                if(Input.GetMouseButtonDown(0))
-                    hit_member.GetShot(36); //Dummy Placholder of Damage- Should be replaced with Damage from Current Weapon
-        }
+    void FixedUpdate(){
+        HandleRayCast();
+      
     }
-    public void CollectGernade(Gernade gernade){
+    
+    
+    void HandleRayCast() {
+        if(!isWeaponDrawn) return;
+        Ray ray = Camera.main.ViewportPointToRay(rayCenter);
+        normalInfectantInRange = null;
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, PlayerConstants.PISTOL_RANGE)) {
+            GameObject collided = hit.collider.gameObject;
+             if(collided.CompareTag(NormalInfectantConstants.TAG)){
+                   normalInfectantInRange = collided;
+                   if(!isEnemyInAimRange) {
+                        SetCrossHairGreen();
+                        isEnemyInAimRange = true;
+                      
+                   }
+             }
+             else {
+               
+                 if(isEnemyInAimRange) {
+                    SetCrossHairRed();
+                    isEnemyInAimRange = false;
+                  
+                 }
+             }
+            // Debugging purposes only
+            // Debug.DrawLine(ray.origin, hit.point);
+          
+        }
+        else {
+              if(isEnemyInAimRange) {
+                    SetCrossHairRed();
+                    isEnemyInAimRange = false;
+                 }
+
+        }
+
+    }
+      public void CollectGernade(Gernade gernade){
+        Debug.Log("Added Gernade");
+        ResetGrenadeInfo();
         gernades.Add(gernade); //Need to Check for Type of Gernade and If max Limit is Exceeded
+        Debug.Log(gernades.Count);
+    }
+    Gernade DeactivateGrenadeProps(Gernade grenade){
+        Animator animator = grenade.gameObject.GetComponentInChildren<Animator>();
+        // if(animator){
+        //     Destroy(animator);
+        // }
+        Light[] lights = grenade.gameObject.GetComponentsInChildren<Light>();
+        for(int i = 0;i<lights.Length;i++){
+            Debug.Log(lights[i].type + " Type") ;
+            if(lights[i].type.Equals("Spot")){
+                Destroy(lights[i].gameObject);
+            }
+        }
+        return grenade;
     }
     public void ThrowGrenade()
     {
+        Debug.Log(gernades.Count);
         if(gernades.Count>0){
             Debug.Log("Throwing");
             currentGernade = gernades[0];
@@ -71,7 +140,8 @@ public class Player : MonoBehaviour
             currentGernade.gameObject.transform.rotation = transform.rotation;
             Rigidbody grenadeRigidbody =currentGernade.gameObject.AddComponent<Rigidbody>();
             grenadeRigidbody.useGravity=true;
-            grenadeRigidbody.AddForce((transform.forward+transform.up) * 10, ForceMode.Impulse);
+            currentGernade = DeactivateGrenadeProps(currentGernade);
+            grenadeRigidbody.AddForce((transform.forward+transform.up) * throwingPower, ForceMode.Impulse);
             gernades.RemoveAt(0);
         }else{
             Debug.Log("No Gernade Available");
@@ -79,25 +149,65 @@ public class Player : MonoBehaviour
         
     }
     
-    
-  
 
-    // Update is called once per frame
-    void Update()
-    {
-        if(Input.GetMouseButtonDown(1)){
-            ThrowGrenade();
+
+     void HandleDrawWeapon(){
+        if(Input.GetButtonDown(PlayerConstants.DRAW_WEAPON_INPUT)){
+            Debug.Log("Draw Weapon");
+            this.isWeaponDrawn = !isWeaponDrawn;
+            animator.SetBool(PlayerConstants.DRAW_PISTOL, isWeaponDrawn);
+        }
+        
+    }    
+
+    void HandleFire(){
+        if(Input.GetButtonDown("Fire1") && isWeaponDrawn){
+            animator.SetTrigger(PlayerConstants.SHOOT);
+            pistolAnimator.SetTrigger(PlayerConstants.FIRE);
+            if(normalInfectantInRange){
+                normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(1000);
+            }
         }
     }
-
-
-    private void HandleMovement()
-    {
-        // float horizontalInput = Input.GetAxis("Horizontal");
-        // float verticalInput = Input.GetAxis("Vertical");
-
-        //  this.transform.Translate(new Vector3(horizontalInput, 0, verticalInput) * moveSpeed * Time.deltaTime);
+    
+    void SetCrossHairGreen(){
+        SpriteRenderer sprite = crossHair.GetComponent<SpriteRenderer>();
+        sprite.color = new Color (0, 255, 0, 1); 
     }
+
+    void SetCrossHairRed() {
+         SpriteRenderer sprite = crossHair.GetComponent<SpriteRenderer>();
+         sprite.color = new Color (255, 0, 0, 1); 
+    }
+
+    void HandleGrenade(){
+        if(Input.GetMouseButton(1)){
+            if(throwingPower<PlayerConstants.THROWING_POWER_MAX){
+                throwingPower += 0.2f;
+            }
+        }
+        if(Input.GetMouseButtonUp(1)){
+            Debug.Log("Throwing Power");
+            Debug.Log(throwingPower);
+            ThrowGrenade(); 
+            ResetGrenadeInfo();
+        }
+    }
+    void ResetGrenadeInfo(){
+        throwingPower = 3f;
+        thrown=false;
+    }
+    // Update is called once per frame
+    void Update()
+    {   
+
+        HandleDrawWeapon();
+        HandleFire();
+        HandleGrenade();
+        
+    }
+
+
     public void ResetHealth(){
         
     }
