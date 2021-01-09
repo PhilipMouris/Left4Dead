@@ -4,11 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityStandardAssets.Characters.FirstPerson;
 
 
 public class GameManager : MonoBehaviour
 {
 
+    public GameObject CraftingScreen;
+
+    public GameObject HUD;
     private GameObject pauseScreen;
 
     private SoundManager soundManager;
@@ -29,7 +33,7 @@ public class GameManager : MonoBehaviour
 
     private HUDManager hudManager;
 
-
+    private bool crafting_bool;
     // Start is called before the first frame update
     // void Awake()
     // {   
@@ -79,10 +83,19 @@ public class GameManager : MonoBehaviour
     }
 
 
+    private void HandleCraftingScreen() {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            crafting_bool = !crafting_bool;
+            CraftingScreen.SetActive(crafting_bool);
+            //GameObject.Find("FPSController 1").GetComponent<FirstPersonController>().enabled = !crafting_bool;
+            HandlePause();
+        }
+    }
 
     void Update()
     {
-
+        HandleCraftingScreen();
 
         HandleSwitchWeapons();
         // if (Input.GetKeyDown("1"))
@@ -109,15 +122,17 @@ public class GameManager : MonoBehaviour
     private void HandlePause()
     {
         this.isPaused = !this.isPaused;
-        soundManager.HandlePause(this.isPaused);
+        //soundManager.HandlePause(this.isPaused);
         if (isPaused)
         {
             Time.timeScale = 0;
-            pauseScreen.SetActive(true);
+            //pauseScreen.SetActive(true);
+            HUD.SetActive(false);
             return;
         }
         Time.timeScale = 1;
-        pauseScreen.SetActive(false);
+        //pauseScreen.SetActive(false);
+        HUD.SetActive(true);
     }
 
 
@@ -140,7 +155,7 @@ public class GameManager : MonoBehaviour
         InitializeWeapon(WeaponsConstants.ASSAULT_RIFLE_DATA, false, WeaponsConstants.RIFLE_TRANSFORMATIONS, WeaponsConstants.RIFLE_CAMERA_DATA);
         InitializeWeapon(WeaponsConstants.SHOT_GUN_DATA, false, WeaponsConstants.SHOT_GUN_TRANSFORMATIONS, WeaponsConstants.RIFLE_CAMERA_DATA);
         InitializeWeapon(WeaponsConstants.HUNTING_RIFLE_DATA, false, WeaponsConstants.HUNTING_RIFLE_TRANSFORMATIONS, WeaponsConstants.RIFLE_CAMERA_DATA);
-    
+        crafting_bool = false;
     
     
     
