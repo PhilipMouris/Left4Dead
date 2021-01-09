@@ -49,7 +49,7 @@ public class Weapon : MonoBehaviour
         this.currentAmmo = clipCapacity;
         this.maxAmmo = maxAmmo;
         this.weapon = weapon;
-        this.animator = weapon.GetComponentsInChildren<Animator>()[0];
+        this.animator = weapon.GetComponentsInChildren<Animator>().Length == 0 ? null : weapon.GetComponentsInChildren<Animator>()[0] ;
         this.totalAmmo = maxAmmo;
         this.range = range;
         this.cameraData = cameraData;

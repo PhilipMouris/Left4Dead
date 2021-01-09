@@ -103,8 +103,30 @@ public static (Vector3 position,
                                              900, 
                                              50, 
                                              70, 
-                                             "Prefabs/Weapons/Pistol/Modern Guns - Handgun/_Prefabs/Handgun Black/PistolShooting"
+                                             "Prefabs/Weapons/smg/MP7(v3)"
                                              );
+
+  public static  (Vector3 position, 
+                    Vector3 scale, 
+                    Vector3 rotation) SMG_TRANSFORMATIONS = (new Vector3(0.139200002f,-0.0140000004f,0.0110999998f),
+                                                            new Vector3(1,1.29999995f,1f),
+                                                            new Vector3(355.381287f,105.65963f,96.798317f)
+                                                          
+                                                        );
+
+  public static (Vector3 position, 
+               Vector3 rotation 
+               ) SMG_CAMERA_DATA = (
+             // new Vector3(0.1358f,1.6335f,-0.0219f),
+                                        // new Vector3(5.88f,-5.67f,0.006f)
+                                        // new Vector3(0.05913162f,1.538786f,0.2859898f),
+                                        // new Vector3(18.599f,-5.792f,-0.117f)
+                                        
+                                        // new Vector3(-0.007f,1.555f,0.0048f),
+                                        new Vector3(0.0308999997f,1.55799997f,0.0780000016f),
+                                        new Vector3(5.88f,-5.67f,0.006f)
+               );
+
 
   
 
@@ -133,6 +155,8 @@ public static (Vector3 position,
                                                             new Vector3(277.279877f,19.9621258f,166.510986f)
                                                           
                                                         );
+
+                  
  
  
  
