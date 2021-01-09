@@ -128,9 +128,9 @@ public static (Vector3 position,
  
    public static  (Vector3 position, 
                     Vector3 scale, 
-                    Vector3 rotation) HUNTING_RIFLE_TRANSFORMATIONS = (new Vector3(0.2712f,-0.0371f,0.0665f),
-                                                            new Vector3(0.8f,0.8f,0.8f),
-                                                            new Vector3(-90f,0f,-180f)
+                    Vector3 rotation) HUNTING_RIFLE_TRANSFORMATIONS = (new Vector3(0.236599997f,-0.0304000005f,0.0456999987f),
+                                                            new Vector3(0.800000012f,0.699999988f,0.5f),
+                                                            new Vector3(277.279877f,19.9621258f,166.510986f)
                                                           
                                                         );
  
@@ -174,10 +174,10 @@ public static (Vector3 position,
                                                             //  new Vector3(0.699999988f,0.699999988f,0.600000024f),
                                                             //  new Vector3(2.02892876f,287.376648f,263.721405f)
 
-                                                            new Vector3(0.229000002f,-0.0240000002f,0.0189999994f),
-                                                            new Vector3(0.550000012f,0.649999976f,0.5f),
-                                                            new Vector3(1.40168953f,285.174805f,261.383911f)
-
+                                                            new Vector3(0.229000002f,-0.0240000002f,0.0170000009f),
+                                                            new Vector3(0.400000006f,0.5f,0.5f),
+                                                            new Vector3(1.01758265f,281.122681f,261.188141f)
+                                                           
                                                         );
 
 
