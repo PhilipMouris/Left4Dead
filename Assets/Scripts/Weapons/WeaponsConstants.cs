@@ -1,7 +1,20 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
 public class WeaponsConstants
+
 { 
- // public  string[] WEAPON_TYPES = {"tacticalShotgun", "assaultRifle", "huntingRifle", "submachinGun", "pistol"};
+  //public  string[] WEAPON_TYPES = {"shotgun", "assaultRifle", "huntingRifle", "smg", "pistol"};
+  //public  string[] WEAPON_TYPES = {"pistol", "assaultRifle"};
+  public static IDictionary<string, string> WEAPON_TYPES = new Dictionary<string,string>() {
+	{"PISTOL", "pistol"},
+	{"ASSAULT_RIFLE", "assaultRifle"},
+  {"SMG","smg"},
+  {"HUNTING_RIFLE","huntingRifle"},
+  {"SHOTGUN","shotgun"}
+  };
+
   
   public const string FIRE = "Fire";
 

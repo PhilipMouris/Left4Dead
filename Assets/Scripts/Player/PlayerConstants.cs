@@ -9,7 +9,7 @@ public class PlayerConstants
 
  public const string EQUIPPED = "equipped";
 
- public const string CROSS_HAIR = "CrossHair";
+ public const string CROSS_HAIR = "PistolCrossHair";
 
  public const string PUT_DOWN_WEAPON_INPUT = "putDownWeapon";
 

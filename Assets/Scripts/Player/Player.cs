@@ -22,19 +22,22 @@ public class Player : MonoBehaviour
 
     private bool isWeaponDrawn;
 
-    private GameObject pistol;
+    //private GameObject pistol;
 
     private GameObject weaponCamera;
 
     private Vector3 rayCenter;
 
-    private GameObject crossHair;
+    //private GameObject crossHair;
+    IDictionary<string, GameObject> crossHairs;
 
     private bool isEnemyInAimRange;
 
     private GameObject normalInfectantInRange;
 
     private Weapon currentWeapon;
+
+    private GameObject crossHair;
 
     //private Camera weaponCamera;
 
@@ -56,11 +59,10 @@ public class Player : MonoBehaviour
     
     void Awake()
     {  
-        rayCenter = new Vector3(0.5F, 0.7F, 0);
+        rayCenter = new Vector3(0.51F, 0.52F, 0);
         animator = GetComponent<Animator>();
-        //pistol = GameObject.Find(PlayerConstants.EQUIPPED);
-        //pistolAnimator = pistol.GetComponent<Animator>();
-        crossHair = GameObject.Find(PlayerConstants.CROSS_HAIR);
+        crossHairs = new Dictionary<string, GameObject>();
+        InitializeCrossHairs();
         weaponCamera = GameObject.Find(PlayerConstants.WEAPON_CAMERA);
         isWeaponDrawn = false;
         isEnemyInAimRange = false;
@@ -71,6 +73,21 @@ public class Player : MonoBehaviour
         HandleRayCast();
       
     }
+
+    void InitializeCrossHairs() {
+        foreach(KeyValuePair<string, string> kvp in WeaponsConstants.WEAPON_TYPES) {
+            //Console.WriteLine("Key: {0}, Value: {1}", kvp.Key, kvp.Value);
+            GameObject currentCrossHair = GameObject.Find($"{kvp.Value}CrossHair");
+            crossHairs.Add(kvp.Value, currentCrossHair);
+            if(kvp.Key == "PISTOL"){
+                this.crossHair = currentCrossHair;
+            }
+            else {
+                if(currentCrossHair != null) currentCrossHair.SetActive(false);
+            }
+        }
+
+    }
     
     
     void HandleRayCast() {
@@ -78,7 +95,8 @@ public class Player : MonoBehaviour
         Ray ray = Camera.main.ViewportPointToRay(rayCenter);
         normalInfectantInRange = null;
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, currentWeapon.GetRange())) {
+        // if (Physics.Raycast(ray, out hit, currentWeapon.GetRange())) {
+        if (Physics.Raycast(ray, out hit, 100)) {
             GameObject collided = hit.collider.gameObject;
              if(collided.CompareTag(NormalInfectantConstants.TAG)){
                    normalInfectantInRange = collided;
@@ -91,13 +109,13 @@ public class Player : MonoBehaviour
              else {
                
                  if(isEnemyInAimRange) {
-                    SetCrossHairRed();
-                    isEnemyInAimRange = false;
+                      SetCrossHairRed();
+                      isEnemyInAimRange = false;
                   
-                 }
+                 } else SetCrossHairGreen();
              }
             // Debugging purposes only
-            // Debug.DrawLine(ray.origin, hit.point);
+            Debug.DrawLine(ray.origin, hit.point);
           
         }
         else {
@@ -105,6 +123,7 @@ public class Player : MonoBehaviour
                     SetCrossHairRed();
                     isEnemyInAimRange = false;
                  }
+             else   SetCrossHairGreen();
 
         }
 
@@ -163,12 +182,18 @@ public class Player : MonoBehaviour
         if(currentWeapon && isWeaponDrawn){
             currentWeapon.Hide();
         }
+        // GameObject test =  crossHairs[weapon.GetType()];
+        if(currentWeapon) crossHairs[currentWeapon.GetType()].SetActive(false);
         var(position,rotation) = weapon.GetCameraData();
         weaponCamera.transform.localPosition = position;
         weaponCamera.transform.localRotation = Quaternion.Euler(rotation);
         this.currentWeapon = weapon;
         currentWeapon.UnHide();
-        if(isWeaponDrawn) HandleDrawWeapon();
+        if(isWeaponDrawn){
+             HandleDrawWeapon();
+             crossHairs[weapon.GetType()].SetActive(true);
+             crossHair = crossHairs[weapon.GetType()];
+        }
     
     }
 
