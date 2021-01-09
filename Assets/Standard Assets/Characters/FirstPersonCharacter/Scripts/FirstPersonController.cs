@@ -92,6 +92,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         }
 
 
+        
+
         private void FixedUpdate()
         {
             float speed;

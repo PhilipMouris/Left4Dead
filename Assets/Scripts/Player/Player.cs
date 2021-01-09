@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
 
     private Companion companion;
 
-    private Gernade[] gernades;
+    private List<Gernade> gernades = new List<Gernade>();
 
     private RageMeter rageMeter;
 
@@ -175,6 +175,10 @@ public class Player : MonoBehaviour
 
     public bool GetIsweaponDrawn() {
         return isWeaponDrawn;
+    }
+
+    public void CraftGrenade(Gernade grenade){
+        gernades.Add(grenade);
     }
   
 }

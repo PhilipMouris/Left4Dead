@@ -9,6 +9,8 @@ TagManager:
   - WeaponCamera
   - SpecialInfected
   - Tank
+  - alcohol
+  - health_pack
   layers:
   - Default
   - TransparentFX

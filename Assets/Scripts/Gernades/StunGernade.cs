@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StunGernade : MonoBehaviour
+public class StunGernade : Gernade
 {
     // Start is called before the first frame update
     void Start()
