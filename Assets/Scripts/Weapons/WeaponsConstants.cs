@@ -36,10 +36,26 @@ public static  (Vector3 position,
 
 public static (Vector3 position, 
                Vector3 rotation 
-               ) PISTOL_CAMERA_DATA = (
+               ) PISTOsL_CAMERA_DATA = (
                                         new Vector3(0.05913162f,1.538786f,0.2859898f),
                                         new Vector3(18.599f,-5.792f,-0.117f)
                );
+
+public static (Vector3 position, 
+               Vector3 rotation 
+               ) PISTOL_CAMERA_DATA = (
+             // new Vector3(0.1358f,1.6335f,-0.0219f),
+                                        // new Vector3(5.88f,-5.67f,0.006f)
+                                        // new Vector3(0.05913162f,1.538786f,0.2859898f),
+                                        // new Vector3(18.599f,-5.792f,-0.117f)
+                                        
+                                        // new Vector3(-0.007f,1.555f,0.0048f),
+                                        new Vector3(-0.0209999997f,1.58000004f,0.0780000016f),
+                                        new Vector3(5.88f,-5.67f,0.006f)
+               );
+
+
+
 
 
 
@@ -61,10 +77,16 @@ public static (Vector3 position,
   
  public static  (Vector3 position, 
                     Vector3 scale, 
-                    Vector3 rotation) SHOT_GUN_TRANSFORMATIONS = (new Vector3(0.25f,-0.026f,0.015f),
-                                                            new Vector3(0.1f,0.1f,0.1f),
-                                                            new Vector3(-90f,180f,0f)
-                                                          
+                    Vector3 rotation) SHOT_GUN_TRANSFORMATIONS = (
+                                                            // new Vector3(0.25f,-0.026f,0.015f),
+                                                            // new Vector3(0.1f,0.1f,0.1f),
+                                                            // new Vector3(-90f,180f,0f)
+                                                            
+                                                            new Vector3(0.150999993f,-0.0289999992f,0.0250000004f),
+                                                             new Vector3(0.1f,0.1f,0.1f),
+                                                            new Vector3(270.756409f,261.248047f,286.122375f)
+                                                           
+
                                                         );
 
   
@@ -143,10 +165,19 @@ public static (Vector3 position,
 
     public static  (Vector3 position, 
                     Vector3 scale, 
-                    Vector3 rotation) RIFLE_TRANSFORMATIONS = (new Vector3(0.25f,-0.026f,0.015f),
-                                                            new Vector3(0.57f,0.5f,0.5f),
-                                                            new Vector3(0.517f,-79.043f,-90.019f)
-                                                          
+                    Vector3 rotation) RIFLE_TRANSFORMATIONS = (
+                                                            // new Vector3(0.25f,-0.026f,0.015f),
+                                                            // new Vector3(0.7f,0.5f,0.5f),
+                                                            // new Vector3(0.517f,-79.043f,-90.019f)
+
+                                                            //  new Vector3(0.248999998f,-0.0149999997f,0.00800000038f),
+                                                            //  new Vector3(0.699999988f,0.699999988f,0.600000024f),
+                                                            //  new Vector3(2.02892876f,287.376648f,263.721405f)
+
+                                                            new Vector3(0.229000002f,-0.0240000002f,0.0189999994f),
+                                                            new Vector3(0.550000012f,0.649999976f,0.5f),
+                                                            new Vector3(1.40168953f,285.174805f,261.383911f)
+
                                                         );
 
 
@@ -154,10 +185,14 @@ public static (Vector3 position,
 public static (Vector3 position, 
                Vector3 rotation 
                ) RIFLE_CAMERA_DATA = (
-                                        new Vector3(0.1358f,1.6335f,-0.0219f),
-                                        new Vector3(5.88f,-5.67f,0.006f)
+             // new Vector3(0.1358f,1.6335f,-0.0219f),
+                                        // new Vector3(5.88f,-5.67f,0.006f)
                                         // new Vector3(0.05913162f,1.538786f,0.2859898f),
                                         // new Vector3(18.599f,-5.792f,-0.117f)
+                                        
+                                        // new Vector3(-0.007f,1.555f,0.0048f),
+                                        new Vector3(-0.0209999997f,1.58000004f,0.0780000016f),
+                                        new Vector3(5.88f,-5.67f,0.006f)
                );
 
 
