@@ -193,4 +193,14 @@ public class GameManager : MonoBehaviour
 
     // Update is called once per frame
 
+    public void SetHealth(int health)
+    {
+        hudManager.SetHealth(health);
+    }
+
+    public int GetHealth()
+    {
+        return hudManager.GetHealth();
+    }
+
 }
