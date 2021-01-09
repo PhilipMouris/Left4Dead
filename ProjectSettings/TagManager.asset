@@ -8,6 +8,7 @@ TagManager:
   - NormalInfected
   - WeaponCamera
   - SpecialInfected
+  - Tank
   layers:
   - Default
   - TransparentFX
