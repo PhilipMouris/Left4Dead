@@ -19,6 +19,10 @@ public class PlayerConstants
 
  public const string SWITCH = "switch";
 
+ public const string BULLET_HOLES = "BulletHoles";
+
+ public const string BULLET_HOLE_PATH = "Prefabs/Weapons/JMO Assets/WarFX/_Effects/Bullet Impacts/+ Bullet Hole/Lit/WFX_BImpact Concrete + Hole Lit";
+
 
 
 

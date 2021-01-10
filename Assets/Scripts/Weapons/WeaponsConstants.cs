@@ -234,7 +234,7 @@ public static (Vector3 position,
 
 
 
-public static Vector3 PISTOL_AIM = new Vector3(0.51f,0.52f,0);
+public static Vector3 PISTOL_AIM = new Vector3(0.51f,0.51f,0);
 
 public static Vector3 ASSAULT_RIFLE_AIM = new Vector3(0.51f,0.5f,0);
 

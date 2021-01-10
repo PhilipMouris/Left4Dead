@@ -22,16 +22,11 @@ public class Player : MonoBehaviour
 
     private bool isWeaponDrawn;
 
-    //private GameObject pistol;
-
     private GameObject weaponCamera;
 
     private Vector3 rayCenter;
 
-    //private GameObject crossHair;
     IDictionary<string, GameObject> crossHairs;
-
-    private bool isEnemyInAimRange;
 
     private GameObject normalInfectantInRange;
 
@@ -39,7 +34,13 @@ public class Player : MonoBehaviour
 
     private GameObject crossHair;
 
-    //private Camera weaponCamera;
+    private GameObject bulletHoles;
+
+    private GameObject bulletHole;
+
+    private GameObject collided;
+
+    private Vector3 hitPoint;
 
 
 
@@ -64,9 +65,10 @@ public class Player : MonoBehaviour
         crossHairs = new Dictionary<string, GameObject>();
         InitializeCrossHairs();
         weaponCamera = GameObject.Find(PlayerConstants.WEAPON_CAMERA);
+        bulletHoles = GameObject.Find(PlayerConstants.BULLET_HOLES);
+        bulletHole = Resources.Load(PlayerConstants.BULLET_HOLE_PATH) as GameObject;
+        Debug.Log(bulletHole.name +  "NAMEEE");
         isWeaponDrawn = false;
-        isEnemyInAimRange = false;
-        //this.weapons = new List<Weapon>();
     }
 
     void FixedUpdate(){
@@ -97,12 +99,15 @@ public class Player : MonoBehaviour
         RaycastHit hit;
         // if (Physics.Raycast(ray, out hit, currentWeapon.GetRange())) {
         if (Physics.Raycast(ray, out hit, 100)) {
-            GameObject collided = hit.collider.gameObject;
+             hitPoint = hit.point;
+             collided = hit.collider.gameObject;
              if(collided.CompareTag(NormalInfectantConstants.TAG)){
                    normalInfectantInRange = collided;
                    SetCrossHairRed();
                    return;
             }
+
+            // Debugging
              Debug.DrawLine(ray.origin, hit.point);
         }
         SetCrossHairGreen();
@@ -127,6 +132,12 @@ public class Player : MonoBehaviour
             //animator.SetTrigger(WeaponsConstants.SHOOT);
             //pistolAnimator.SetTrigger(WeaponsConstants.FIRE);
             currentWeapon.Shoot();
+            if(collided){
+                Vector3 position = hitPoint;
+                GameObject bulletHoleInstance = Instantiate(bulletHole, position, crossHair.transform.rotation);
+                bulletHoleInstance.transform.SetParent(bulletHoles.transform,true);
+                bulletHoleInstance.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
+            }
             animator.SetTrigger(WeaponsConstants.FIRE);
             if(normalInfectantInRange){
                 normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(1000);
