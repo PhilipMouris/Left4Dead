@@ -60,6 +60,7 @@ public class WeaponUI : MonoBehaviour
 
     private void SetTextColor( TextMeshProUGUI textObject, int current, int total ) {
         float ratio = (float)current/total;
+        if(ratio>0.5) textObject.color = white;
         if(ratio<0.5) textObject.color = orange;
         if(ratio<0.25) textObject.color = red;
     }

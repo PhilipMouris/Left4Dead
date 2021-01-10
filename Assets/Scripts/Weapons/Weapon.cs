@@ -29,6 +29,9 @@ public class Weapon : MonoBehaviour
     private double nextFire = -1f;
     private double hidMuzzleAfter = 0.1f;
     private bool hideMuzzle = false;
+    private Color red = new Color (255, 0, 0, 1);
+    private Color green =  new Color (0, 255, 0, 1);
+    private Color grey = new Color(0.5f,0.5f,0.5f,1);
 
 
     void Awake() {
@@ -44,7 +47,7 @@ public class Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
-        
+    
     if(nextFire > 0)
      {  
         nextFire -= Time.deltaTime;
@@ -61,6 +64,7 @@ public class Weapon : MonoBehaviour
         }
 
         HideMuzzle();
+        if(currentAmmo <=0) SetCrossHairGrey();
 
     }
 
@@ -110,6 +114,7 @@ public class Weapon : MonoBehaviour
 
     public void  HandleFire() {
          if(Input.GetButton("Fire1") && isDrawn){
+             if(currentAmmo<=0) return;
              if(type!= WeaponsConstants.WEAPON_TYPES["PISTOL"] && !muzzle.active) muzzle.SetActive(true);
              if(animator) animator.SetTrigger(WeaponsConstants.FIRE);
              if(collided && ! collided.CompareTag(NormalInfectantConstants.TAG) ) DrawBulletHole();
@@ -117,6 +122,7 @@ public class Weapon : MonoBehaviour
              currentAmmo -= 1;
              nextFire = 1/(rateOfFire/60.0);
              hidMuzzleAfter = 0.1f;
+          
         }
     
 }
@@ -137,17 +143,36 @@ public class Weapon : MonoBehaviour
         this.aim = aim;
     }
 
+    public bool Reload() {
+        if(type== WeaponsConstants.WEAPON_TYPES["PISTOL"]){
+            currentAmmo = clipCapacity;
+            return true;
+        }
+        if(currentAmmo == clipCapacity) return false;
+        if(totalAmmo <= 0) return false;
+        if(totalAmmo>=clipCapacity) currentAmmo = clipCapacity;
+        else currentAmmo = totalAmmo;
+        totalAmmo -= currentAmmo;
+        return true;
+        }
+
+    
 
     private void SetCrossHairGreen(){
         if(crossHair==null) return;
         //SpriteRenderer sprite = crossHair.GetComponent<SpriteRenderer>();
-        crossHair.color = new Color (0, 255, 0, 1); 
+        crossHair.color = green;
     }
 
     private void SetCrossHairRed() {
         if(crossHair==null) return;
          //SpriteRenderer sprite = crossHair.GetComponent<SpriteRenderer>();
-         crossHair.color = new Color (255, 0, 0, 1); 
+         crossHair.color = red; 
+    }
+
+    private void SetCrossHairGrey() {
+        if(crossHair==null) return;
+        crossHair.color = grey;
     }
 
 

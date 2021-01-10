@@ -32,6 +32,11 @@ public class Player : MonoBehaviour
     
     private Weapon currentWeapon;
 
+    private bool reloading = false;
+
+    private float reloadTime = 0.4f;
+
+
     void OnTriggerEnter(Collider other){
         if(other.gameObject.CompareTag(NormalInfectantConstants.TAG)){
             other.gameObject.GetComponent<NormalInfectant>().Chase();
@@ -88,20 +93,42 @@ public class Player : MonoBehaviour
             animator.SetTrigger($"draw{currentWeapon.GetType()}");
         }
     
+
+    private void PutDown() {
+        this.isWeaponDrawn = false;
+        currentWeapon.SetIsDrawn(false);
+    }
     public void HandlePutDownWeapon() {
         if(Input.GetButtonDown(PlayerConstants.PUT_DOWN_WEAPON_INPUT)){
-           this.isWeaponDrawn = false;
-           currentWeapon.SetIsDrawn(false);
+           PutDown();
            animator.SetTrigger(PlayerConstants.SWITCH);
         }
     }
 
 
-    // private void HandleReload() {
-    //     Input.GetButtonDown(PlayerConstants.RELOAD_INPUT) {
-    //         animator.SetTrigger(PlayerConstants.RELOAD_INPUT);
-    //     }
-    // }
+    private void HandleReload() {
+        if(Input.GetButtonDown(PlayerConstants.RELOAD_INPUT) && isWeaponDrawn) {
+            bool canReload = currentWeapon.Reload();
+            if(!canReload) return;
+            animator.SetTrigger(PlayerConstants.RELOAD_INPUT);
+            PutDown();
+            reloading = true;
+        }
+    }
+
+
+    private void HandleReloadTime() {
+        if(!reloading) return;
+        if(reloadTime < 0) {
+            HandleDrawWeapon();
+        }
+        reloadTime -= Time.deltaTime;
+        if(reloadTime <=0) {
+            HandleDrawWeapon();
+            reloading = false;
+            reloadTime = 0.4f;
+        }
+    }
   
 
 
@@ -109,8 +136,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
-      //  HandleReload();
+        HandleReload();
         HandlePutDownWeapon();
+        HandleReloadTime();
         
     }
 
