@@ -85,7 +85,7 @@ public class Weapon : MonoBehaviour
          normalInfectantInRange = null;
          RaycastHit hit;
           // if (Physics.Raycast(ray, out hit, currentWeapon.GetRange())) {
-          if (Physics.Raycast(ray, out hit, 100)) {
+          if (Physics.Raycast(ray, out hit, range)) {
               hitPoint = hit.point;
               collided = hit.collider.gameObject;
           if(collided.CompareTag(NormalInfectantConstants.TAG)){
@@ -93,12 +93,14 @@ public class Weapon : MonoBehaviour
                    SetCrossHairRed();
                    return;
              //Debugging
-             Debug.DrawLine(ray.origin, hit.point);
+          
+            }
           }
+             //Debug.DrawLine(ray.origin, hit.point);
         SetCrossHairGreen();
     }
     
-    }
+    
 
     void FixedUpdate(){
         HandleRayCast();
@@ -118,7 +120,7 @@ public class Weapon : MonoBehaviour
              if(type!= WeaponsConstants.WEAPON_TYPES["PISTOL"] && !muzzle.active) muzzle.SetActive(true);
              if(animator) animator.SetTrigger(WeaponsConstants.FIRE);
              if(collided && ! collided.CompareTag(NormalInfectantConstants.TAG) ) DrawBulletHole();
-             if(normalInfectantInRange) normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(1000);   
+             if(normalInfectantInRange) normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(dmg);   
              currentAmmo -= 1;
              nextFire = 1/(rateOfFire/60.0);
              hidMuzzleAfter = 0.1f;
