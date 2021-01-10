@@ -23,6 +23,7 @@ public class PlayerConstants
 
  public const string BULLET_HOLE_PATH = "Prefabs/Weapons/JMO Assets/WarFX/_Effects/Bullet Impacts/+ Bullet Hole/Lit/WFX_BImpact Concrete + Hole Lit";
 
+ public const string MUZZLE_EFFEECTS = "MuzzleEffects";
 
 
 

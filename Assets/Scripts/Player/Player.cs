@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
 
     IDictionary<string, GameObject> crossHairs;
 
+    IDictionary<string,GameObject> muzzles;
+
     private GameObject normalInfectantInRange;
 
     private Weapon currentWeapon;
@@ -63,12 +65,16 @@ public class Player : MonoBehaviour
         rayCenter = new Vector3(0.55F, 0.5F, 0);
         animator = GetComponent<Animator>();
         crossHairs = new Dictionary<string, GameObject>();
-        InitializeCrossHairs();
+        muzzles = new Dictionary<string,GameObject>();
+        InitializeCrossHairsAndMuzzles();
         weaponCamera = GameObject.Find(PlayerConstants.WEAPON_CAMERA);
         bulletHoles = GameObject.Find(PlayerConstants.BULLET_HOLES);
         bulletHole = Resources.Load(PlayerConstants.BULLET_HOLE_PATH) as GameObject;
-        Debug.Log(bulletHole.name +  "NAMEEE");
         isWeaponDrawn = false;
+    }
+
+    void Start() {
+
     }
 
     void FixedUpdate(){
@@ -76,15 +82,19 @@ public class Player : MonoBehaviour
       
     }
 
-    void InitializeCrossHairs() {
+    void InitializeCrossHairsAndMuzzles() {
         foreach(KeyValuePair<string, string> kvp in WeaponsConstants.WEAPON_TYPES) {
-            //Console.WriteLine("Key: {0}, Value: {1}", kvp.Key, kvp.Value);
             GameObject currentCrossHair = GameObject.Find($"{kvp.Value}CrossHair");
+            GameObject currentMuzzle =  GameObject.Find($"{kvp.Value}Muzzle");
             crossHairs.Add(kvp.Value, currentCrossHair);
             if(kvp.Key == "PISTOL"){
                 this.crossHair = currentCrossHair;
             }
             else {
+                 if(currentMuzzle != null ){
+                    muzzles.Add(kvp.Value, currentMuzzle);
+                    currentMuzzle.SetActive(false);
+                 }
                 if(currentCrossHair != null) currentCrossHair.SetActive(false);
             }
         }
@@ -128,13 +138,17 @@ public class Player : MonoBehaviour
   
 
     private void HandleFire(){
-        if(Input.GetButtonDown("Fire1") && isWeaponDrawn){
+        string weaponType = currentWeapon.GetType();
+        if(Input.GetButton("Fire1") && isWeaponDrawn){
             //animator.SetTrigger(WeaponsConstants.SHOOT);
             //pistolAnimator.SetTrigger(WeaponsConstants.FIRE);
+            if(weaponType != WeaponsConstants.WEAPON_TYPES["PISTOL"]) {
+                if(!muzzles[weaponType].active)
+                    muzzles[weaponType].SetActive(true);
+            }
             currentWeapon.Shoot();
-            if(collided){
-                Vector3 position = hitPoint;
-                GameObject bulletHoleInstance = Instantiate(bulletHole, position, crossHair.transform.rotation);
+            if(collided && ! collided.CompareTag(NormalInfectantConstants.TAG) ){
+                GameObject bulletHoleInstance = Instantiate(bulletHole, hitPoint, crossHair.transform.rotation);
                 bulletHoleInstance.transform.SetParent(bulletHoles.transform,true);
                 bulletHoleInstance.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
             }
@@ -143,6 +157,14 @@ public class Player : MonoBehaviour
                 normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(1000);
 
             }
+        }
+       if (Input.GetButtonUp("Fire1")){
+              if(weaponType != WeaponsConstants.WEAPON_TYPES["PISTOL"]){
+                GameObject muzzle = muzzles[weaponType];
+                if(muzzle.active) {
+                   muzzle.SetActive(false);
+                }
+              }
         }
     }
     
@@ -181,11 +203,17 @@ public class Player : MonoBehaviour
         this.currentWeapon = weapon;
         currentWeapon.UnHide();
         if(isWeaponDrawn){
+             string weaponType = weapon.GetType();
              HandleDrawWeapon();
-             crossHairs[weapon.GetType()].SetActive(true);
-             crossHair = crossHairs[weapon.GetType()];
+             crossHairs[weaponType].SetActive(true);
+             crossHair = crossHairs[weaponType];
         }
     
+    }
+
+
+    private void SwitchMuzzles(Weapon previous, Weapon current) {
+
     }
 
     public bool GetIsweaponDrawn() {
