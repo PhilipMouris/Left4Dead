@@ -91,9 +91,17 @@ public class Player : MonoBehaviour
     public void HandlePutDownWeapon() {
         if(Input.GetButtonDown(PlayerConstants.PUT_DOWN_WEAPON_INPUT)){
            this.isWeaponDrawn = false;
+           currentWeapon.SetIsDrawn(false);
            animator.SetTrigger(PlayerConstants.SWITCH);
         }
     }
+
+
+    // private void HandleReload() {
+    //     Input.GetButtonDown(PlayerConstants.RELOAD_INPUT) {
+    //         animator.SetTrigger(PlayerConstants.RELOAD_INPUT);
+    //     }
+    // }
   
 
 
@@ -101,7 +109,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
-
+      //  HandleReload();
         HandlePutDownWeapon();
         
     }

@@ -47,11 +47,8 @@ public class Weapon : MonoBehaviour
         
     if(nextFire > 0)
      {  
-        Debug.Log("DELAYY???");
         nextFire -= Time.deltaTime;
         hideMuzzle = true;
-        //if(muzzle!=null && muzzle.active) muzzle.SetActive(false);
-        //can not fire
     } else
         {
             HandleFire();
@@ -117,6 +114,7 @@ public class Weapon : MonoBehaviour
              if(animator) animator.SetTrigger(WeaponsConstants.FIRE);
              if(collided && ! collided.CompareTag(NormalInfectantConstants.TAG) ) DrawBulletHole();
              if(normalInfectantInRange) normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(1000);   
+             currentAmmo -= 1;
              nextFire = 1/(rateOfFire/60.0);
              hidMuzzleAfter = 0.1f;
         }

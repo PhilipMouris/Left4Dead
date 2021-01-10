@@ -25,6 +25,8 @@ public class PlayerConstants
 
  public const string MUZZLE_EFFEECTS = "MuzzleEffects";
 
+ public const string RELOAD_INPUT = "reload";
+
 
 
 }
