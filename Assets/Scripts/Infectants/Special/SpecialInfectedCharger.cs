@@ -18,6 +18,7 @@ public class SpecialInfectedCharger : MonoBehaviour
     private bool isChasing = false;
     private bool isAttacking = false;
     private bool isIdle = false;
+    private bool isDead = false;
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +38,8 @@ public class SpecialInfectedCharger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isDead)
+            return;
         if (!isAttacking && !isChasing && !isIdle)
             AlternatePosition();
         if (PlayerInRange() && !isChasing && !isAttacking && !isIdle)
@@ -45,9 +48,22 @@ public class SpecialInfectedCharger : MonoBehaviour
             Attack();
         if (isChasing)
             Chase();
+        if (isAttacking)
+            RotateToPlayer();
+        CheckCamera();
         // for testing purposes
         if (Input.GetKeyDown("m"))
             GetShot(50);
+    }
+
+    public void CheckCamera()
+    {
+        if (player.gameObject.transform.GetChild(1).GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Fall"))
+        {
+            SwitchToThirdPerson();
+        }
+        else
+            SwitchToFirstPerson();
     }
 
     public void UnAttack()
@@ -55,10 +71,15 @@ public class SpecialInfectedCharger : MonoBehaviour
         isChasing = false;
         isAttacking = false;
         isIdle = true;
+        animator.SetBool("Idle", true);
         animator.SetBool("Attack", false);
         animator.SetBool("Run", false);
         if (PlayerAttacked())
+        {
             DecreaseHealth();
+            player.gameObject.transform.GetChild(1).GetComponent<Animator>().SetTrigger("Fall");
+            player.gameObject.transform.GetChild(1).GetComponent<Player>().SetIsWeaponDrawn(false);
+        }
         Invoke("ContinueChasing", attackInterval);
     }
 
@@ -69,6 +90,7 @@ public class SpecialInfectedCharger : MonoBehaviour
         agent.destination = player.transform.position;
         agent.stoppingDistance = 5;
         isIdle = false;
+        animator.SetBool("Idle", false);
         StartChasing();
     }
 
@@ -109,7 +131,7 @@ public class SpecialInfectedCharger : MonoBehaviour
 
     public bool PlayerInRange()
     {
-        return Vector3.Distance(transform.position, player.transform.position) <= 10;
+        return Vector3.Distance(transform.position, player.transform.position) <= 15;
     }
 
     public void Chase()
@@ -134,10 +156,32 @@ public class SpecialInfectedCharger : MonoBehaviour
             animator.SetBool("Dead", true);
             manager.UpdateDeadMembers(gameObject);
             agent.isStopped = true;
+            isDead = true;
         }
         else
         {
             animator.SetTrigger("GetShot");
         }
+    }
+
+    public void RotateToPlayer()
+    {
+        Vector3 lookAt = player.transform.position - transform.position;
+        lookAt.y = 0;
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookAt), Time.deltaTime);
+    }
+
+    public void SwitchToThirdPerson()
+    {
+        GameObject.Find("ThirdPersonCamera").GetComponent<Camera>().enabled = true;
+        GameObject.Find("FirstPersonCharacter").GetComponent<Camera>().enabled = false;
+        GameObject.Find("WeaponCamera").GetComponent<Camera>().enabled = false;
+    }
+
+    public void SwitchToFirstPerson()
+    {
+        GameObject.Find("ThirdPersonCamera").GetComponent<Camera>().enabled = false;
+        GameObject.Find("FirstPersonCharacter").GetComponent<Camera>().enabled = true;
+        GameObject.Find("WeaponCamera").GetComponent<Camera>().enabled = true;
     }
 }
