@@ -96,37 +96,16 @@ public class Player : MonoBehaviour
         normalInfectantInRange = null;
         RaycastHit hit;
         // if (Physics.Raycast(ray, out hit, currentWeapon.GetRange())) {
-        if (Physics.Raycast(ray, out hit, 1000)) {
+        if (Physics.Raycast(ray, out hit, 100)) {
             GameObject collided = hit.collider.gameObject;
              if(collided.CompareTag(NormalInfectantConstants.TAG)){
                    normalInfectantInRange = collided;
-                   if(!isEnemyInAimRange) {
-                        SetCrossHairGreen();
-                        isEnemyInAimRange = true;
-                      
-                   }
-             }
-             else {
-               
-                 if(isEnemyInAimRange) {
-                      SetCrossHairRed();
-                      isEnemyInAimRange = false;
-                  
-                 } else SetCrossHairGreen();
-             }
-            // Debugging purposes only
-            Debug.DrawLine(ray.origin, hit.point);
-          
+                   SetCrossHairRed();
+                   return;
+            }
+             Debug.DrawLine(ray.origin, hit.point);
         }
-        else {
-              if(isEnemyInAimRange) {
-                    SetCrossHairRed();
-                    isEnemyInAimRange = false;
-                 }
-             else   SetCrossHairGreen();
-
-        }
-
+        SetCrossHairGreen();
     }
     
      public void HandleDrawWeapon(){
@@ -184,6 +163,7 @@ public class Player : MonoBehaviour
         }
         // GameObject test =  crossHairs[weapon.GetType()];
         if(currentWeapon) crossHairs[currentWeapon.GetType()].SetActive(false);
+        rayCenter = weapon.GetAim();
         var(position,rotation) = weapon.GetCameraData();
         weaponCamera.transform.localPosition = position;
         weaponCamera.transform.localRotation = Quaternion.Euler(rotation);

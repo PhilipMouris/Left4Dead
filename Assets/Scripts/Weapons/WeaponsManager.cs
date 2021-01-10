@@ -17,7 +17,41 @@ public class WeaponsManager : MonoBehaviour
             trans.gameObject.layer = layerNumber;
         }
     }
-   public Weapon InitializeWeapon((string,int,int,int,int,int,string) weaponData, (Vector3, Vector3,Vector3) transformationData,(Vector3,Vector3) cameraData ) {
+
+
+   public Weapon InitializeWeapon(string type) {
+       (string,int,int,int,int,int,string) weaponData;
+       (Vector3, Vector3,Vector3) transformationData;
+       (Vector3,Vector3) cameraData = WeaponsConstants.RIFLE_CAMERA_DATA;
+       Vector3 aim;
+       switch(type) {
+           case "pistol":
+            weaponData = WeaponsConstants.PISTOL_DATA;
+            transformationData = WeaponsConstants.PISTOL_TRANSFORMATIONS;
+            aim = WeaponsConstants.PISTOL_AIM;
+            break;
+           case "assaultRifle":
+            weaponData = WeaponsConstants.ASSAULT_RIFLE_DATA;
+            transformationData = WeaponsConstants.RIFLE_TRANSFORMATIONS;
+            aim = WeaponsConstants.ASSAULT_RIFLE_AIM;
+            break;
+           case "shotgun":
+            weaponData = WeaponsConstants.SHOT_GUN_DATA;
+            transformationData = WeaponsConstants.SHOT_GUN_TRANSFORMATIONS;
+            aim = WeaponsConstants.SHOTGUN_AIM;
+            break;
+           case "huntingRifle":
+            weaponData = WeaponsConstants.HUNTING_RIFLE_DATA;
+            transformationData = WeaponsConstants.HUNTING_RIFLE_TRANSFORMATIONS;
+            aim = WeaponsConstants.HUNTING_RIFLE_AIM;
+            break;
+           default:
+             weaponData = WeaponsConstants.SMG_DATA;
+             transformationData = WeaponsConstants.SMG_TRANSFORMATIONS;
+             aim = WeaponsConstants.SMG_AIM;
+             cameraData = WeaponsConstants.SMG_CAMERA_DATA;
+             break;
+       }
         var (TYPE,RANGE,DAMAGE,RATE_OF_FIRE,CLIP_CAPACITY,MAX_AMMO,PATH) = weaponData;
         var (position,scale,rotation) = transformationData;
         GameObject weaponObject = Resources.Load(PATH) as GameObject;
@@ -38,7 +72,8 @@ public class WeaponsManager : MonoBehaviour
                           MAX_AMMO,
                           weaponObjectInstance,
                           RANGE,
-                          cameraData
+                          cameraData,
+                          aim
                           );
         weapon.Hide();
         return weapon;
