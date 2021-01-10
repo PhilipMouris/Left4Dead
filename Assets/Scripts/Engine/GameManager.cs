@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
 
     private HUDManager hudManager;
 
-    private bool crafting_bool;
+    public static bool crafting_bool;
     // Start is called before the first frame update
     // void Awake()
     // {   
@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
         {
             crafting_bool = !crafting_bool;
             CraftingScreen.SetActive(crafting_bool);
-            //GameObject.Find("FPSController 1").GetComponent<FirstPersonController>().enabled = !crafting_bool;
+            GameObject.Find("FPSController 1").GetComponent<FirstPersonController>().isCrafting = crafting_bool;
             HandlePause();
         }
     }

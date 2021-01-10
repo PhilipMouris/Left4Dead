@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7265702176346141107}
   - component: {fileID: 2859901456499111594}
   - component: {fileID: 7572216027408913991}
+  - component: {fileID: -4298241694323326974}
   m_Layer: 0
   m_Name: alcohol
   m_TagString: alcohol
@@ -28,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9210997937143500902}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 53.4963, y: 3.832, z: 3.094192}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 20, y: 20, z: 20}
   m_Children: []
   m_Father: {fileID: 0}
@@ -108,3 +109,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c9c68cb950bca43882fe999c7159bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!122 &-4298241694323326974
+Halo:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9210997937143500902}
+  m_Enabled: 1
+  m_Color:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_Size: 20

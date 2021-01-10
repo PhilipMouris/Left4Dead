@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1285906110097111579}
   - component: {fileID: 60545514679215818}
+  - component: {fileID: 3110862575151694403}
   m_Layer: 0
   m_Name: cloth
   m_TagString: Untagged
@@ -45,6 +46,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 200, y: 200, z: 200}
   m_Center: {x: 0, y: 100, z: 470}
+--- !u!114 &3110862575151694403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1915055032347648161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68c9c68cb950bca43882fe999c7159bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7430499063394769016
 GameObject:
   m_ObjectHideFlags: 0
