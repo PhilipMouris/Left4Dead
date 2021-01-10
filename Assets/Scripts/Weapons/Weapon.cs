@@ -26,6 +26,9 @@ public class Weapon : MonoBehaviour
     private GameObject bulletHoles;
     private GameObject bulletHole;
     private GameObject normalInfectantInRange;
+    private double nextFire = -1f;
+    private double hidMuzzleAfter = 0.1f;
+    private bool hideMuzzle = false;
 
 
     void Awake() {
@@ -40,8 +43,39 @@ public class Weapon : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        HandleFire();
+    {   
+        
+    if(nextFire > 0)
+     {  
+        Debug.Log("DELAYY???");
+        nextFire -= Time.deltaTime;
+        hideMuzzle = true;
+        //if(muzzle!=null && muzzle.active) muzzle.SetActive(false);
+        //can not fire
+    } else
+        {
+            HandleFire();
+        }
+
+        if (Input.GetButtonUp("Fire1")){
+              if(type != WeaponsConstants.WEAPON_TYPES["PISTOL"]){
+                 hideMuzzle = true;
+              }
+        }
+
+        HideMuzzle();
+
+    }
+
+
+    void HideMuzzle() {
+        if(!hideMuzzle) return;
+        hidMuzzleAfter -= Time.deltaTime;
+        if(hidMuzzleAfter < 0) {
+            if(muzzle!=null && muzzle.active) muzzle.SetActive(false);
+            hideMuzzle = false;
+        }
+
     }
 
     private void HandleRayCast() {
@@ -77,19 +111,16 @@ public class Weapon : MonoBehaviour
     }
 
 
-    public void HandleFire() {
+    public void  HandleFire() {
          if(Input.GetButton("Fire1") && isDrawn){
              if(type!= WeaponsConstants.WEAPON_TYPES["PISTOL"] && !muzzle.active) muzzle.SetActive(true);
              if(animator) animator.SetTrigger(WeaponsConstants.FIRE);
              if(collided && ! collided.CompareTag(NormalInfectantConstants.TAG) ) DrawBulletHole();
              if(normalInfectantInRange) normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(1000);   
+             nextFire = 1/(rateOfFire/60.0);
+             hidMuzzleAfter = 0.1f;
         }
-          if (Input.GetButtonUp("Fire1")){
-              if(type != WeaponsConstants.WEAPON_TYPES["PISTOL"]){
-                if(muzzle.active) muzzle.SetActive(false);
-              }
-        }
-
+    
 }
 
 
@@ -168,6 +199,7 @@ public class Weapon : MonoBehaviour
     }
 
     public void Hide() {
+        if(muzzle!=null && muzzle.active) muzzle.SetActive(false);
         weapon.SetActive(false);
     }
 
