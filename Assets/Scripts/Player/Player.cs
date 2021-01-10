@@ -180,5 +180,10 @@ public class Player : MonoBehaviour
     public void CraftGrenade(Gernade grenade){
         gernades.Add(grenade);
     }
+
+    public void SetIsWeaponDrawn(bool isWeaponDrawn)
+    {
+        this.isWeaponDrawn = isWeaponDrawn;
+    }
   
 }
