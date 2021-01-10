@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
     
     void Awake()
     {  
-        rayCenter = new Vector3(0.51F, 0.52F, 0);
+        rayCenter = new Vector3(0.55F, 0.5F, 0);
         animator = GetComponent<Animator>();
         crossHairs = new Dictionary<string, GameObject>();
         InitializeCrossHairs();
@@ -96,7 +96,7 @@ public class Player : MonoBehaviour
         normalInfectantInRange = null;
         RaycastHit hit;
         // if (Physics.Raycast(ray, out hit, currentWeapon.GetRange())) {
-        if (Physics.Raycast(ray, out hit, 100)) {
+        if (Physics.Raycast(ray, out hit, 1000)) {
             GameObject collided = hit.collider.gameObject;
              if(collided.CompareTag(NormalInfectantConstants.TAG)){
                    normalInfectantInRange = collided;

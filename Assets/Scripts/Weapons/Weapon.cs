@@ -35,7 +35,7 @@ public class Weapon : MonoBehaviour
 
     public void Shoot() {
         if(animator){
-            animator.SetTrigger(WeaponsConstants.FIRE);
+            //animator.SetTrigger(WeaponsConstants.FIRE);
         }
 
     }
