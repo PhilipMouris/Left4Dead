@@ -250,9 +250,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void RotateView()
         {
-            if(!isCrafting) {
+            //if(!isCrafting) {
             m_MouseLook.LookRotation (transform, m_Camera.transform);
-            }
+            //}
         }
 
 

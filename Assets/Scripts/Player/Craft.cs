@@ -120,7 +120,7 @@ public class Craft : MonoBehaviour
             GameObject.Find("FPSController 1").GetComponent<Player>().CraftGrenade(new StunGernade());
             sugar--;
             gunpowder -= 2;
-            GameObject.Find("StunImage").GetComponentInChildren<Text>().text = sugar.ToString();
+            GameObject.Find("StunImage").GetComponentInChildren<Text>().text = stun_grenade.ToString();
             GameObject.Find("SugarImage").GetComponentInChildren<Text>().text = sugar.ToString();
             GameObject.Find("GunpowderImage").GetComponentInChildren<Text>().text = gunpowder.ToString();
         }
@@ -136,7 +136,7 @@ public class Craft : MonoBehaviour
             alcohol--;
             gunpowder--;
             canister--;
-            GameObject.Find("PipeImage").GetComponentInChildren<Text>().text = sugar.ToString();
+            GameObject.Find("PipeImage").GetComponentInChildren<Text>().text = pipe_bomb.ToString();
             GameObject.Find("AlcoholImage").GetComponentInChildren<Text>().text = alcohol.ToString();
             GameObject.Find("GunpowderImage").GetComponentInChildren<Text>().text = gunpowder.ToString();
             GameObject.Find("CanisterImage").GetComponentInChildren<Text>().text = canister.ToString();
@@ -152,7 +152,7 @@ public class Craft : MonoBehaviour
             health_pack++;
             alcohol -= 2;
             cloth -= 2;
-            GameObject.Find("HealthPackImage").GetComponentInChildren<Text>().text = sugar.ToString();
+            GameObject.Find("HealthPackImage").GetComponentInChildren<Text>().text = health_pack.ToString();
             GameObject.Find("AlcoholImage").GetComponentInChildren<Text>().text = alcohol.ToString();
             GameObject.Find("ClothImage").GetComponentInChildren<Text>().text = cloth.ToString();
         }

@@ -9,6 +9,10 @@ TagManager:
   - WeaponCamera
   - alcohol
   - health_pack
+  - gunpowder
+  - canister
+  - sugar
+  - cloth
   layers:
   - Default
   - TransparentFX

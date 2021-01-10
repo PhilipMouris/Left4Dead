@@ -33,6 +33,11 @@ public class GameManager : MonoBehaviour
 
     private HUDManager hudManager;
 
+    public Camera FPS;
+
+    public Camera craftingCamera;
+
+
     public static bool crafting_bool;
     // Start is called before the first frame update
     // void Awake()
@@ -86,6 +91,8 @@ public class GameManager : MonoBehaviour
     private void HandleCraftingScreen() {
         if (Input.GetKeyDown(KeyCode.I))
         {
+            FPS.enabled = !FPS.enabled;
+            craftingCamera.enabled = !craftingCamera.enabled;
             crafting_bool = !crafting_bool;
             CraftingScreen.SetActive(crafting_bool);
             GameObject.Find("FPSController 1").GetComponent<FirstPersonController>().isCrafting = crafting_bool;
@@ -156,7 +163,9 @@ public class GameManager : MonoBehaviour
         InitializeWeapon(WeaponsConstants.SHOT_GUN_DATA, false, WeaponsConstants.SHOT_GUN_TRANSFORMATIONS, WeaponsConstants.RIFLE_CAMERA_DATA);
         InitializeWeapon(WeaponsConstants.HUNTING_RIFLE_DATA, false, WeaponsConstants.HUNTING_RIFLE_TRANSFORMATIONS, WeaponsConstants.RIFLE_CAMERA_DATA);
         crafting_bool = false;
-    
+
+        FPS.enabled = true;
+        craftingCamera.enabled = false;
     
     
     
