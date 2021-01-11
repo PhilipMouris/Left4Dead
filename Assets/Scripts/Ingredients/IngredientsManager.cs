@@ -29,6 +29,7 @@ public class IngredientsManager : MonoBehaviour
     void Start()
     {
         all_locations =  locations.GetComponentsInChildren<Transform>();
+       
         GenerateLocationsList(all_locations);
         ShuffleModels();
         for(int i = 0; i<models.Length; i++) {
@@ -42,6 +43,9 @@ public class IngredientsManager : MonoBehaviour
        foreach(Transform location in locations) {
            ingredients_locations.Add(location);
        }
+       Debug.Log(ingredients_locations.Count + " Count");
+    //    if(ingredients_locations.Count>0)
+    //         ingredients_locations.RemoveAt(0);
 
    }
 
@@ -76,7 +80,7 @@ public class IngredientsManager : MonoBehaviour
         //Transform[] all_locations =  locations.GetComponentsInChildren<Transform>();
         //all_items = new GameObject[all_locations.Length];
         int spawned = 0;
-        while(ingredients_locations.Count != 0 && spawned < num_models) {
+        while(ingredients_locations.Count > 0 && spawned < num_models) {
             GameObject item = Instantiate(model,ingredients_locations[spawned].position,Quaternion.identity);
             item.SetActive(false);
             all_items.Add(item);

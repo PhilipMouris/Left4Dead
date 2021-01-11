@@ -60,7 +60,8 @@ public class NormalInfectantsManager : MonoBehaviour
             Animator currentAnimator = infected_members[i].GetComponent<Animator>();
             bool attacking = currentAnimator.GetBool("Attack");
             bool chasing = currentAnimator.GetBool("Chase");
-            currentAnimator.SetBool("Stun", true);
+            if(attacking || chasing)
+                currentAnimator.SetBool("Stun", true);
         }
     }
     public void AttractAll(Transform grenadeLocation)
