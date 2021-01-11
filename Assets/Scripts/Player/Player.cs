@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
 
     private Companion companion;
 
-    private List<Gernade> gernades = new List<Gernade>();
+ 
 
     private RageMeter rageMeter;
 
@@ -37,8 +37,20 @@ public class Player : MonoBehaviour
     private float reloadTime = 0.4f;
 
 
-    void OnTriggerEnter(Collider other){
+    private Gernade currentGernade;
+
+    private bool thrown = false;
+
+    private float throwingPower = 3f;
+
+    private List<Gernade> gernades = new List<Gernade>();
+
+
+
+    void OnTriggerStay(Collider other){
+        
         if(other.gameObject.CompareTag(NormalInfectantConstants.TAG)){
+            // Debug.Log("CHASE IN");
             other.gameObject.GetComponent<NormalInfectant>().Chase();
         }
     }
@@ -69,7 +81,7 @@ public class Player : MonoBehaviour
         foreach(KeyValuePair<string, string> kvp in WeaponsConstants.WEAPON_TYPES) {
             GameObject currentCrossHair = GameObject.Find($"{kvp.Value}CrossHair");
             GameObject currentMuzzle =  GameObject.Find($"{kvp.Value}Muzzle");
-            crossHairs.Add(kvp.Value, currentCrossHair);
+            this.crossHairs.Add(kvp.Value, currentCrossHair);
             if(kvp.Key == "PISTOL"){
                 this.crossHair = currentCrossHair;
             }
@@ -81,7 +93,7 @@ public class Player : MonoBehaviour
                 if(currentCrossHair != null) currentCrossHair.SetActive(false);
             }
         }
-
+        
     }
     
     
@@ -135,13 +147,7 @@ public class Player : MonoBehaviour
 
 
     // Update is called once per frame
-    void Update()
-    {   
-        HandleReload();
-        HandlePutDownWeapon();
-        HandleReloadTime();
-        
-    }
+    
 
 
     public void SetWeapon(Weapon weapon) {
@@ -166,6 +172,76 @@ public class Player : MonoBehaviour
         }
     
     }
+
+
+    public void CollectGernade(Gernade gernade){
+        Debug.Log("Added Gernade");
+        ResetGrenadeInfo();
+        this.gernades.Add(gernade); //Need to Check for Type of Gernade and If max Limit is Exceeded
+        Debug.Log(gernades.Count + " AFTER ADDING");
+    }
+    Gernade DeactivateGrenadeProps(Gernade grenade){
+        Animator animator = grenade.gameObject.GetComponentInChildren<Animator>();
+        // if(animator){
+        //     Destroy(animator);
+        // }
+        Light[] lights = grenade.gameObject.GetComponentsInChildren<Light>();
+        for(int i = 0;i<lights.Length;i++){
+            Debug.Log(lights[i].type + " Type") ;
+            if(lights[i].type.Equals("Spot")){
+                Destroy(lights[i].gameObject);
+            }
+        }
+        return grenade;
+    }
+    public void ThrowGrenade()
+    {
+        Debug.Log(gernades.Count + "COUNDTTTT");
+        if(gernades.Count>0){
+            Debug.Log("Throwing");
+            currentGernade = gernades[0];
+            currentGernade.gameObject.SetActive(true);
+            currentGernade.gameObject.transform.position = transform.position - new Vector3(0,0,1.5f);
+            currentGernade.gameObject.transform.rotation = transform.rotation;
+            Rigidbody grenadeRigidbody =currentGernade.gameObject.AddComponent<Rigidbody>();
+            grenadeRigidbody.useGravity=true;
+            currentGernade = DeactivateGrenadeProps(currentGernade);
+            grenadeRigidbody.AddForce((transform.forward+transform.up) * throwingPower, ForceMode.Impulse);
+            gernades.RemoveAt(0);
+        }else{
+            Debug.Log("No Gernade Available");
+        }
+        
+    }
+    void HandleGrenade(){
+        if(Input.GetMouseButton(1)){
+            if(throwingPower<PlayerConstants.THROWING_POWER_MAX){
+                throwingPower += 0.2f;
+            }
+        }
+        if(Input.GetMouseButtonUp(1)){
+            Debug.Log(gernades.Count + " COUNT?????");
+            ThrowGrenade(); 
+            ResetGrenadeInfo();
+        }
+    }
+
+
+    void Update()
+    {   
+        Debug.Log(this.gernades.Count);
+        HandleReload();
+        HandlePutDownWeapon();
+        HandleReloadTime();
+        HandleGrenade();
+        
+    }
+    void ResetGrenadeInfo(){
+        throwingPower = 3f;
+        thrown=false;
+    }
+
+
 
 
 
