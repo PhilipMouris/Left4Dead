@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
     void OnTriggerStay(Collider other){
         
         if(other.gameObject.CompareTag(NormalInfectantConstants.TAG)){
-            Debug.Log("CHASE IN");
+            // Debug.Log("CHASE IN");
             other.gameObject.GetComponent<NormalInfectant>().Chase();
         }
     }
@@ -88,7 +88,7 @@ public class Player : MonoBehaviour
                     muzzles.Add(kvp.Value, currentMuzzle);
                     currentMuzzle.SetActive(false);
                  }
-                //if(currentCrossHair != null) currentCrossHair.SetActive(false);
+                if(currentCrossHair != null) currentCrossHair.SetActive(false);
             }
         }
         
@@ -153,12 +153,6 @@ public class Player : MonoBehaviour
         if(currentWeapon && isWeaponDrawn){
             currentWeapon.Hide();
         }
-
-         foreach(KeyValuePair<string, GameObject> kvp in this.crossHairs) {
-          Debug.Log(kvp.Key + " KLEY");
-          Debug.Log(kvp.Value + " VALUE INSIDE");
-         }
-     
         // GameObject test =  crossHairs[weapon.GetType()];
         if(currentWeapon) crossHairs[currentWeapon.GetType()].SetActive(false);
         var(position,rotation) = weapon.GetCameraData();
@@ -181,8 +175,8 @@ public class Player : MonoBehaviour
     public void CollectGernade(Gernade gernade){
         Debug.Log("Added Gernade");
         ResetGrenadeInfo();
-        gernades.Add(gernade); //Need to Check for Type of Gernade and If max Limit is Exceeded
-        Debug.Log(gernades.Count);
+        this.gernades.Add(gernade); //Need to Check for Type of Gernade and If max Limit is Exceeded
+        Debug.Log(gernades.Count + " AFTER ADDING");
     }
     Gernade DeactivateGrenadeProps(Gernade grenade){
         Animator animator = grenade.gameObject.GetComponentInChildren<Animator>();
@@ -200,7 +194,7 @@ public class Player : MonoBehaviour
     }
     public void ThrowGrenade()
     {
-        Debug.Log(gernades.Count);
+        Debug.Log(gernades.Count + "COUNDTTTT");
         if(gernades.Count>0){
             Debug.Log("Throwing");
             currentGernade = gernades[0];
@@ -224,8 +218,7 @@ public class Player : MonoBehaviour
             }
         }
         if(Input.GetMouseButtonUp(1)){
-            Debug.Log("Throwing Power");
-            Debug.Log(throwingPower);
+            Debug.Log(gernades.Count + " COUNT?????");
             ThrowGrenade(); 
             ResetGrenadeInfo();
         }
@@ -234,10 +227,11 @@ public class Player : MonoBehaviour
 
     void Update()
     {   
+        Debug.Log(gernades.Count);
         HandleReload();
         HandlePutDownWeapon();
         HandleReloadTime();
-        //HandleGrenade();
+        HandleGrenade();
         
     }
     void ResetGrenadeInfo(){

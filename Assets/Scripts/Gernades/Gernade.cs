@@ -9,7 +9,7 @@ public class Gernade : MonoBehaviour
      public AudioClip explosionSound;
      protected GernadeManager manager;
      
-     //protected Player player;
+     protected Player player;
      protected NormalInfectantsManager infectantManager;
      
      
