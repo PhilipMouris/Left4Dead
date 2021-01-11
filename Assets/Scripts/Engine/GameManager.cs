@@ -37,14 +37,19 @@ public class GameManager : MonoBehaviour
 
     private Camera craftingCamera;
 
+    private Camera TPS;
+
 
     public static bool crafting_bool;
     // Start is called before the first frame update
     void Awake()
     {   
+      crafting_bool = false;  
       FPS = GameObject.Find("FirstPersonCharacter").GetComponent<Camera>();
       craftingCamera = GameObject.Find("CraftingCamera").GetComponent<Camera>();
+      TPS = GameObject.Find("ThirdPersonCamera").GetComponent<Camera>();
       FPS.enabled = true;
+      TPS.enabled = true;
       craftingCamera.enabled = false;
     //   Debug.Log(FPS.enabled + " FPS");
     //   De
@@ -98,6 +103,7 @@ public class GameManager : MonoBehaviour
         {   
             crafting_bool = !crafting_bool;
             FPS.enabled = false ;
+            TPS.enabled = false;
             craftingCamera.enabled = true;
             Debug.Log(FPS.enabled + "ASFSF");
             Debug.Log(craftingCamera.enabled + "SAFASF");
@@ -178,9 +184,7 @@ public class GameManager : MonoBehaviour
         InitializeWeapon(WeaponsConstants.WEAPON_TYPES["SMG"],false);
         InitializeWeapon(WeaponsConstants.WEAPON_TYPES["HUNTING_RIFLE"],false);
         InitializeWeapon(WeaponsConstants.WEAPON_TYPES["SHOTGUN"],false);
-        crafting_bool = false;
-        FPS.enabled = true;
-        craftingCamera.enabled = false;
+        
 
     
     

@@ -40,7 +40,7 @@ public class Ingredients : MonoBehaviour
         {
             
             manager.UpdateLocations(gameObject);
-            Player current_player = player.GetComponent<Player>();
+            //Player current_player = player.GetComponent<Player>();
             //GameObject ingredient = this.gameObject.GetComponent<Ingredients>();
             Debug.Log("Add");
             //Craft current_ingredient = player.GetComponent<Craft>();
