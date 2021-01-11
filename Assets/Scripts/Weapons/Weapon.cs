@@ -32,8 +32,10 @@ public class Weapon : MonoBehaviour
     private Color red = new Color (255, 0, 0, 1);
     private Color green =  new Color (0, 255, 0, 1);
     private Color grey = new Color(0.5f,0.5f,0.5f,1);
-    //private List<AudioSource> audioSources;
+    private AudioSource outOfAmmo;
     private AudioClip clip;
+    private AudioClip reload;
+    private AudioClip dryFire;
 
 
     void Awake() {
@@ -118,7 +120,7 @@ public class Weapon : MonoBehaviour
          bulletHoleInstance.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
     }
 
-    private void PlayAudio() {
+    private void PlayAudio(AudioClip clip) {
         AudioSource audioSource =  gameObject.AddComponent<AudioSource>();
         audioSource.clip = clip;
         audioSource.Play();
@@ -128,8 +130,14 @@ public class Weapon : MonoBehaviour
 
     public void  HandleFire() {
          if(Input.GetButton("Fire1") && isDrawn){
-             if(currentAmmo<=0) return;
-             PlayAudio();
+             if(currentAmmo<=0) {
+                 if(!outOfAmmo.isPlaying) {
+                    outOfAmmo.clip = dryFire;
+                    outOfAmmo.Play();
+                 }
+                 return;
+             }
+             PlayAudio(clip);
              if(type!= WeaponsConstants.WEAPON_TYPES["PISTOL"] && !muzzle.active) muzzle.SetActive(true);
              if(animator) animator.SetTrigger(WeaponsConstants.FIRE);
              if(collided && ! collided.CompareTag(NormalInfectantConstants.TAG) ) DrawBulletHole();
@@ -156,15 +164,17 @@ public class Weapon : MonoBehaviour
         this.range = range;
         this.cameraData = cameraData;
         this.aim = aim;
-        //this.audio = gameObject.AddComponent<AudioSource>();
-        //audio.playOnAwake = false;
+        outOfAmmo =  gameObject.AddComponent<AudioSource>();
+        outOfAmmo.playOnAwake = false;
         clip =  Resources.Load<AudioClip>($"Sounds/Weapons/{type}");
-        //audio.loop = true;
+        reload = Resources.Load<AudioClip>("Sounds/Weapons/reload");
+        dryFire = Resources.Load<AudioClip>("Sounds/Weapons/dryFire");
     }
 
     public bool Reload() {
         if(type== WeaponsConstants.WEAPON_TYPES["PISTOL"]){
             currentAmmo = clipCapacity;
+            PlayAudio(reload);
             return true;
         }
         if(currentAmmo == clipCapacity) return false;
@@ -172,6 +182,7 @@ public class Weapon : MonoBehaviour
         if(totalAmmo>=clipCapacity) currentAmmo = clipCapacity;
         else currentAmmo = totalAmmo;
         totalAmmo -= currentAmmo;
+        PlayAudio(reload);
         return true;
         }
 
