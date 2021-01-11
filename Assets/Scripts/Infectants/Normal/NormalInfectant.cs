@@ -17,15 +17,17 @@ public class NormalInfectant : MonoBehaviour
     private int HP;
     private int dps;
     
-
+    private bool dead = false;
     private float speed;
     private bool chasing = false;
 
     private bool attacking = false;
+    private NormalInfectantsManager manager;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        manager = FindObjectOfType<NormalInfectantsManager>();
     }
 
     // Update is called once per frame
@@ -45,6 +47,17 @@ public class NormalInfectant : MonoBehaviour
         }else{
             UnAttack();
             Chase();
+        }
+    }
+    public void GetShot(int damage){
+        HP = HP - damage;
+        if(HP<=0){
+            animator.SetBool("Dead",true);
+            dead=true;
+            manager.UpdateDeadMembers(gameObject);
+            agent.isStopped=true;
+        }else{
+            animator.SetTrigger("GetShot");
         }
     }
     private void CheckWalking()
