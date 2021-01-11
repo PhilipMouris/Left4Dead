@@ -27,16 +27,19 @@ public class Weapon : MonoBehaviour
     private GameObject bulletHole;
     private GameObject normalInfectantInRange;
     private double nextFire = -1f;
-    private double hidMuzzleAfter = 0.1f;
+    private double hidMuzzleAfter = 0.15f;
     private bool hideMuzzle = false;
     private Color red = new Color (255, 0, 0, 1);
     private Color green =  new Color (0, 255, 0, 1);
     private Color grey = new Color(0.5f,0.5f,0.5f,1);
+    //private List<AudioSource> audioSources;
+    private AudioClip clip;
 
 
     void Awake() {
         bulletHoles = GameObject.Find(PlayerConstants.BULLET_HOLES);
         bulletHole = Resources.Load(PlayerConstants.BULLET_HOLE_PATH) as GameObject;
+
     }
 
     void Start()
@@ -52,6 +55,7 @@ public class Weapon : MonoBehaviour
      {  
         nextFire -= Time.deltaTime;
         hideMuzzle = true;
+        //audio.Pause();
     } else
         {
             HandleFire();
@@ -61,6 +65,7 @@ public class Weapon : MonoBehaviour
               if(type != WeaponsConstants.WEAPON_TYPES["PISTOL"]){
                  hideMuzzle = true;
               }
+              //audio.Pause();
         }
 
         HideMuzzle();
@@ -113,17 +118,25 @@ public class Weapon : MonoBehaviour
          bulletHoleInstance.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
     }
 
+    private void PlayAudio() {
+        AudioSource audioSource =  gameObject.AddComponent<AudioSource>();
+        audioSource.clip = clip;
+        audioSource.Play();
+        Destroy(audioSource, audioSource.clip.length);
+    }
+
 
     public void  HandleFire() {
          if(Input.GetButton("Fire1") && isDrawn){
              if(currentAmmo<=0) return;
+             PlayAudio();
              if(type!= WeaponsConstants.WEAPON_TYPES["PISTOL"] && !muzzle.active) muzzle.SetActive(true);
              if(animator) animator.SetTrigger(WeaponsConstants.FIRE);
              if(collided && ! collided.CompareTag(NormalInfectantConstants.TAG) ) DrawBulletHole();
              if(normalInfectantInRange) normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(dmg);   
              currentAmmo -= 1;
              nextFire = 1/(rateOfFire/60.0);
-             hidMuzzleAfter = 0.1f;
+             hidMuzzleAfter = 0.15f;
           
         }
     
@@ -143,6 +156,10 @@ public class Weapon : MonoBehaviour
         this.range = range;
         this.cameraData = cameraData;
         this.aim = aim;
+        //this.audio = gameObject.AddComponent<AudioSource>();
+        //audio.playOnAwake = false;
+        clip =  Resources.Load<AudioClip>($"Sounds/Weapons/{type}");
+        //audio.loop = true;
     }
 
     public bool Reload() {

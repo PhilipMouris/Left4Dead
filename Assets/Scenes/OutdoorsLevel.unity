@@ -5933,7 +5933,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9500000, guid: 9a21925963ad72641b17d3da3e0c173f, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9500000, guid: 9a21925963ad72641b17d3da3e0c173f, type: 3}
       propertyPath: m_Controller
@@ -5944,7 +5944,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 9500000, guid: 9a21925963ad72641b17d3da3e0c173f, type: 3}
     - {fileID: -9112888551156146636, guid: 9a21925963ad72641b17d3da3e0c173f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9a21925963ad72641b17d3da3e0c173f, type: 3}
 --- !u!4 &1263864803 stripped
