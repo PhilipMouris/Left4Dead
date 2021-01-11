@@ -9,7 +9,7 @@ public class PlayerConstants
 
  public const string EQUIPPED = "equipped";
 
- public const string CROSS_HAIR = "CrossHair";
+ public const string CROSS_HAIR = "PistolCrossHair";
 
  public const string PUT_DOWN_WEAPON_INPUT = "putDownWeapon";
 
@@ -19,6 +19,15 @@ public class PlayerConstants
 
  public const string SWITCH = "switch";
 
+ public const string BULLET_HOLES = "BulletHoles";
+
+ public const string BULLET_HOLE_PATH = "Prefabs/Weapons/JMO Assets/WarFX/_Effects/Bullet Impacts/+ Bullet Hole/Lit/WFX_BImpact Concrete + Hole Lit";
+
+ public const string MUZZLE_EFFEECTS = "MuzzleEffects";
+
+ public const string RELOAD_INPUT = "reload";
+
+ public const string RELOAD_PATH = "Sounds/Weapons/reload";
 
 
 
