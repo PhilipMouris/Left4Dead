@@ -17,6 +17,7 @@ public class SpecialInfectedSpitterClone : MonoBehaviour
     private GameObject player;
     private bool isChasing = false;
     private bool isAttacking = false;
+    public GameObject spit;
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +43,8 @@ public class SpecialInfectedSpitterClone : MonoBehaviour
             StartChasing();
         if (PlayerAtStoppingDistance() && isChasing)
             Attack();
+        if (isAttacking)
+            RotateToPlayer();
     }
 
     public void AlternatePosition()
@@ -84,6 +87,7 @@ public class SpecialInfectedSpitterClone : MonoBehaviour
         isChasing = false;
         animator.SetTrigger("Attack");
         Invoke("ContinueChasing", 7);
+        Invoke("Spit", 2.0f);
     }
 
     public bool PlayerInRange()
@@ -99,6 +103,19 @@ public class SpecialInfectedSpitterClone : MonoBehaviour
     public bool PlayerAttacked()
     {
         return Vector3.Distance(transform.position, player.transform.position) <= 10;
+    }
+
+    public void RotateToPlayer()
+    {
+        Vector3 lookAt = player.transform.position - transform.position;
+        lookAt.y = 0;
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookAt), Time.deltaTime);
+    }
+
+    public void Spit()
+    {
+        GameObject spitBall = Instantiate(spit, transform.GetChild(2).transform.position, Quaternion.identity);
+        spitBall.GetComponent<Rigidbody>().AddForce(transform.forward * 300);
     }
 
 
