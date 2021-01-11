@@ -201,7 +201,7 @@ public class Player : MonoBehaviour
             Debug.Log("Throwing");
             currentGernade = gernades[0];
             currentGernade.gameObject.SetActive(true);
-            currentGernade.gameObject.transform.position = transform.position - new Vector3(0,0,1.5f);
+            currentGernade.gameObject.transform.position = transform.position - new Vector3(0,-1,1.5f);
             currentGernade.gameObject.transform.rotation = transform.rotation;
             Rigidbody grenadeRigidbody =currentGernade.gameObject.AddComponent<Rigidbody>();
             grenadeRigidbody.useGravity=true;
