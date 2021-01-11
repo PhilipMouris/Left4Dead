@@ -53,11 +53,12 @@ public class Craft : MonoBehaviour
     {
         string tag = ingredient.tag;
          
-
+        Debug.Log(tag + " TAG");
         switch (tag)
         {
             case "alcohol":
                 alcohol++;
+                //Debug.Log(alcohol);
                 //GameObject.Find("AlcoholImage").GetComponentInChildren<Text>().text = alcohol.ToString();
                 break;
 
