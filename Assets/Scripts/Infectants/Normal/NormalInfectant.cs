@@ -35,14 +35,32 @@ public class NormalInfectant : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!chasing & !isAttracted)
+        if (!isAttracted)
         {
-            UpdateDestination();
+            if (PlayerInRange() && !chasing && !attacking)
+                StartChasing();
+            if (chasing)
+                Chase();
+            if (PlayerAtStoppingDistance() && chasing && !attacking)
+                Attack();
+            if (PlayerOutsideStoppingDistance() && !chasing && attacking)
+                UnAttack();
+            if (PlayerOutOfRange())
+            {
+                UnChase();
+                UnAttack();
+                UpdateDestination();
+            }
         }
-        else if (!isAttracted)
-        {
-            CheckAttack();
-        }
+
+        // if (!chasing &!attacking & !isAttracted)
+        // {
+        //     UpdateDestination();
+        // }
+        // else if (!isAttracted)
+        // {
+        //     CheckAttack();
+        // }
     }
     public Transform GetPreviousDestination()
     {
@@ -137,6 +155,13 @@ public class NormalInfectant : MonoBehaviour
             random_timer--;
         }
     }
+    public void RotateToPlayer()
+    {
+        Debug.Log("Rotating");
+        Vector3 lookAt = mainPlayer.transform.position - gameObject.transform.position;
+        // lookAt.y = 0;
+        gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, Quaternion.LookRotation(lookAt), Time.deltaTime);
+    }
     private Transform GetRandomLocation()
     {
         int index = Random.Range(0, locations.Length - 1);
@@ -171,7 +196,7 @@ public class NormalInfectant : MonoBehaviour
     {
         if (!isAttracted)
         {
-           
+
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
             animator.SetBool("Chase", true);
@@ -193,6 +218,7 @@ public class NormalInfectant : MonoBehaviour
         Debug.Log(agent.destination);
         agent.speed = 0.5f;
         chasing = true;
+        isAttracted = true;
 
     }
     public void Attack()
@@ -200,12 +226,43 @@ public class NormalInfectant : MonoBehaviour
         if (!isAttracted)
         {
             attacking = true;
+            chasing = false;
             animator.SetBool("Attack", true);
+            RotateToPlayer();
         }
     }
     public void UnAttack()
     {
         attacking = false;
+        animator.SetBool("Attack", false);
+    }
+    public bool PlayerAtStoppingDistance()
+    {
+        return agent.remainingDistance <= agent.stoppingDistance;
+    }
+
+    public bool PlayerInRange()
+    {
+        return Vector3.Distance(transform.position, mainPlayer.transform.position) <= 10;
+    }
+    public bool PlayerOutOfRange()
+    {
+        return Vector3.Distance(transform.position, mainPlayer.transform.position) > 10;
+    }
+
+    public void Chase2()
+    {
+        agent.destination = mainPlayer.transform.position;
+        agent.stoppingDistance = 5;
+    }
+    public bool PlayerOutsideStoppingDistance()
+    {
+        return Vector3.Distance(transform.position, mainPlayer.transform.position) > 5;
+    }
+    public void StartChasing()
+    {
+        chasing = true;
+        animator.SetBool("Chase", true);
         animator.SetBool("Attack", false);
     }
 
