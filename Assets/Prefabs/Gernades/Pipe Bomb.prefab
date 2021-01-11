@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 852644773599430577}
   - component: {fileID: 7040902110744142626}
   - component: {fileID: 7627481088892499084}
-  - component: {fileID: 8087345304057548347}
+  - component: {fileID: -9185214811762730747}
   m_Layer: 0
   m_Name: Pipe Bomb
   m_TagString: Untagged
@@ -62,7 +62,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3.3107128, y: 1.1129704, z: 3.109807}
   m_Center: {x: -0.023734093, y: 0.30888224, z: -0.36501646}
---- !u!114 &8087345304057548347
+--- !u!114 &-9185214811762730747
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

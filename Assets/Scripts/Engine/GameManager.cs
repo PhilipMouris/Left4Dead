@@ -33,17 +33,22 @@ public class GameManager : MonoBehaviour
 
     private HUDManager hudManager;
 
-    public Camera FPS;
+    private Camera FPS;
 
-    public Camera craftingCamera;
+    private Camera craftingCamera;
 
 
     public static bool crafting_bool;
     // Start is called before the first frame update
-    // void Awake()
-    // {   
-      
-    // }
+    void Awake()
+    {   
+      FPS = GameObject.Find("FirstPersonCharacter").GetComponent<Camera>();
+      craftingCamera = GameObject.Find("CraftingCamera").GetComponent<Camera>();
+      FPS.enabled = true;
+      craftingCamera.enabled = false;
+    //   Debug.Log(FPS.enabled + " FPS");
+    //   De
+    }
 
     void InitializeWeapon(string type, bool isSelected) {
         Weapon weapon = weaponsManager.InitializeWeapon(type);
@@ -90,10 +95,12 @@ public class GameManager : MonoBehaviour
 
     private void HandleCraftingScreen() {
         if (Input.GetKeyDown(KeyCode.I))
-        {
-            FPS.enabled = !FPS.enabled;
-            craftingCamera.enabled = !craftingCamera.enabled;
+        {   
             crafting_bool = !crafting_bool;
+            FPS.enabled = false ;
+            craftingCamera.enabled = true;
+            Debug.Log(FPS.enabled + "ASFSF");
+            Debug.Log(craftingCamera.enabled + "SAFASF");
             CraftingScreen.SetActive(crafting_bool);
             GameObject.Find("FPSController").GetComponent<FirstPersonController>().isCrafting = crafting_bool;
             HandlePause();

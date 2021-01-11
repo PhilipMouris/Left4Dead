@@ -13,7 +13,16 @@ public class MolotovCocktail : Gernade
     private bool isExploded = false;
     private GameObject createdFire;
     private bool inside = false;
-   
+
+    
+    private Player player;
+
+    void Awake() {
+         this.player = GameObject.Find("Player").GetComponent<Player>();
+    }
+
+
+    
     void Update()
     {
         // Debug.Log(inside);
@@ -23,7 +32,7 @@ public class MolotovCocktail : Gernade
             if (Input.GetKeyDown(KeyCode.E))
             {
                 manager.UpdateLocations(gameObject);
-                player.CollectGernade(gameObject.GetComponent<Gernade>());
+                 GameObject.Find("Player").GetComponent<Player>().CollectGernade(gameObject.GetComponent<Gernade>());
             }
         }
         if (isExploded == true & SecondDelay > 0f)
@@ -53,7 +62,7 @@ public class MolotovCocktail : Gernade
         {
             // Debug.Log("INSIDEE");
             inside=true;
-            player = collidedPlayer.GetComponent<Player>();
+            // player = collidedPlayer.GetComponent<Player>();
         }
     }
     void OnTriggerExit(Collider collidedPlayer)
@@ -63,7 +72,7 @@ public class MolotovCocktail : Gernade
         {
             // Debug.Log("INSIDEE");
             inside=false;
-            player = collidedPlayer.GetComponent<Player>();
+            // player = collidedPlayer.GetComponent<Player>();
         }
     }
     void OnCollisionEnter(Collision other)

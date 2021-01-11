@@ -15,21 +15,23 @@ public class PipeBomb : Gernade
     private float ExplosionForce = 400f;
     private Animator beepingAnimator;
     private bool inside = false;
-   
+    private Player player;
     void Awake(){
         beepingAnimator = GetComponentInChildren<Animator>();
         beepingAnimator.enabled=false;
+        this.player = GameObject.Find("Player").GetComponent<Player>();
     }
+
     void Update()
+
     {
         // Debug.Log(inside);
         if (inside == true)
         {
-            // Debug.Log("INSIDEEe2");
             if (Input.GetKeyDown(KeyCode.E))
             {
                 manager.UpdateLocations(gameObject);
-                player.CollectGernade(gameObject.GetComponent<Gernade>());
+                this.player.CollectGernade(gameObject.GetComponent<Gernade>());
             }
         }
         if (isCollided == true & SecondDelay > 0f && !isExploded)
@@ -59,7 +61,7 @@ public class PipeBomb : Gernade
         {
             // Debug.Log("INSIDEE");
             inside=true;
-            player = collidedPlayer.GetComponent<Player>();
+           // player = collidedPlayer.GetComponent<Player>();
         }
     }
     void OnTriggerExit(Collider collidedPlayer)
@@ -69,7 +71,7 @@ public class PipeBomb : Gernade
         {
             // Debug.Log("INSIDEE");
             inside=false;
-            player = collidedPlayer.GetComponent<Player>();
+            //player = collidedPlayer.GetComponent<Player>();
         }
     }
     void OnCollisionEnter(Collision other)

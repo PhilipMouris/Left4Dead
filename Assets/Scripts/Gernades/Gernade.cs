@@ -9,13 +9,13 @@ public class Gernade : MonoBehaviour
      public AudioClip explosionSound;
      protected GernadeManager manager;
      
-     protected Player player;
-     protected NormalInfectantsManager infectantManager;
+  protected NormalInfectantsManager infectantManager;
      
      
     
     // Start is called before the first frame update
     
+
     void Start()
     {
         manager = FindObjectOfType<GernadeManager>();

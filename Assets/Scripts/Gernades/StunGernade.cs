@@ -13,6 +13,13 @@ public class StunGernade : Gernade
     private GameObject createdFire;
     private bool inside = false;
 
+    private Player player;
+
+    void Awake() {
+         this.player = GameObject.Find("Player").GetComponent<Player>();
+    }
+
+  
     void Update()
     {
         // Debug.Log(inside);
@@ -22,7 +29,7 @@ public class StunGernade : Gernade
             if (Input.GetKeyDown(KeyCode.E))
             {
                 manager.UpdateLocations(gameObject);
-                player.CollectGernade(gameObject.GetComponent<Gernade>());
+                this.player.CollectGernade(gameObject.GetComponent<Gernade>());
             }
         }
         if (isExploded == true & SecondDelay > 0f)
@@ -52,7 +59,7 @@ public class StunGernade : Gernade
         {
             // Debug.Log("INSIDEE");
             inside=true;
-            player = collidedPlayer.GetComponent<Player>();
+            //player = collidedPlayer.GetComponent<Player>();
         }
     }
     void OnTriggerExit(Collider collidedPlayer)
@@ -62,7 +69,7 @@ public class StunGernade : Gernade
         {
             // Debug.Log("INSIDEE");
             inside=false;
-            player = collidedPlayer.GetComponent<Player>();
+            //player = collidedPlayer.GetComponent<Player>();
         }
     }
     void OnCollisionEnter(Collision other)

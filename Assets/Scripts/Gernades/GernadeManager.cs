@@ -8,7 +8,7 @@ public class GernadeManager : MonoBehaviour
     public GameObject stun;
     public GameObject pipe;
     public GameObject locations;
-    public GameObject player;
+    private GameObject player;
     public AudioSource source;
     private GameObject[] all_items;
     private List<GameObject> occupied_locations ;
@@ -16,6 +16,11 @@ public class GernadeManager : MonoBehaviour
 
     private int occupied_num = 3;
     // Start is called before the first frame update
+
+    void Awake() {
+         player = GameObject.Find(EngineConstants.PLAYER);
+         Debug.Log(player.name + " NAMEEE");
+    }
     void Start()
     {
        Spawn();

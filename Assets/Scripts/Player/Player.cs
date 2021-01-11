@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
 
     private Companion companion;
 
-    private List<Gernade> gernades = new List<Gernade>();
+ 
 
     private RageMeter rageMeter;
 
@@ -42,6 +42,8 @@ public class Player : MonoBehaviour
     private bool thrown = false;
 
     private float throwingPower = 3f;
+
+    private List<Gernade> gernades = new List<Gernade>();
 
 
 
@@ -227,7 +229,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {   
-        Debug.Log(gernades.Count);
+        Debug.Log(this.gernades.Count);
         HandleReload();
         HandlePutDownWeapon();
         HandleReloadTime();
