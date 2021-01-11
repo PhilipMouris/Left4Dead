@@ -16,6 +16,7 @@ TagManager:
   - sugar
   - cloth
   - Charger
+  - Spitter
   layers:
   - Default
   - TransparentFX
