@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
             craftingCamera.enabled = !craftingCamera.enabled;
             crafting_bool = !crafting_bool;
             CraftingScreen.SetActive(crafting_bool);
-            GameObject.Find("FPSController 1").GetComponent<FirstPersonController>().isCrafting = crafting_bool;
+            GameObject.Find("FPSController").GetComponent<FirstPersonController>().isCrafting = crafting_bool;
             HandlePause();
         }
     }

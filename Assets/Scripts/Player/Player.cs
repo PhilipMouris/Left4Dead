@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
  
+
     private Animator animator;
 
     private Animator pistolAnimator;
@@ -15,6 +16,7 @@ public class Player : MonoBehaviour
 
     private Companion companion;
 
+    private List<Gernade> gernades = new List<Gernade>();
 
     private RageMeter rageMeter;
 
@@ -26,8 +28,6 @@ public class Player : MonoBehaviour
 
     IDictionary<string,GameObject> muzzles;
     
-    private List<Gernade> gernades = new List<Gernade>();
-
     private GameObject crossHair;
     
     private Weapon currentWeapon;
@@ -36,13 +36,17 @@ public class Player : MonoBehaviour
 
     private float reloadTime = 0.4f;
 
+
     private Gernade currentGernade;
-    
-    private float throwingPower = 3f;
 
     private bool thrown = false;
 
-   void OnTriggerStay(Collider other){
+    private float throwingPower = 3f;
+
+
+
+    void OnTriggerStay(Collider other){
+        
         if(other.gameObject.CompareTag(NormalInfectantConstants.TAG)){
             Debug.Log("CHASE IN");
             other.gameObject.GetComponent<NormalInfectant>().Chase();
@@ -70,49 +74,12 @@ public class Player : MonoBehaviour
     }
 
     
-     public void CollectGernade(Gernade gernade){
-        Debug.Log("Added Gernade");
-        ResetGrenadeInfo();
-        gernades.Add(gernade); //Need to Check for Type of Gernade and If max Limit is Exceeded
-        Debug.Log(gernades.Count);
-    }
-    Gernade DeactivateGrenadeProps(Gernade grenade){
-        Animator animator = grenade.gameObject.GetComponentInChildren<Animator>();
-        // if(animator){
-        //     Destroy(animator);
-        // }
-        Light[] lights = grenade.gameObject.GetComponentsInChildren<Light>();
-        for(int i = 0;i<lights.Length;i++){
-            Debug.Log(lights[i].type + " Type") ;
-            if(lights[i].type.Equals("Spot")){
-                Destroy(lights[i].gameObject);
-            }
-        }
-        return grenade;
-    }
-    public void ThrowGrenade()
-    {
-        Debug.Log(gernades.Count);
-        if(gernades.Count>0){
-            Debug.Log("Throwing");
-            currentGernade = gernades[0];
-            currentGernade.gameObject.SetActive(true);
-            currentGernade.gameObject.transform.position = transform.position - new Vector3(0,0,1.5f);
-            currentGernade.gameObject.transform.rotation = transform.rotation;
-            Rigidbody grenadeRigidbody =currentGernade.gameObject.AddComponent<Rigidbody>();
-            grenadeRigidbody.useGravity=true;
-            currentGernade = DeactivateGrenadeProps(currentGernade);
-            grenadeRigidbody.AddForce((transform.forward+transform.up) * throwingPower, ForceMode.Impulse);
-            gernades.RemoveAt(0);
-        }else{
-            Debug.Log("No Gernade Available");
-        }
-    }
+
     void InitializeCrossHairsAndMuzzles() {
         foreach(KeyValuePair<string, string> kvp in WeaponsConstants.WEAPON_TYPES) {
             GameObject currentCrossHair = GameObject.Find($"{kvp.Value}CrossHair");
             GameObject currentMuzzle =  GameObject.Find($"{kvp.Value}Muzzle");
-            crossHairs.Add(kvp.Value, currentCrossHair);
+            this.crossHairs.Add(kvp.Value, currentCrossHair);
             if(kvp.Key == "PISTOL"){
                 this.crossHair = currentCrossHair;
             }
@@ -121,14 +88,14 @@ public class Player : MonoBehaviour
                     muzzles.Add(kvp.Value, currentMuzzle);
                     currentMuzzle.SetActive(false);
                  }
-                if(currentCrossHair != null) currentCrossHair.SetActive(false);
+                //if(currentCrossHair != null) currentCrossHair.SetActive(false);
             }
         }
-
+        
     }
     
-
-
+    
+    
      public void HandleDrawWeapon(){
             this.isWeaponDrawn = true;
             //animator.SetBool(WeaponsConstants.DRAW_PISTOL, isWeaponDrawn);
@@ -173,36 +140,12 @@ public class Player : MonoBehaviour
             reloadTime = 0.4f;
         }
     }
-
-    void HandleGrenade(){
-        if(Input.GetMouseButton(1)){
-            if(throwingPower<PlayerConstants.THROWING_POWER_MAX){
-                throwingPower += 0.2f;
-            }
-        }
-        if(Input.GetMouseButtonUp(1)){
-            Debug.Log("Throwing Power");
-            Debug.Log(throwingPower);
-            ThrowGrenade(); 
-            ResetGrenadeInfo();
-        }
-    }
-    void ResetGrenadeInfo(){
-        throwingPower = 3f;
-        thrown=false;
-    }
+  
 
 
 
     // Update is called once per frame
-    void Update()
-    {   
-        HandleReload();
-        HandlePutDownWeapon();
-        HandleReloadTime();
-        HandleGrenade();
-        
-    }
+    
 
 
     public void SetWeapon(Weapon weapon) {
@@ -210,6 +153,12 @@ public class Player : MonoBehaviour
         if(currentWeapon && isWeaponDrawn){
             currentWeapon.Hide();
         }
+
+         foreach(KeyValuePair<string, GameObject> kvp in this.crossHairs) {
+          Debug.Log(kvp.Key + " KLEY");
+          Debug.Log(kvp.Value + " VALUE INSIDE");
+         }
+     
         // GameObject test =  crossHairs[weapon.GetType()];
         if(currentWeapon) crossHairs[currentWeapon.GetType()].SetActive(false);
         var(position,rotation) = weapon.GetCameraData();
@@ -227,6 +176,76 @@ public class Player : MonoBehaviour
         }
     
     }
+
+
+    public void CollectGernade(Gernade gernade){
+        Debug.Log("Added Gernade");
+        ResetGrenadeInfo();
+        gernades.Add(gernade); //Need to Check for Type of Gernade and If max Limit is Exceeded
+        Debug.Log(gernades.Count);
+    }
+    Gernade DeactivateGrenadeProps(Gernade grenade){
+        Animator animator = grenade.gameObject.GetComponentInChildren<Animator>();
+        // if(animator){
+        //     Destroy(animator);
+        // }
+        Light[] lights = grenade.gameObject.GetComponentsInChildren<Light>();
+        for(int i = 0;i<lights.Length;i++){
+            Debug.Log(lights[i].type + " Type") ;
+            if(lights[i].type.Equals("Spot")){
+                Destroy(lights[i].gameObject);
+            }
+        }
+        return grenade;
+    }
+    public void ThrowGrenade()
+    {
+        Debug.Log(gernades.Count);
+        if(gernades.Count>0){
+            Debug.Log("Throwing");
+            currentGernade = gernades[0];
+            currentGernade.gameObject.SetActive(true);
+            currentGernade.gameObject.transform.position = transform.position - new Vector3(0,0,1.5f);
+            currentGernade.gameObject.transform.rotation = transform.rotation;
+            Rigidbody grenadeRigidbody =currentGernade.gameObject.AddComponent<Rigidbody>();
+            grenadeRigidbody.useGravity=true;
+            currentGernade = DeactivateGrenadeProps(currentGernade);
+            grenadeRigidbody.AddForce((transform.forward+transform.up) * throwingPower, ForceMode.Impulse);
+            gernades.RemoveAt(0);
+        }else{
+            Debug.Log("No Gernade Available");
+        }
+        
+    }
+    void HandleGrenade(){
+        if(Input.GetMouseButton(1)){
+            if(throwingPower<PlayerConstants.THROWING_POWER_MAX){
+                throwingPower += 0.2f;
+            }
+        }
+        if(Input.GetMouseButtonUp(1)){
+            Debug.Log("Throwing Power");
+            Debug.Log(throwingPower);
+            ThrowGrenade(); 
+            ResetGrenadeInfo();
+        }
+    }
+
+
+    void Update()
+    {   
+        HandleReload();
+        HandlePutDownWeapon();
+        HandleReloadTime();
+        //HandleGrenade();
+        
+    }
+    void ResetGrenadeInfo(){
+        throwingPower = 3f;
+        thrown=false;
+    }
+
+
 
 
 

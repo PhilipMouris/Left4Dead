@@ -5,11 +5,11 @@ using UnityEngine;
 public class Gernade : MonoBehaviour
 {
     
-    public GameObject particleEffect;
-    public AudioClip explosionSound;
+     public GameObject particleEffect;
+     public AudioClip explosionSound;
      protected GernadeManager manager;
      
-     protected Player player;
+     //protected Player player;
      protected NormalInfectantsManager infectantManager;
      
      
