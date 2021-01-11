@@ -5,7 +5,7 @@ Youssef Sherif
 
 
 Youssef Abdelrahman
-[Environment, Normal]
+[Health Pack, Health Pack manager, Normal]
 
 
 
@@ -27,4 +27,4 @@ Laithy
 
 
 Nadeen
-[Health Pack, Health Pack manager, Weapon 4]
+[Environment, Weapon 4]
