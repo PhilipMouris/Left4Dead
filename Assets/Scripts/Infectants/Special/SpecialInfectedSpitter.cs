@@ -38,11 +38,11 @@ public class SpecialInfectedSpitter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isAttacking && !isChasing && !isIdle)
+        if (!isAttacking && !isChasing)
             AlternatePosition();
-        if (PlayerInRange() && !isChasing && !isAttacking && !isIdle)
+        if (PlayerInRange() && !isChasing && !isAttacking)
             StartChasing();
-        if (PlayerAtStoppingDistance() && isChasing && !isAttacking && !isIdle)
+        if (PlayerAtStoppingDistance() && isChasing && !isAttacking)
             Attack();
         if (isChasing)
             Chase();
@@ -57,8 +57,6 @@ public class SpecialInfectedSpitter : MonoBehaviour
     {
         isChasing = false;
         isAttacking = false;
-        isIdle = true;
-        animator.SetBool("Idle", true);
         animator.SetBool("Attack", false);
         animator.SetBool("Run", false);
         Invoke("ContinueChasing", attackInterval);
@@ -66,11 +64,10 @@ public class SpecialInfectedSpitter : MonoBehaviour
 
     public void ContinueChasing()
     {
+        isAttacking = false;
         agent.ResetPath();
         agent.destination = player.transform.position;
-        agent.stoppingDistance = 5;
-        isIdle = false;
-        animator.SetBool("Idle", false);
+        agent.stoppingDistance = 10;
         StartChasing();
     }
 
@@ -83,7 +80,6 @@ public class SpecialInfectedSpitter : MonoBehaviour
 
     public void Attack()
     {
-        Debug.Log("Attack");
         isChasing = false;
         isAttacking = true;
         animator.SetBool("Attack", true);
@@ -102,11 +98,6 @@ public class SpecialInfectedSpitter : MonoBehaviour
         return agent.remainingDistance <= agent.stoppingDistance;
     }
 
-    public bool PlayerAttacked()
-    {
-        return Vector3.Distance(transform.position, player.transform.position) <= 5;
-    }
-
     public bool PlayerInRange()
     {
         return Vector3.Distance(transform.position, player.transform.position) <= 15;
@@ -115,7 +106,7 @@ public class SpecialInfectedSpitter : MonoBehaviour
     public void Chase()
     {
         agent.destination = player.transform.position;
-        agent.stoppingDistance = 5;
+        agent.stoppingDistance = 10;
     }
 
     public void AlternatePosition()
