@@ -29,7 +29,7 @@ public class HUDManager : MonoBehaviour
 
     private TextMeshProUGUI health;
 
-    private Color textGreen = new Color(22,130,15,255);
+    private Color textGreen = new Color(0.08627450980392157f,0.5098039215686274f,.058823529411764705f,1f);
 
     private Color healthGreen = new Color(0.147f, 0.566f, 0.142f, 1.000f);
 
@@ -138,9 +138,6 @@ public class HUDManager : MonoBehaviour
     public void SetHealth(int health) {
         currentHealth = health;
         this.health.text = "+" + health;
-        if(health > 60) this.health.color = textGreen;
-        if(health<=60 && health >= 30) this.health.color = orange;
-        if(health<30) this.health.color = red;
         this.healthPercentage = health;
         if(previousHealth > health) {
             this.increaseHealthBar = true;
@@ -162,9 +159,18 @@ public class HUDManager : MonoBehaviour
           // Debug.Log(this.healthBar.GetComponent<Image>().fillAmount + "FILL" );
         float fillAmount =  healthBarImage.fillAmount;
         if(this.increaseHealthBar || this.deacreaseHealthBar) {
-            if(fillAmount > 0.6) healthBarImage.color = healthGreen;
-            if(fillAmount<=0.6 && fillAmount >= 0.3) healthBarImage.color = orange;
-            if(fillAmount<0.3) healthBarImage.color = red;
+            if(fillAmount > 0.6) {
+                healthBarImage.color = healthGreen;
+                this.health.color = textGreen;
+            }
+            if(fillAmount<=0.6 && fillAmount >= 0.3) {
+                healthBarImage.color = orange;
+                this.health.color = orange;
+            }
+            if(fillAmount<0.3) {
+                healthBarImage.color = red;
+                this.health.color = red;
+            }
         }
         float updateAmount =  1f / 2 * Time.deltaTime;
         if(this.increaseHealthBar && fillAmount < healthPercentage/100.0){
