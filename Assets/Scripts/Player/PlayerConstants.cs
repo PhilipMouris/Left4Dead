@@ -27,6 +27,8 @@ public class PlayerConstants
 
  public const string RELOAD_INPUT = "reload";
 
+ public const string RELOAD_PATH = "Sounds/Weapons/reload"
+
 
 
 }

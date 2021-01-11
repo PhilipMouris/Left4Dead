@@ -36,6 +36,9 @@ public class Player : MonoBehaviour
 
     private float reloadTime = 0.4f;
 
+    private AudioSource audio;
+
+    private AudioClip reload;
 
     void OnTriggerEnter(Collider other){
         if(other.gameObject.CompareTag(NormalInfectantConstants.TAG)){
@@ -57,6 +60,7 @@ public class Player : MonoBehaviour
         InitializeCrossHairsAndMuzzles();
         weaponCamera = GameObject.Find(PlayerConstants.WEAPON_CAMERA);
         isWeaponDrawn = false;
+        reload = Resources.Load<AudioClip>(PlayerConstants.RELOAD_PATH);
     }
 
     void Start() {
@@ -106,10 +110,19 @@ public class Player : MonoBehaviour
     }
 
 
+    private void PlayAudio(AudioClip clip) {
+        AudioSource audioSource =  gameObject.AddComponent<AudioSource>();
+        audioSource.clip = clip;
+        audioSource.Play();
+        Destroy(audioSource, audioSource.clip.length);
+    }
+
+
     private void HandleReload() {
         if(Input.GetButtonDown(PlayerConstants.RELOAD_INPUT) && isWeaponDrawn) {
             bool canReload = currentWeapon.Reload();
             if(!canReload) return;
+            PlayAudio(reload);
             animator.SetTrigger(PlayerConstants.RELOAD_INPUT);
             PutDown();
             reloading = true;
