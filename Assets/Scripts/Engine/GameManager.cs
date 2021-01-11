@@ -4,11 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityStandardAssets.Characters.FirstPerson;
 
 
 public class GameManager : MonoBehaviour
 {
 
+    public GameObject CraftingScreen;
+
+    public GameObject HUD;
     private GameObject pauseScreen;
 
     private SoundManager soundManager;
@@ -29,7 +33,12 @@ public class GameManager : MonoBehaviour
 
     private HUDManager hudManager;
 
+    public Camera FPS;
 
+    public Camera craftingCamera;
+
+
+    public static bool crafting_bool;
     // Start is called before the first frame update
     // void Awake()
     // {   
@@ -79,10 +88,21 @@ public class GameManager : MonoBehaviour
     }
 
 
+    private void HandleCraftingScreen() {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            FPS.enabled = !FPS.enabled;
+            craftingCamera.enabled = !craftingCamera.enabled;
+            crafting_bool = !crafting_bool;
+            CraftingScreen.SetActive(crafting_bool);
+            GameObject.Find("FPSController 1").GetComponent<FirstPersonController>().isCrafting = crafting_bool;
+            HandlePause();
+        }
+    }
 
     void Update()
     {
-
+        HandleCraftingScreen();
 
         HandleSwitchWeapons();
         // if (Input.GetKeyDown("1"))
@@ -109,15 +129,17 @@ public class GameManager : MonoBehaviour
     private void HandlePause()
     {
         this.isPaused = !this.isPaused;
-        soundManager.HandlePause(this.isPaused);
+        //soundManager.HandlePause(this.isPaused);
         if (isPaused)
         {
             Time.timeScale = 0;
-            pauseScreen.SetActive(true);
+            //pauseScreen.SetActive(true);
+            HUD.SetActive(false);
             return;
         }
         Time.timeScale = 1;
-        pauseScreen.SetActive(false);
+        //pauseScreen.SetActive(false);
+        HUD.SetActive(true);
     }
 
 
@@ -149,6 +171,9 @@ public class GameManager : MonoBehaviour
         InitializeWeapon(WeaponsConstants.WEAPON_TYPES["SMG"],false);
         InitializeWeapon(WeaponsConstants.WEAPON_TYPES["HUNTING_RIFLE"],false);
         InitializeWeapon(WeaponsConstants.WEAPON_TYPES["SHOTGUN"],false);
+        crafting_bool = false;
+        FPS.enabled = true;
+        craftingCamera.enabled = false;
 
     
     
@@ -185,5 +210,15 @@ public class GameManager : MonoBehaviour
 
 
     // Update is called once per frame
+
+    public void SetHealth(int health)
+    {
+        hudManager.SetHealth(health);
+    }
+
+    public int GetHealth()
+    {
+        return hudManager.GetHealth();
+    }
 
 }

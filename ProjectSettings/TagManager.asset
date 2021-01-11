@@ -7,6 +7,15 @@ TagManager:
   - QuitButton
   - NormalInfected
   - WeaponCamera
+  - SpecialInfected
+  - Tank
+  - alcohol
+  - health_pack
+  - gunpowder
+  - canister
+  - sugar
+  - cloth
+  - Charger
   layers:
   - Default
   - TransparentFX

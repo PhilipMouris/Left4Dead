@@ -47,6 +47,8 @@ public class HUDManager : MonoBehaviour
 
     private bool deacreaseHealthBar;
 
+    private int currentHealth = 100;
+
     // Start is called before the first frame update
     
     
@@ -134,6 +136,7 @@ public class HUDManager : MonoBehaviour
     }
 
     public void SetHealth(int health) {
+        currentHealth = health;
         this.health.text = "+" + health;
         this.healthPercentage = health;
         if(previousHealth > health) {
@@ -145,6 +148,11 @@ public class HUDManager : MonoBehaviour
             this.deacreaseHealthBar = true;
         }
         // previousHealth = health;
+    }
+
+    public int GetHealth()
+    {
+        return currentHealth;
     }
 
     public void HandleHealthBar(){
