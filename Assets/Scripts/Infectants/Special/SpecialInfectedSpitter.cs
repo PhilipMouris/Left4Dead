@@ -44,7 +44,7 @@ public class SpecialInfectedSpitter : MonoBehaviour
             StartChasing();
         if (PlayerAtStoppingDistance() && isChasing && !isAttacking)
             Attack();
-        if (isChasing)
+        if (isChasing && !PlayerAttacked())
             Chase();
         if (isAttacking)
             RotateToPlayer();
@@ -101,6 +101,11 @@ public class SpecialInfectedSpitter : MonoBehaviour
     public bool PlayerInRange()
     {
         return Vector3.Distance(transform.position, player.transform.position) <= 15;
+    }
+
+    public bool PlayerAttacked()
+    {
+        return Vector3.Distance(transform.position, player.transform.position) <= 10;
     }
 
     public void Chase()
