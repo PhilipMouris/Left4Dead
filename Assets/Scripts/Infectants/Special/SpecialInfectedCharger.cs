@@ -57,7 +57,8 @@ public class SpecialInfectedCharger : MonoBehaviour
     }
 
     public void CheckCamera()
-    {
+    {   
+        if(GameManager.crafting_bool) return;
         if (player.gameObject.transform.GetChild(1).GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Fall"))
         {
             SwitchToThirdPerson();
