@@ -88,7 +88,11 @@ public class Weapon : MonoBehaviour
 
     private void HandleRayCast() {
         if(!isDrawn) return;
-         Ray ray = Camera.main.ViewportPointToRay(aim);
+        Ray ray; 
+        if(Camera.main) {
+            ray = Camera.main.ViewportPointToRay(aim);
+        }
+        else return;
          normalInfectantInRange = null;
          RaycastHit hit;
           // if (Physics.Raycast(ray, out hit, currentWeapon.GetRange())) {
