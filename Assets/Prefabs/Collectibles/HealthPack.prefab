@@ -4799,7 +4799,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3622413133489811206}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.112, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -9698,7 +9698,7 @@ GameObject:
   - component: {fileID: 6868535336735248338}
   m_Layer: 0
   m_Name: HealthPack
-  m_TagString: Untagged
+  m_TagString: health_pack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9731,7 +9731,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 169c5932838520f4a8a16ca4d437ad5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manager: {fileID: 3350453945710072760, guid: d6e98333b16bee84b8b4e5a9b4322b33, type: 3}
 --- !u!65 &6868535336735248338
 BoxCollider:
   m_ObjectHideFlags: 0
