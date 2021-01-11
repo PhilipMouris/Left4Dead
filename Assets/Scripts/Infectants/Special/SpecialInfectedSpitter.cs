@@ -49,7 +49,7 @@ public class SpecialInfectedSpitter : MonoBehaviour
         if (isAttacking)
             RotateToPlayer();
         // for testing purposes
-        if (Input.GetKeyDown("m"))
+        if (Input.GetKeyDown("n"))
             GetShot(50);
     }
 
@@ -83,6 +83,7 @@ public class SpecialInfectedSpitter : MonoBehaviour
 
     public void Attack()
     {
+        Debug.Log("Attack");
         isChasing = false;
         isAttacking = true;
         animator.SetBool("Attack", true);
@@ -98,8 +99,6 @@ public class SpecialInfectedSpitter : MonoBehaviour
 
     public bool PlayerAtStoppingDistance()
     {
-        if (!agent.enabled)
-            return false;
         return agent.remainingDistance <= agent.stoppingDistance;
     }
 
