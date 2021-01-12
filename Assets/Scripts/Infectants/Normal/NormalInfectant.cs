@@ -25,6 +25,7 @@ public class NormalInfectant : MonoBehaviour
     private bool isAttracted;
     private NormalInfectantsManager manager;
     private Transform previousDestination;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -95,8 +96,10 @@ public class NormalInfectant : MonoBehaviour
         agent.isStopped = true;
     }
 
-    public void GetShot(int damage)
-    {
+    public bool GetShot(int damage)
+    {  
+        
+        if(dead) return false;
         HP = HP - damage;
         if (HP <= 0)
         {
@@ -104,10 +107,11 @@ public class NormalInfectant : MonoBehaviour
             dead = true;
             manager.UpdateDeadMembers(gameObject);
             agent.isStopped = true;
-        }
-        else
-        {
+            manager.Die();
+            return true;
+        } else {
             animator.SetTrigger("GetShot");
+            return false;
         }
     }
     public void GetAttracted(Transform grenadeLocation)
@@ -127,7 +131,8 @@ public class NormalInfectant : MonoBehaviour
         UnChase();
     }
     public void GetBurned(int damage)
-    {
+    {   
+        if(dead) return;
         HP = HP - damage;
         if (HP <= 0)
         {
@@ -135,6 +140,7 @@ public class NormalInfectant : MonoBehaviour
             dead = true;
             manager.UpdateDeadMembers(gameObject);
             agent.isStopped = true;
+            manager.Die();
         }
         else
         {

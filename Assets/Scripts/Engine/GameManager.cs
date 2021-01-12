@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     private Level3Manager level3Manager;
 
     private WeaponsManager weaponsManager;
+
     private GernadeManager gernadeManager;
 
     private Player player;
@@ -40,6 +41,7 @@ public class GameManager : MonoBehaviour
     private Camera craftingCamera;
 
     private Camera TPS;
+
     private float throwingPower;
 
     public static bool crafting_bool;
@@ -174,7 +176,6 @@ public class GameManager : MonoBehaviour
 
     private void HandlePickUpWeapon() {
         if(Input.GetKeyDown(KeyCode.E)){
-            Debug.Log("HEREEE");
             Weapon weapon = player.GetWeaponInRange();
             if(!weapon) return;
             Weapon oldWeapon = weaponsManager.GetWeapon(weapon.GetType());
@@ -189,6 +190,15 @@ public class GameManager : MonoBehaviour
          
         }
     }
+
+    public void EnemyDead(string type) {
+        if(type=="normal")
+            hudManager.ChangeRage(10);
+        else hudManager.ChangeRage(50);
+    }
+
+
+
 
     void Update()
     {
