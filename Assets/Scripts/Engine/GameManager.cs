@@ -120,10 +120,13 @@ public class GameManager : MonoBehaviour
             Weapon oldWeapon = weaponsManager.GetWeapon(weapon.GetType());
             if(!oldWeapon) {
                 InitializeWeapon(weapon.GetType(),false);
-                return;
+                Destroy(weapon.GetWeapon());
             }
-            oldWeapon.Reset();
-            Destroy(weapon.GetWeapon());
+            else {
+                oldWeapon.Reset();
+                weapon.PlayReloadAndDestroy();
+            }
+         
         }
     }
 
@@ -159,28 +162,11 @@ public class GameManager : MonoBehaviour
         player = GameObject.Find(EngineConstants.PLAYER).GetComponent<Player>();
         hudManager = GameObject.Find(EngineConstants.HUD).GetComponent<HUDManager>();
         weaponsManager = GameObject.Find(EngineConstants.WEAPONS_MANAGER).GetComponent<WeaponsManager>();
-        //level = 1;
-        //isPaused = false;
-        //pauseScreen = GameObject.Find(EngineConstants.PAUSE);
-        //SetButtonListeners();
-        //pauseScreen.SetActive(false);
-        //this.soundManager = GameObject.Find(MenuConstants.AUDIO_MANAGER).GetComponent<SoundManager>();
-        //InitializeLevelManagers();
-        //InitializeScene();
-        //InitializePistol();
-        // InitializeWeapon(WeaponsConstants.PISTOL_DATA, true, WeaponsConstants.PISTOL_TRANSFORMATIONS, WeaponsConstants.PISTOL_CAMERA_DATA);
-        // InitializeWeapon(WeaponsConstants.ASSAULT_RIFLE_DATA, false, WeaponsConstants.RIFLE_TRANSFORMATIONS, WeaponsConstants.RIFLE_CAMERA_DATA);
-        // InitializeWeapon(WeaponsConstants.SHOT_GUN_DATA, false, WeaponsConstants.SHOT_GUN_TRANSFORMATIONS, WeaponsConstants.RIFLE_CAMERA_DATA);
-        // InitializeWeapon(WeaponsConstants.HUNTING_RIFLE_DATA, false, WeaponsConstants.HUNTING_RIFLE_TRANSFORMATIONS, WeaponsConstants.RIFLE_CAMERA_DATA);
-        // //InitializeWeapon(WeaponsConstants.HUNTING_RIFLE_DATA, false, WeaponsConstants.HUNTING_RIFLE_TRANSFORMATIONS, WeaponsConstants.RIFLE_CAMERA_DATA);
-        // InitializeWeapon(WeaponsConstants.SMG_DATA, false, WeaponsConstants.SMG_TRANSFORMATIONS, WeaponsConstants.SMG_CAMERA_DATA);
-        
-
         InitializeWeapon(WeaponsConstants.WEAPON_TYPES["PISTOL"], true);
-        InitializeWeapon(WeaponsConstants.WEAPON_TYPES["ASSAULT_RIFLE"],false);
-        InitializeWeapon(WeaponsConstants.WEAPON_TYPES["SMG"],false);
-        InitializeWeapon(WeaponsConstants.WEAPON_TYPES["HUNTING_RIFLE"],false);
-        InitializeWeapon(WeaponsConstants.WEAPON_TYPES["SHOTGUN"],false);
+        // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["ASSAULT_RIFLE"],false);
+        // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["SMG"],false);
+        // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["HUNTING_RIFLE"],false);
+        // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["SHOTGUN"],false);
         
 
     

@@ -128,12 +128,19 @@ public class WeaponsManager : MonoBehaviour
         weaponObjectInstance.AddComponent<BoxCollider>();
         BoxCollider collider = weaponObjectInstance.GetComponent<BoxCollider>();
         collider.isTrigger = true;
-        collider.size = new Vector3(1f,1.5f,1f);
+        collider.size = type=="shotgun"? new Vector3(10f,10f,10f) : type=="assaultRifle" ? new Vector3(1f,1.5f,2) : new Vector3(1f,1.5f,1f);
     }
 
     // Randomly choose from weapon types and initialize each weapon accordingly
     // Add weapon data in constants file
     public void Spawn() {
-        InitializeSpawn("assaultRifle",WeaponsConstants.SpawnPositions[0]);
+        // InitializeSpawn("assaultRifle",WeaponsConstants.SpawnPositions[0]);
+        // // InitializeSpawn("smg", WeaponsConstants.SpawnPositions[1] );
+        // // InitializeSpawn("shotgun", WeaponsConstants.SpawnPositions[2] );
+        // // InitializeSpawn("huntingRifle", WeaponsConstants.SpawnPositions[3] );
+        for(int i =0;i<WeaponsConstants.SpawnPositions.Length;i++){
+            InitializeSpawn("assaultRifle",WeaponsConstants.SpawnPositions[i]);
+        }
+
     }
 }

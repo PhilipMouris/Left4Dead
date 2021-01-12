@@ -125,6 +125,12 @@ public class Weapon : MonoBehaviour
          bulletHoleInstance.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
     }
 
+    public void PlayReloadAndDestroy() {
+        AudioSource audioSource =  gameObject.AddComponent<AudioSource>();
+        audioSource.clip = reload;
+        audioSource.Play();
+        Destroy(gameObject, audioSource.clip.length);
+    }
     private void PlayAudio(AudioClip clip) {
         AudioSource audioSource =  gameObject.AddComponent<AudioSource>();
         audioSource.clip = clip;
@@ -179,6 +185,7 @@ public class Weapon : MonoBehaviour
     public void Initialize(string type, GameObject weapon) {
         this.type = type;
         this.weapon = weapon;
+        reload = Resources.Load<AudioClip>("Sounds/Weapons/reload");
     }
 
     public bool Reload() {
@@ -267,7 +274,7 @@ public class Weapon : MonoBehaviour
 
     public void Hide() {
         if(muzzle!=null && muzzle.active) muzzle.SetActive(false);
-        weapon.SetActive(false);
+         weapon.SetActive(false);
     }
 
     public void UnHide() {
