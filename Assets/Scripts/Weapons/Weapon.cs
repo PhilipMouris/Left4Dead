@@ -38,6 +38,7 @@ public class Weapon : MonoBehaviour
     private AudioClip dryFire;
     private int spawnIndex;
     private GameObject specialInfectantInRange;
+    private GameManager gameManager;
 
     private Vector3 cameraPosition;
 
@@ -160,7 +161,8 @@ public class Weapon : MonoBehaviour
              if(animator) animator.SetTrigger(WeaponsConstants.FIRE);
              if(collided && ! collided.CompareTag(NormalInfectantConstants.TAG) ) DrawBulletHole();
              if(normalInfectantInRange) {
-                normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(dmg);
+                int dealtDamage = gameManager.GetIsRaged() ? 2*dmg : dmg;
+                normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(dealtDamage);
                 //if(isDead) gameManager.EnemyDead("normal");
              }
              else {
@@ -197,6 +199,7 @@ public class Weapon : MonoBehaviour
         clip =  Resources.Load<AudioClip>($"Sounds/Weapons/{type}");
         reload = Resources.Load<AudioClip>("Sounds/Weapons/reload");
         dryFire = Resources.Load<AudioClip>("Sounds/Weapons/dryFire");
+        gameManager = GameObject.FindObjectOfType<GameManager>();
     }
 
     public void Initialize(string type, GameObject weapon,int spawnIndex) {

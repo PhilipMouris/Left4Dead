@@ -8,25 +8,35 @@ public class RageMeter : MonoBehaviour
 
     private AnimatedBar rageBar;
 
+    private GameManager gameManager;
+
     private float resetBarTimer = 3f;
 
     void Awake() {
         rageBar = null;
+        gameManager = GameObject.FindObjectOfType<GameManager>();
     }
 
     public void ChangeRage(int amount) {
+        if(gameManager.GetIsRaged()) return;
         rageBar.Change(amount);
         ResetTimer();
 
     }
 
     public void resetBar() {
-        ChangeRage(-100);
+        rageBar.Change(-100);
         ResetTimer();
+        gameManager.SetRage(false);
     }
 
-    public void ActivateRageBar() {
-        resetBarTimer = 7f;
+    public bool ActivateRage() {
+        if(rageBar.GetPercentage() >= 100) {
+            gameManager.SetRage(true);
+            resetBarTimer = 7f;
+            return true;
+        }
+        return false;
     }
     // Start is called before the first frame update
     void Start()

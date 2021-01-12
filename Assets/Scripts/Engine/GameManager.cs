@@ -46,6 +46,8 @@ public class GameManager : MonoBehaviour
 
     public static bool crafting_bool;
 
+    private bool isRaged ;
+
 
     // Start is called before the first frame update
     void Awake()
@@ -192,11 +194,25 @@ public class GameManager : MonoBehaviour
     }
 
     public void EnemyDead(string type) {
-        if(type=="normal")
-            hudManager.ChangeRage(10);
+        if(type=="normal"){
+            Debug.Log("HEREEEEE DEAD");
+            hudManager.ChangeRage(100);
+        }
         else hudManager.ChangeRage(50);
     }
 
+    private void HandleActivateRage() {
+        if(isRaged) return;
+        if(Input.GetKeyDown(KeyCode.F)) hudManager.ActivateRage();
+    }
+
+    public void SetRage(bool rage) {
+        this.isRaged = rage;
+    }
+
+    public bool GetIsRaged() {
+        return isRaged;
+    }
 
 
 
@@ -207,6 +223,7 @@ public class GameManager : MonoBehaviour
         HandleSwitchGrenades();
         HandleThrowGrenade();
         HandlePickUpWeapon();
+        HandleActivateRage();
 
         if(Input.GetKeyDown(KeyCode.H)){
             hudManager.ChangeRage(+30);

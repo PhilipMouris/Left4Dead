@@ -80,6 +80,7 @@ public class AnimatedBar : MonoBehaviour
         return currentPercentage;
     }
 
+
     
 
     // Update is called once per frame

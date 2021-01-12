@@ -313,6 +313,10 @@ public class HUDManager : MonoBehaviour
     public void ChangeRage(int amount) {
         rageMeter.ChangeRage(amount);
     }
+
+    public bool ActivateRage() {
+        return rageMeter.ActivateRage();
+    } 
    
 
     void Start()

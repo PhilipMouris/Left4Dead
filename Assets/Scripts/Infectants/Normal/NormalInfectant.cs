@@ -163,7 +163,6 @@ public class NormalInfectant : MonoBehaviour
     }
     public void RotateToPlayer()
     {
-        Debug.Log("Rotating");
         Vector3 lookAt = mainPlayer.transform.position - gameObject.transform.position;
         // lookAt.y = 0;
         gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, Quaternion.LookRotation(lookAt), Time.deltaTime);
