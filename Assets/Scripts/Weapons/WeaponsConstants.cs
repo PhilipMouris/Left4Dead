@@ -85,8 +85,9 @@ public static (Vector3 position,
                                              200, 
                                              10, 
                                              130, 
-                                             "Prefabs/Weapons/shotgun/MARMO3"
+                                             "Prefabs/Weapons/shotgun/MARMO32"
                                              );
+                                           
   
  public static  (Vector3 position, 
                     Vector3 scale, 
