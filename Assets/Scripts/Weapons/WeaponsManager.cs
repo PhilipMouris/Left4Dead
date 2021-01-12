@@ -8,7 +8,7 @@ public class WeaponsManager : MonoBehaviour
 
     private GameObject weaponEQ;
    
-   
+    private IDictionary<string,Weapon> allWeapons; 
 
    public static void SetLayerRecursively(GameObject go, int layerNumber)
     {
@@ -56,6 +56,7 @@ public class WeaponsManager : MonoBehaviour
         var (position,scale,rotation) = transformationData;
         GameObject weaponObject = Resources.Load(PATH) as GameObject;
         GameObject weaponObjectInstance = Instantiate(weaponObject, weaponObject.transform.position, Quaternion.identity);
+        Destroy( weaponObjectInstance.GetComponentInChildren<ParticleSystem>() );
         weaponObjectInstance.AddComponent<Weapon>();
         Weapon weapon = weaponObjectInstance.GetComponent<Weapon>();
         weaponObjectInstance.transform.SetParent(weaponEQ.transform,true);
@@ -76,12 +77,23 @@ public class WeaponsManager : MonoBehaviour
                           aim
                           );
         weapon.Hide();
+        allWeapons.Add(type,weapon);
         return weapon;
+   }
+
+
+   public Weapon GetWeapon(string type) {
+       Weapon value;
+       if(allWeapons.TryGetValue(type,out value)){
+            return  allWeapons[type];
+       }
+        return null;
    } 
    
    
    void Awake(){
        weaponEQ = GameObject.Find(PlayerConstants.WEAPON_EQ);
+       allWeapons = new Dictionary<string, Weapon>();
    }
    
    

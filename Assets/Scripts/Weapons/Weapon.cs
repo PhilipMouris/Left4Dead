@@ -191,6 +191,10 @@ public class Weapon : MonoBehaviour
         return true;
         }
 
+    public void Reset() {
+        this.currentAmmo = clipCapacity;
+        this.totalAmmo = maxAmmo;
+    }
     
 
     private void SetCrossHairGreen(){
@@ -271,5 +275,9 @@ public class Weapon : MonoBehaviour
 
     public void SetIsDrawn(bool isDrawn) {
         this.isDrawn = isDrawn;
+    }
+
+    public GameObject GetWeapon() {
+        return weapon;
     }
 }

@@ -47,6 +47,17 @@ public class Player : MonoBehaviour
 
     private List<Gernade> gernades = new List<Gernade>();
 
+    private Weapon weaponInRange;
+
+
+    void OnTriggerEnter(Collider other){
+        
+        if(other.gameObject.CompareTag(WeaponsConstants.TAG)){
+            // Debug.Log("CHASE IN");
+           weaponInRange = other.GetComponent<Weapon>();
+        }
+    }
+
 
 
     void OnTriggerStay(Collider other){
@@ -60,6 +71,11 @@ public class Player : MonoBehaviour
         if(other.gameObject.CompareTag(NormalInfectantConstants.TAG)){
             other.gameObject.GetComponent<NormalInfectant>().UnChase();
         }
+         if(other.gameObject.CompareTag(WeaponsConstants.TAG)){
+            // Debug.Log("CHASE IN");
+           weaponInRange = null;
+        }
+        
     }
     
     
@@ -266,6 +282,10 @@ public class Player : MonoBehaviour
     public void SetIsWeaponDrawn(bool isWeaponDrawn)
     {
         this.isWeaponDrawn = isWeaponDrawn;
+    }
+
+    public Weapon GetWeaponInRange() {
+        return weaponInRange;
     }
   
 }

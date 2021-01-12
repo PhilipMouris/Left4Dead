@@ -113,30 +113,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+    private void HandlePickUpWeapon() {
+        if(Input.GetKeyDown(KeyCode.E)){
+            Weapon weapon = player.GetWeaponInRange();
+            if(!weapon) return;
+            Weapon oldWeapon = weaponsManager.GetWeapon(weapon.GetType());
+            if(!oldWeapon) {
+                InitializeWeapon(weapon.GetType(),false);
+                Destroy(weapon.GetWeapon());
+                return;
+            }
+            oldWeapon.Reset();
+        }
+    }
+
     void Update()
     {
         HandleCraftingScreen();
 
         HandleSwitchWeapons();
-        // if (Input.GetKeyDown("1"))
-        // {
-        //     InitializeWeapon(WeaponsConstants.SHOT_GUN_DATA,false);
-        // }
-        // if (Input.GetKeyDown("2"))
-        // {
-        //     InitializeWeapon(WeaponsConstants.SMG_DATA,false);
-        // }
 
-        // if (Input.GetKeyDown("3"))
-        // {
-        //     InitializeWeapon(WeaponsConstants.HUNTING_RIFLE_DATA,false);
-        // }
-
-        // if (Input.GetKeyDown("4"))
-        // {
-        //     InitializeWeapon(WeaponsConstants.ASSAULT_RIFLE_DATA,false);
-        // }
-
+        HandlePickUpWeapon();
     }
 
     private void HandlePause()

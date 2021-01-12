@@ -22,6 +22,9 @@ public class WeaponsConstants
 
   public const string DRAW_PISTOL = "drawPistol";
 
+
+  public const string TAG = "weapon";
+
   // PISTOL DATA
   public static (string TYPE,  
                 int RANGE, 
