@@ -14,9 +14,13 @@ public class StunGernade : Gernade
     private bool inside = false;
 
     private Player player;
+    // private string type = "stun";
+
 
     void Awake() {
-         this.player = GameObject.Find("Player").GetComponent<Player>();
+        this.player = GameObject.Find("Player").GetComponent<Player>();
+        this.maxCapacity = WeaponsConstants.STUN_MAX;
+        type = "stun";
     }
 
   
@@ -28,8 +32,9 @@ public class StunGernade : Gernade
             // Debug.Log("INSIDEEe2");
             if (Input.GetKeyDown(KeyCode.E))
             {
-                manager.UpdateLocations(gameObject);
-                this.player.CollectGernade(gameObject.GetComponent<Gernade>());
+                bool collected= this.hudManager.CollectGernade(gameObject.GetComponent<Gernade>(),player);
+                if(collected)
+                    manager.UpdateLocations(gameObject);
             }
         }
         if (isExploded == true & SecondDelay > 0f)

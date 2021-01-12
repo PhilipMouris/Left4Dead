@@ -1,6 +1,7 @@
 public class HUDConstants {
 
     public const string  WEAPON_UI_PATH = "Prefabs/HUD/HUDWeapon";
+    public const string  GERNADE_UI_PATH = "Prefabs/HUD/HUDGernade_New";
 
     public const string EQUIPMENT_CONTAINER = "EquipmentContainer";
 

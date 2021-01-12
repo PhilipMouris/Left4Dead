@@ -13,12 +13,15 @@ public class MolotovCocktail : Gernade
     private bool isExploded = false;
     private GameObject createdFire;
     private bool inside = false;
+    // private string type = "molotov";
 
     
     private Player player;
 
     void Awake() {
          this.player = GameObject.Find("Player").GetComponent<Player>();
+         this.maxCapacity = WeaponsConstants.MOLOTOV_MAX;
+         type = "molotov";
     }
 
 
@@ -31,8 +34,10 @@ public class MolotovCocktail : Gernade
             Debug.Log("INSIDEEe2");
             if (Input.GetKeyDown(KeyCode.E))
             {
-                manager.UpdateLocations(gameObject);
-                 this.player.CollectGernade(gameObject.GetComponent<Gernade>());
+                bool collected= this.hudManager.CollectGernade(gameObject.GetComponent<Gernade>(),player);
+                if(collected)
+                    manager.UpdateLocations(gameObject);
+                 
             }
         }
         if (isExploded == true & SecondDelay > 0f)

@@ -16,10 +16,14 @@ public class PipeBomb : Gernade
     private Animator beepingAnimator;
     private bool inside = false;
     private Player player;
+    // private string type = "pipe";
+
     void Awake(){
         beepingAnimator = GetComponentInChildren<Animator>();
         beepingAnimator.enabled=false;
         this.player = GameObject.Find("Player").GetComponent<Player>();
+         this.maxCapacity = WeaponsConstants.PIPE_MAX;
+         type = "pipe";
     }
 
     void Update()
@@ -30,8 +34,9 @@ public class PipeBomb : Gernade
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                manager.UpdateLocations(gameObject);
-                this.player.CollectGernade(gameObject.GetComponent<Gernade>());
+                bool collected= this.hudManager.CollectGernade(gameObject.GetComponent<Gernade>(),player);
+                if(collected)
+                    manager.UpdateLocations(gameObject);
             }
         }
         if (isCollided == true & SecondDelay > 0f && !isExploded)

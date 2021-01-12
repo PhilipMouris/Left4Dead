@@ -68,6 +68,14 @@ public class GernadeManager : MonoBehaviour
             }
         }
     }
+    public Gernade InitializeGrenade(string type){
+        switch(type){
+            case "Molotov": return new MolotovCocktail();
+            case "Pipe": return new PipeBomb();
+            case "Stun": return new StunGernade();
+        }
+        return null;
+    }
 
 
 }
