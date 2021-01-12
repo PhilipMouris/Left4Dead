@@ -33,7 +33,6 @@ public class AmmoPackManager : MonoBehaviour
 
    
     public void Spawn(){
-        Debug.Log("spawn");
           occupied_locations = new List<GameObject>();
         free_locations = new List<GameObject>();
         Transform[] all_locations =  locations.GetComponentsInChildren<Transform>();
