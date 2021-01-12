@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 187338983738853184}
   - component: {fileID: 2104208032124342577}
   m_Layer: 0
-  m_Name: canister 2
+  m_Name: canister
   m_TagString: canister
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
