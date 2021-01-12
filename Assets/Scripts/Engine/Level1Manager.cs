@@ -22,7 +22,7 @@ public class Level1Manager : ScriptableObject
     private void InitializeManagers(){
         //  healthPackManager = ScriptableObject.CreateInstance("HealthPackManager") as HealthPackManager;
         //  normalInfectantsManager = ScriptableObject.CreateInstance("NormalInfectantsManager") as NormalInfectantsManager;
-         ammoPackManager = ScriptableObject.CreateInstance("AmmoPackManager") as AmmoPackManager;
+        //  ammoPackManager = ScriptableObject.CreateInstance("AmmoPackManager") as AmmoPackManager;
          //weaponsManager =  ScriptableObject.CreateInstance("WeaponsManager") as WeaponsManager;
          ingredientsManager =  ScriptableObject.CreateInstance("IngredientsManager") as IngredientsManager;
     }

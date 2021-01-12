@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class AmmoPack : MonoBehaviour
 {
+    private AmmoPackManager manager;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        manager = FindObjectOfType<AmmoPackManager>();
     }
 
     // Update is called once per frame
@@ -18,6 +20,16 @@ public class AmmoPack : MonoBehaviour
 
      public void Initialize() {
         Utils.AddBoxCollider(gameObject);
+    }
+
+    void OnTriggerEnter(Collider player)
+    {
+        if (player.gameObject.CompareTag("Player"))
+        {
+            manager.UpdateLocations(gameObject);
+            // player.GetComponent<Player>().ResetAmmo();
+        }
+
     }
 
 }
