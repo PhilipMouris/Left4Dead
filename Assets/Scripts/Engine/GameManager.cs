@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour
 
     private Camera TPS;
 
+    private static String companion;
+
 
     public static bool crafting_bool;
     // Start is called before the first frame update
@@ -84,6 +86,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+    public static void SetCompanion(String companionName) {
+        companion = companionName;
+        Debug.Log(companion);
+    }
 
     private void HandleSwitchWeapons() {
         if(Input.GetButtonDown(PlayerConstants.DRAW_WEAPON_INPUT)){
