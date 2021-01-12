@@ -48,6 +48,7 @@ public class HUDManager : MonoBehaviour
     private Color red = new Color(134, 0, 0, 255);
 
     private  AnimatedBar animatedHealthBar;
+    private AnimatedBar animatedPowerBar;
     private List<Gernade> gernades = new List<Gernade>();
     public static IDictionary<string, List<Gernade>> all_gernades = new Dictionary<string, List<Gernade>>(){
         {"molotov", new List<Gernade>()},
@@ -55,6 +56,8 @@ public class HUDManager : MonoBehaviour
         {"stun",new List<Gernade>()}
     };
     private List<GrenadeUI> gernadeUIs = new List<GrenadeUI>();
+
+
 
 
 
@@ -71,8 +74,11 @@ public class HUDManager : MonoBehaviour
         equipmentContainer = GameObject.Find(HUDConstants.EQUIPMENT_CONTAINER);
         TextMeshProUGUI health = GameObject.Find(HUDConstants.HEALTH).GetComponent<TextMeshProUGUI>();
         healthBar = GameObject.Find(HUDConstants.HEALTH_BAR);
+        GameObject powerBar = GameObject.Find(HUDConstants.POWER_BAR);
         healthBar.AddComponent<AnimatedBar>();
+        animatedPowerBar = powerBar.AddComponent<AnimatedBar>();
         animatedHealthBar = healthBar.GetComponent<AnimatedBar>();
+        animatedPowerBar.SetSwitchColor(true);
         animatedHealthBar.Initialize(
             health,
             new Color[] {healthGreen,orange,red},
@@ -81,6 +87,7 @@ public class HUDManager : MonoBehaviour
             0.7f,
             100
         );
+        animatedPowerBar.Initialize(2f,0.7f,0);
         //healthBarImage = healthBar.GetComponent<Image>();
         isLastAddedRight = false;
         rightAddedCount = 0;
@@ -317,7 +324,10 @@ public class HUDManager : MonoBehaviour
     public bool ActivateRage() {
         return rageMeter.ActivateRage();
     } 
-   
+
+    public void ChangePowerBar(int amount) {
+        animatedPowerBar.Change(amount);
+    }
 
     void Start()
     {

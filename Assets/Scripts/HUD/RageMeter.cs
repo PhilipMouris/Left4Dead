@@ -64,6 +64,7 @@ public class RageMeter : MonoBehaviour
         rageBar.Initialize(2f,1f,0);
 
     }
+
     // Update is called once per frame
     void Update()
     {   

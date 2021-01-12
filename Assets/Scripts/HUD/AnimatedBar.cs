@@ -24,9 +24,20 @@ public class AnimatedBar : MonoBehaviour
     private float updateAmount;
     private Image image;
 
+     private Color green = new Color(0.147f, 0.566f, 0.142f, 1.000f);
+
+    private Color orange = new Color(255, 126, 0, 255);
+
+
+    private Color red = new Color(134, 0, 0, 255);
+
+    private Color[] defaultColors;
 
 
 
+    void Awake() {
+        this.defaultColors =  new Color[] { red,orange,green};
+    }
     public void Initialize(TextMeshProUGUI textReference, Color[] barColors, Color[] textColors, float waitTime, float step, int startingPercentage) {
         this.switchColors = true;
         this.textReference = textReference;
@@ -46,6 +57,7 @@ public class AnimatedBar : MonoBehaviour
         this.target = currentPercentage;
         image = this.gameObject.GetComponent<Image>();
         image.fillAmount = startingPercentage/100;
+        barColors = defaultColors;
     }
 
     public void Change(int amount) {
@@ -64,14 +76,17 @@ public class AnimatedBar : MonoBehaviour
         float currentFill = image.fillAmount;
         if(currentFill > 0.6) {
                 image.color = barColors[0];
+                if(textReference)
                 textReference.color = textColors[0];
             }
             if(currentFill<=0.6 && currentFill >= 0.3) {
                 image.color = barColors[1];
+                if(textReference)
                 textReference.color = textColors[1];
             }
             if(currentFill<0.3) {
                image.color = barColors[2];
+               if(textReference)
                textReference.color = textColors[2];
             }
         }
@@ -80,7 +95,9 @@ public class AnimatedBar : MonoBehaviour
         return currentPercentage;
     }
 
-
+    public void SetSwitchColor(bool switchColors) {
+        this.switchColors = switchColors;
+    }
     
 
     // Update is called once per frame

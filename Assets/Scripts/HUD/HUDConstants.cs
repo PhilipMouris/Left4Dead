@@ -18,6 +18,8 @@ public class HUDConstants {
 
     public const string RAGE_BAR = "RageBar";
 
+    public const string POWER_BAR = "PowerBar";
+
 
 
 
