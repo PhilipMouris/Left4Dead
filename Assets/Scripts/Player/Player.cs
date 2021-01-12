@@ -16,10 +16,6 @@ public class Player : MonoBehaviour
 
     private Companion companion;
 
- 
-
-    private RageMeter rageMeter;
-
     private bool isWeaponDrawn;
 
     private GameObject weaponCamera;
@@ -78,7 +74,8 @@ public class Player : MonoBehaviour
         }
         
     }
-    
+
+  
     
     void Awake()
     {  
