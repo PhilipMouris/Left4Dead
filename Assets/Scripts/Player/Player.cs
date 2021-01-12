@@ -24,6 +24,8 @@ public class Player : MonoBehaviour
 
     private GameObject weaponCamera;
 
+    private Vector3 cameraPosition;
+
     IDictionary<string, GameObject> crossHairs;
 
     IDictionary<string,GameObject> muzzles;
@@ -68,6 +70,7 @@ public class Player : MonoBehaviour
         muzzles = new Dictionary<string,GameObject>();
         InitializeCrossHairsAndMuzzles();
         weaponCamera = GameObject.Find(PlayerConstants.WEAPON_CAMERA);
+        cameraPosition = weaponCamera.transform.localPosition;
         isWeaponDrawn = false;
     }
 
@@ -170,6 +173,7 @@ public class Player : MonoBehaviour
              HandleDrawWeapon();
              crossHairs[weaponType].SetActive(true);
         }
+        cameraPosition = weaponCamera.transform.localPosition;
     
     }
 
@@ -227,13 +231,19 @@ public class Player : MonoBehaviour
     }
 
 
+    void HandleLift() {
+        if(Input.GetKeyDown(KeyCode.E)){
+            animator.SetTrigger("lift");
+        }
+    }
+
     void Update()
     {   
-        Debug.Log(this.gernades.Count);
         HandleReload();
         HandlePutDownWeapon();
         HandleReloadTime();
         HandleGrenade();
+        HandleLift();
         
     }
     void ResetGrenadeInfo(){

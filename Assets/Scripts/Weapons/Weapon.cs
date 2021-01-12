@@ -37,6 +37,8 @@ public class Weapon : MonoBehaviour
     private AudioClip reload;
     private AudioClip dryFire;
 
+    private Vector3 cameraPosition;
+
 
     void Awake() {
         bulletHoles = GameObject.Find(PlayerConstants.BULLET_HOLES);
@@ -95,7 +97,6 @@ public class Weapon : MonoBehaviour
         else return;
          normalInfectantInRange = null;
          RaycastHit hit;
-          // if (Physics.Raycast(ray, out hit, currentWeapon.GetRange())) {
           if (Physics.Raycast(ray, out hit, range)) {
               hitPoint = hit.point;
               collided = hit.collider.gameObject;
