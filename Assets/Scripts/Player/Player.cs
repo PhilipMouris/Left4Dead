@@ -43,9 +43,8 @@ public class Player : MonoBehaviour
 
     private bool thrown = false;
 
-    private float throwingPower = 3f;
 
-    private List<Gernade> gernades = new List<Gernade>();
+    
 
     private Weapon weaponInRange;
 
@@ -194,14 +193,12 @@ public class Player : MonoBehaviour
         cameraPosition = weaponCamera.transform.localPosition;
     
     }
-
-
-    public void CollectGernade(Gernade gernade){
-        Debug.Log("Added Gernade");
-        ResetGrenadeInfo();
-        this.gernades.Add(gernade); //Need to Check for Type of Gernade and If max Limit is Exceeded
-        Debug.Log(gernades.Count + " AFTER ADDING");
+    public void SetGrenade(Gernade grenade){
+        this.currentGernade = grenade;
+        //SHould Add here logic of animating the grenade on player if needed
     }
+
+    
     Gernade DeactivateGrenadeProps(Gernade grenade){
         Animator animator = grenade.gameObject.GetComponentInChildren<Animator>();
         // if(animator){
@@ -216,12 +213,8 @@ public class Player : MonoBehaviour
         }
         return grenade;
     }
-    public void ThrowGrenade()
+    public void ThrowGrenade(float throwingPower)
     {
-        Debug.Log(gernades.Count + "COUNDTTTT");
-        if(gernades.Count>0){
-            Debug.Log("Throwing");
-            currentGernade = gernades[0];
             currentGernade.gameObject.SetActive(true);
             currentGernade.gameObject.transform.position = transform.position - new Vector3(0,-1,1.5f);
             currentGernade.gameObject.transform.rotation = transform.rotation;
@@ -229,23 +222,20 @@ public class Player : MonoBehaviour
             grenadeRigidbody.useGravity=true;
             currentGernade = DeactivateGrenadeProps(currentGernade);
             grenadeRigidbody.AddForce((transform.forward+transform.up) * throwingPower, ForceMode.Impulse);
-            gernades.RemoveAt(0);
-        }else{
-            Debug.Log("No Gernade Available");
-        }
         
     }
-    void HandleGrenade(){
-        if(Input.GetMouseButton(1)){
-            if(throwingPower<PlayerConstants.THROWING_POWER_MAX){
-                throwingPower += 0.2f;
-            }
-        }
-        if(Input.GetMouseButtonUp(1)){
-            ThrowGrenade(); 
-            ResetGrenadeInfo();
-        }
-    }
+    // void HandleGrenade(){
+    //     if(Input.GetMouseButton(1)){
+    //         if(throwingPower<PlayerConstants.THROWING_POWER_MAX){
+    //             throwingPower += 0.2f;
+    //         }
+    //     }
+    //     if(Input.GetMouseButtonUp(1)){
+    //         // Debug.Log(gernades.Count + " COUNT?????");
+    //         ThrowGrenade(); 
+    //         ResetGrenadeInfo();
+    //     }
+    // }
 
 
     void HandleLift() {
@@ -259,14 +249,11 @@ public class Player : MonoBehaviour
         HandleReload();
         HandlePutDownWeapon();
         HandleReloadTime();
-        HandleGrenade();
+        // HandleGrenade();
         //HandleLift();
         
     }
-    void ResetGrenadeInfo(){
-        throwingPower = 3f;
-        thrown=false;
-    }
+   
 
 
 
@@ -276,10 +263,10 @@ public class Player : MonoBehaviour
         return isWeaponDrawn;
     }
 
-    public void CraftGrenade(Gernade grenade){
-        Debug.Log("A7a");
-        gernades.Add(grenade);
-    }
+    // public void CraftGrenade(Gernade grenade){
+    //     Debug.Log("A7a");
+    //     gernades.Add(grenade);
+    // }
 
     public void SetIsWeaponDrawn(bool isWeaponDrawn)
     {
