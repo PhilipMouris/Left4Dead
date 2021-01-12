@@ -105,8 +105,6 @@ public class GameManager : MonoBehaviour
             FPS.enabled = false ;
             TPS.enabled = false;
             craftingCamera.enabled = true;
-            Debug.Log(FPS.enabled + "ASFSF");
-            Debug.Log(craftingCamera.enabled + "SAFASF");
             CraftingScreen.SetActive(crafting_bool);
             GameObject.Find("FPSController").GetComponent<FirstPersonController>().isCrafting = crafting_bool;
             HandlePause();
@@ -116,15 +114,16 @@ public class GameManager : MonoBehaviour
 
     private void HandlePickUpWeapon() {
         if(Input.GetKeyDown(KeyCode.E)){
+            Debug.Log("HEREEE");
             Weapon weapon = player.GetWeaponInRange();
             if(!weapon) return;
             Weapon oldWeapon = weaponsManager.GetWeapon(weapon.GetType());
             if(!oldWeapon) {
                 InitializeWeapon(weapon.GetType(),false);
-                Destroy(weapon.GetWeapon());
                 return;
             }
             oldWeapon.Reset();
+            Destroy(weapon.GetWeapon());
         }
     }
 

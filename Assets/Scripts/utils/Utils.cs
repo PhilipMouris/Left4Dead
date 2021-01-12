@@ -11,6 +11,18 @@ public class Utils
         return items[choice];
     }
 
+     public static Vector3 RandomlyChooseFrom(Vector3[] items)
+    {
+        int choice = UnityEngine.Random.Range(0, items.Length);
+        return items[choice];
+    }
+
+
+    public static string RandomlyChooseFrom(string[] items) {
+         int choice = UnityEngine.Random.Range(0, items.Length);
+        return items[choice];
+    }
+
     public static double ManhattenDistance(Vector3 positionA,Vector3 positionB){
         double horizontalDistance = Math.Pow((positionA.x - positionB.x), 2);
         double verticalDistance = Math.Pow((positionA.z - positionB.z), 2);

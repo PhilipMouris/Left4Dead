@@ -8,7 +8,9 @@ public class WeaponsManager : MonoBehaviour
 
     private GameObject weaponEQ;
    
-    private IDictionary<string,Weapon> allWeapons; 
+    private IDictionary<string,Weapon> allWeapons;
+
+    private IDictionary<string,GameObject> weaponResources; 
 
    public static void SetLayerRecursively(GameObject go, int layerNumber)
     {
@@ -54,7 +56,8 @@ public class WeaponsManager : MonoBehaviour
        }
         var (TYPE,RANGE,DAMAGE,RATE_OF_FIRE,CLIP_CAPACITY,MAX_AMMO,PATH) = weaponData;
         var (position,scale,rotation) = transformationData;
-        GameObject weaponObject = Resources.Load(PATH) as GameObject;
+        //GameObject weaponObject = Resources.Load(PATH) as GameObject;
+        GameObject weaponObject = weaponResources[type];
         GameObject weaponObjectInstance = Instantiate(weaponObject, weaponObject.transform.position, Quaternion.identity);
         Destroy( weaponObjectInstance.GetComponentInChildren<ParticleSystem>() );
         weaponObjectInstance.AddComponent<Weapon>();
@@ -83,23 +86,29 @@ public class WeaponsManager : MonoBehaviour
 
 
    public Weapon GetWeapon(string type) {
-       Weapon value;
-       if(allWeapons.TryGetValue(type,out value)){
-            return  allWeapons[type];
-       }
-        return null;
+       return allWeapons.ContainsKey(type) ? allWeapons[type] : null;
    } 
    
    
    void Awake(){
        weaponEQ = GameObject.Find(PlayerConstants.WEAPON_EQ);
        allWeapons = new Dictionary<string, Weapon>();
+       InitializeWeaponResources();
+   }
+
+
+   void InitializeWeaponResources() {
+        weaponResources = new Dictionary<string,GameObject>();
+        foreach(KeyValuePair<string, string> kvp in WeaponsConstants.WEAPON_PATHS) {
+            GameObject weaponObject = Resources.Load(kvp.Value) as GameObject;
+            weaponResources.Add(kvp.Key, weaponObject);
+        }
    }
    
    
     void Start()
     {
-        
+        Spawn();
     }
 
     // Update is called once per frame
@@ -108,9 +117,23 @@ public class WeaponsManager : MonoBehaviour
         
     }
 
+    private void InitializeSpawn(string type, Vector3 position) {
+        GameObject weaponObject = weaponResources[type];
+        GameObject weaponObjectInstance = Instantiate(weaponObject,position, Quaternion.identity);
+        weaponObjectInstance.AddComponent<Weapon>();
+        Weapon weapon = weaponObjectInstance.GetComponent<Weapon>();
+        weapon.Initialize(type,weaponObjectInstance);
+        weaponObjectInstance.transform.localScale = WeaponsConstants.SPAWN_SCALE[type];
+        weaponObjectInstance.transform.localRotation = Quaternion.Euler(WeaponsConstants.SPAWN_ROTATIONS[type]);
+        weaponObjectInstance.AddComponent<BoxCollider>();
+        BoxCollider collider = weaponObjectInstance.GetComponent<BoxCollider>();
+        collider.isTrigger = true;
+        collider.size = new Vector3(1f,1.5f,1f);
+    }
+
     // Randomly choose from weapon types and initialize each weapon accordingly
     // Add weapon data in constants file
     public void Spawn() {
-        Debug.Log("SPAWN WEAPONS");
+        InitializeSpawn("assaultRifle",WeaponsConstants.SpawnPositions[0]);
     }
 }

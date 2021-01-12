@@ -176,6 +176,11 @@ public class Weapon : MonoBehaviour
         dryFire = Resources.Load<AudioClip>("Sounds/Weapons/dryFire");
     }
 
+    public void Initialize(string type, GameObject weapon) {
+        this.type = type;
+        this.weapon = weapon;
+    }
+
     public bool Reload() {
         if(type== WeaponsConstants.WEAPON_TYPES["PISTOL"]){
             currentAmmo = clipCapacity;
@@ -280,4 +285,26 @@ public class Weapon : MonoBehaviour
     public GameObject GetWeapon() {
         return weapon;
     }
+
+    void OnTriggerEnter(Collider collidedPlayer)
+    {
+        
+        if (collidedPlayer.gameObject.CompareTag("Player"))
+        {
+             collidedPlayer.gameObject.GetComponentInChildren<Player>().SetWeaponInRange(this);
+        }
+    }
+    void OnTriggerExit(Collider collidedPlayer)
+    {
+        
+        if (collidedPlayer.gameObject.CompareTag("Player"))
+        {   
+            collidedPlayer.gameObject.GetComponentInChildren<Player>().SetWeaponInRange(null);
+            Debug.Log("HEREEEE");
+         
+        }
+    }
+
+
+    
 }

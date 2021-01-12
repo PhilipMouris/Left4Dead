@@ -51,10 +51,12 @@ public class Player : MonoBehaviour
 
 
     void OnTriggerEnter(Collider other){
-        
+        Debug.Log(other.name + " ORHTERRR");
         if(other.gameObject.CompareTag(WeaponsConstants.TAG)){
             // Debug.Log("CHASE IN");
+        
            weaponInRange = other.GetComponent<Weapon>();
+            Debug.Log(weaponInRange.GetType());
         }
     }
 
@@ -240,7 +242,6 @@ public class Player : MonoBehaviour
             }
         }
         if(Input.GetMouseButtonUp(1)){
-            Debug.Log(gernades.Count + " COUNT?????");
             ThrowGrenade(); 
             ResetGrenadeInfo();
         }
@@ -259,7 +260,7 @@ public class Player : MonoBehaviour
         HandlePutDownWeapon();
         HandleReloadTime();
         HandleGrenade();
-        HandleLift();
+        //HandleLift();
         
     }
     void ResetGrenadeInfo(){
@@ -286,6 +287,10 @@ public class Player : MonoBehaviour
 
     public Weapon GetWeaponInRange() {
         return weaponInRange;
+    }
+
+    public void SetWeaponInRange(Weapon weapon) {
+        this.weaponInRange = weapon;
     }
   
 }

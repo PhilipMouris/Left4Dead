@@ -15,6 +15,15 @@ public class WeaponsConstants
   {"SHOTGUN","shotgun"}
   };
 
+  public static string[] WEAPON_TYPES_LIST = {"pistol","assultRifle","smg","huntingRifle","shotgun"};
+  public static IDictionary<string,string> WEAPON_PATHS = new Dictionary<string,string>() {
+    {"pistol",  "Prefabs/Weapons/Pistol/Modern Guns - Handgun/_Prefabs/Handgun Black/PistolShooting"},
+    {"assaultRifle","Prefabs/Weapons/Rifle/Prefabs/RifleShooting"} ,
+    {"smg", "Prefabs/Weapons/smg/MP7(v3)"},
+    {"huntingRifle",  "Prefabs/Weapons/HuntingRifle/Prefab/Scar"},
+    {"shotgun",  "Prefabs/Weapons/shotgun/MARMO32"}
+  };
+
   
   public const string FIRE = "Fire";
 
@@ -259,12 +268,20 @@ public static Vector3 HUNTING_RIFLE_AIM = SHOTGUN_AIM;
   {"shotgun", new Vector3(90,0,0)}
   };
 
-  public static IDictionary<string, Vector3> SPAWN_TRANSFORMATIONS = new Dictionary<string,Vector3>() {
+  public static IDictionary<string, Vector3> SPAWN_SCALE = new Dictionary<string,Vector3>() {
 	{"assaultRifle", new Vector3(1f,1f,1f)},
   {"smg", new Vector3(2f,2f,2f)},
   {"huntingRifle", new Vector3(1.5f,1.5f,1.5f)},
   {"shotgun", new Vector3(0.15f,0.15f,0.15f)}
   };
-
+  public static Vector3[] SpawnPositions = {
+    new Vector3(61.5169792f,6.04400015f,18.3255501f),
+    new Vector3(60.5169792f,6.04400015f,18.3255501f),
+    new Vector3(58.5169792f,6.04400015f,18.3255501f),
+    new Vector3(57.5169792f,6.04400015f,18.3255501f)
+  };
 }
+
+
+
 
