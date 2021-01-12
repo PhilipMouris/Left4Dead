@@ -36,6 +36,9 @@ public class Weapon : MonoBehaviour
     private AudioClip clip;
     private AudioClip reload;
     private AudioClip dryFire;
+    private int spawnIndex;
+
+    private Vector3 cameraPosition;
 
 
     void Awake() {
@@ -95,7 +98,6 @@ public class Weapon : MonoBehaviour
         else return;
          normalInfectantInRange = null;
          RaycastHit hit;
-          // if (Physics.Raycast(ray, out hit, currentWeapon.GetRange())) {
           if (Physics.Raycast(ray, out hit, range)) {
               hitPoint = hit.point;
               collided = hit.collider.gameObject;
@@ -124,6 +126,12 @@ public class Weapon : MonoBehaviour
          bulletHoleInstance.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
     }
 
+    public void PlayReloadAndDestroy() {
+        AudioSource audioSource =  gameObject.AddComponent<AudioSource>();
+        audioSource.clip = reload;
+        audioSource.Play();
+        Destroy(gameObject, audioSource.clip.length);
+    }
     private void PlayAudio(AudioClip clip) {
         AudioSource audioSource =  gameObject.AddComponent<AudioSource>();
         audioSource.clip = clip;
@@ -175,6 +183,13 @@ public class Weapon : MonoBehaviour
         dryFire = Resources.Load<AudioClip>("Sounds/Weapons/dryFire");
     }
 
+    public void Initialize(string type, GameObject weapon,int spawnIndex) {
+        this.type = type;
+        this.weapon = weapon;
+        reload = Resources.Load<AudioClip>("Sounds/Weapons/reload");
+        this.spawnIndex = spawnIndex;
+    }
+
     public bool Reload() {
         if(type== WeaponsConstants.WEAPON_TYPES["PISTOL"]){
             currentAmmo = clipCapacity;
@@ -190,6 +205,10 @@ public class Weapon : MonoBehaviour
         return true;
         }
 
+    public void Reset() {
+        this.currentAmmo = clipCapacity;
+        this.totalAmmo = maxAmmo;
+    }
     
 
     private void SetCrossHairGreen(){
@@ -257,7 +276,7 @@ public class Weapon : MonoBehaviour
 
     public void Hide() {
         if(muzzle!=null && muzzle.active) muzzle.SetActive(false);
-        weapon.SetActive(false);
+         weapon.SetActive(false);
     }
 
     public void UnHide() {
@@ -271,4 +290,33 @@ public class Weapon : MonoBehaviour
     public void SetIsDrawn(bool isDrawn) {
         this.isDrawn = isDrawn;
     }
+
+    public GameObject GetWeapon() {
+        return weapon;
+    }
+
+    void OnTriggerEnter(Collider collidedPlayer)
+    {
+        
+        if (collidedPlayer.gameObject.CompareTag("Player"))
+        {
+             collidedPlayer.gameObject.GetComponentInChildren<Player>().SetWeaponInRange(this);
+        }
+    }
+    void OnTriggerExit(Collider collidedPlayer)
+    {
+        
+        if (collidedPlayer.gameObject.CompareTag("Player"))
+        {   
+            collidedPlayer.gameObject.GetComponentInChildren<Player>().SetWeaponInRange(null);
+            Debug.Log("HEREEEE");
+         
+        }
+    }
+
+    public int GetSpawnIndex() {
+        return spawnIndex;
+    }
+
+    
 }

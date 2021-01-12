@@ -18,6 +18,7 @@ TagManager:
   - cloth
   - Charger
   - fps
+  - weapon
   layers:
   - Default
   - TransparentFX
