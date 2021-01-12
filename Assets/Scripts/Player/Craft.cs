@@ -118,7 +118,7 @@ public class Craft : MonoBehaviour
         Debug.Log("Molotov molotov");
         if (alcohol >= 2)// && cloth >= 2)
         {
-            GameObject.Find("FPSController 1").GetComponent<Player>().CraftGrenade(new MolotovCocktail());
+            // GameObject.Find("FPSController 1").GetComponent<Player>().CraftGrenade(new MolotovCocktail());
             molotov++;
             alcohol -= 2;
             //cloth -= 2;
@@ -140,7 +140,7 @@ public class Craft : MonoBehaviour
     {
         if (sugar >= 1 && gunpowder >= 2)
         {
-            GameObject.Find("FPSController 1").GetComponent<Player>().CraftGrenade(new StunGernade());
+            // GameObject.Find("FPSController 1").GetComponent<Player>().CraftGrenade(new StunGernade());
             sugar--;
             gunpowder -= 2;
             GameObject.Find("StunImage").GetComponentInChildren<Text>().text = stun_grenade.ToString();
@@ -155,7 +155,7 @@ public class Craft : MonoBehaviour
     {
         if (alcohol >= 1 && gunpowder >= 1 && canister >= 1)
         {
-            GameObject.Find("FPSController 1").GetComponent<Player>().CraftGrenade(new PipeBomb());
+            // GameObject.Find("FPSController 1").GetComponent<Player>().CraftGrenade(new PipeBomb());
             alcohol--;
             gunpowder--;
             canister--;

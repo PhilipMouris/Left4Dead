@@ -6,7 +6,7 @@ public class WeaponsConstants
 
 { 
   //public  string[] WEAPON_TYPES = {"shotgun", "assaultRifle", "huntingRifle", "smg", "pistol"};
-  //public  string[] WEAPON_TYPES = {"pistol", "assaultRifle"};
+  
   public static IDictionary<string, string> WEAPON_TYPES = new Dictionary<string,string>() {
 	{"PISTOL", "pistol"},
 	{"ASSAULT_RIFLE", "assaultRifle"},
@@ -14,6 +14,11 @@ public class WeaponsConstants
   {"HUNTING_RIFLE","huntingRifle"},
   {"SHOTGUN","shotgun"}
   };
+  //  public static IDictionary<string, string> GRENADE_TYPES = new Dictionary<string,string>() {
+  //    {"MOLOTOV_COCKTAIL","molotov"},
+  //    {"PIPE_BOMB","pipe"},
+  //    {"STUN_BOMB","stun"}
+  // };
 
   
   public const string FIRE = "Fire";
@@ -242,5 +247,14 @@ public static Vector3 SMG_AIM = ASSAULT_RIFLE_AIM;
 
 public static Vector3 SHOTGUN_AIM = new Vector3(0.55f,0.5f,0);
 
+
+
 public static Vector3 HUNTING_RIFLE_AIM = SHOTGUN_AIM;
+
+public static string[] GRENADE_TYPES = {"molotov","pipe","stun"};
+  public static int MOLOTOV_MAX = 3;
+
+  public static int PIPE_MAX = 2;
+
+  public static int STUN_MAX = 2;
 }
