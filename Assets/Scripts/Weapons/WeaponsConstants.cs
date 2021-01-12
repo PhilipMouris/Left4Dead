@@ -20,12 +20,24 @@ public class WeaponsConstants
   //    {"STUN_BOMB","stun"}
   // };
 
+  public static string[] WEAPON_TYPES_LIST = {"assaultRifle","smg","huntingRifle","shotgun"};
+  public static IDictionary<string,string> WEAPON_PATHS = new Dictionary<string,string>() {
+    {"pistol",  "Prefabs/Weapons/Pistol/Modern Guns - Handgun/_Prefabs/Handgun Black/PistolShooting"},
+    {"assaultRifle","Prefabs/Weapons/Rifle/Prefabs/RifleShooting"} ,
+    {"smg", "Prefabs/Weapons/smg/MP7(v3)"},
+    {"huntingRifle",  "Prefabs/Weapons/HuntingRifle/Prefab/Scar"},
+    {"shotgun",  "Prefabs/Weapons/shotgun/MARMO32"}
+  };
+
   
   public const string FIRE = "Fire";
 
   public const string SHOOT = "shoot";
 
   public const string DRAW_PISTOL = "drawPistol";
+
+
+  public const string TAG = "weapon";
 
   // PISTOL DATA
   public static (string TYPE,  
@@ -90,8 +102,9 @@ public static (Vector3 position,
                                              200, 
                                              10, 
                                              130, 
-                                             "Prefabs/Weapons/shotgun/MARMO3"
+                                             "Prefabs/Weapons/shotgun/MARMO32"
                                              );
+                                           
   
  public static  (Vector3 position, 
                     Vector3 scale, 
@@ -258,3 +271,89 @@ public static string[] GRENADE_TYPES = {"molotov","pipe","stun"};
 
   public static int STUN_MAX = 2;
 }
+
+
+
+//SPAWN DATA
+  public static IDictionary<string, Vector3> SPAWN_ROTATIONS = new Dictionary<string,Vector3>() {
+	{"assaultRifle", new Vector3(0f,0,90f)},
+  {"smg", new Vector3(0,0,90f)},
+  {"huntingRifle", new Vector3(90f,0,0)},
+  {"shotgun", new Vector3(90,0,0)}
+  };
+
+  public static IDictionary<string, Vector3> SPAWN_SCALE = new Dictionary<string,Vector3>() {
+	{"assaultRifle", new Vector3(1f,1f,1f)},
+  {"smg", new Vector3(2f,2f,2f)},
+  {"huntingRifle", new Vector3(1.5f,1.5f,1.5f)},
+  {"shotgun", new Vector3(0.15f,0.15f,0.15f)}
+  };
+  public static Vector3[] SpawnPositions = {
+    // new Vector3(61.5169792f,4.12f,18.3255501f),
+    // new Vector3(60.5169792f,4.12f,18.3255501f),
+    // new Vector3(58.5169792f,4.12f, 18.3255501f),
+    // new Vector3(57.5169792f,4.12f,18.3255501f)
+    new Vector3(60.5169792f,4.11000013f,10.94555f),
+    new Vector3(56.9099998f,4.11000013f,10.94555f),
+    new Vector3(62.1500015f,4.0f,-2.21000004f),
+    new Vector3(72.0199966f,4.0f,-2.21000004f),
+    new Vector3(78.2399979f,4.0f,2.3900001f),
+    new Vector3(83.5999985f,4.0f,2.3900001f),
+    new Vector3(83.5999985f,4.0f,7.13000011f),
+    new Vector3(83.5999985f,4.0f,12.3999996f),
+    new Vector3(83.5999985f,4.0f,16.0400009f),
+    /// A1
+    // A2
+    new Vector3(78.5999985f,4.19000006f,-42.9099998f),
+    new Vector3(78.5999985f,4.19000006f,-30.2999992f),
+    new Vector3(72.8000031f,4.19000006f,-30.2999992f),
+    new Vector3(72.8000031f,4.19000006f,-10.8999996f),
+    new Vector3(87.4300003f,4.19000006f,-18.8500004f),
+    new Vector3(87.4300003f,4.19000006f,-9.82999992f),
+    new Vector3(62.5999985f,4.19000006f,-45.5999985f),
+    new Vector3(50.2000008f,4.19000006f,-38.0400009f),
+
+
+    // A3 
+    new Vector3(37.8899994f,4.0f,-37.0400009f),
+    new Vector3(29.6599998f,4.0f,-38.0400009f),
+    new Vector3(29.6599998f,4.0f,-49.7000008f),
+    new Vector3(29.6599998f,4.0f,-49.7000008f),
+    new Vector3(10.6899996f,3.7f,-39.0099983f),
+    new Vector3(8f,3.7f,-28.8999996f),
+    new Vector3(8f,3.7f,-19.8999996f),
+    new Vector3(15.2200003f,2f,-26.9300003f),
+    new Vector3(27.5200005f,2.8f,-30.29300003f),
+    new Vector3(39.2999992f,4.19f,-26f),
+    // new Vector3(49.1100006f,4.19000006f,-29.9200001f),
+
+
+    // A4
+    new Vector3(49.1100006f,4f,-29.9200001f),
+    new Vector3(49.1100006f,3.7f,-85.5999985f),
+    new Vector3(45.8100014f,3.7f,-87.6900024f),
+    new Vector3(28.8500004f,3.7f,-85.4499969f),
+    new Vector3(23.5200005f,3.7f,-72.3600006f),
+    new Vector3(12.1999998f,3.7f,-72.3600006f),
+    new Vector3(7.8499999f,3.7f,-85.7699966f),
+    new Vector3(-4.44999981f,3.7f,-80.4000015f),
+    new Vector3(-4.44999981f,4.0000013f,-73.5999985f),
+    new Vector3(-4.44999981f,4.0000013f,-64.6500015f),
+    new Vector3(-16.9599991f,4.0000013f,-53.5f),
+    new Vector3(-4.69999981f,3.7000013f,-38.7000008f),
+    new Vector3(-17.3299999f,3.7f,-26.8400002f),
+    new Vector3(-17.3299999f,3.7f,-18.6700001f),
+    new Vector3(-17.3299999f,3.7f,-16.3500004f),
+    new Vector3(-25.7299995f,2f,-16.3500004f),
+    new Vector3(-25.7299995f,2f,-3.28999996f),
+    new Vector3(-23.3999996f,2f,-43.5999985f),
+    new Vector3(-23.3999996f,2f,-67.4000015f)
+    // Vector3(-25.1299992,4.11000013,-16.3500004)
+    // Vector3(-25.1299992,4.11000013,-1.64999998)
+
+  };
+}
+
+
+
+

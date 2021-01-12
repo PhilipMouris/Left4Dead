@@ -24,6 +24,8 @@ public class Player : MonoBehaviour
 
     private GameObject weaponCamera;
 
+    private Vector3 cameraPosition;
+
     IDictionary<string, GameObject> crossHairs;
 
     IDictionary<string,GameObject> muzzles;
@@ -44,6 +46,19 @@ public class Player : MonoBehaviour
 
     
 
+    private Weapon weaponInRange;
+
+
+    void OnTriggerEnter(Collider other){
+        Debug.Log(other.name + " ORHTERRR");
+        if(other.gameObject.CompareTag(WeaponsConstants.TAG)){
+            // Debug.Log("CHASE IN");
+        
+           weaponInRange = other.GetComponent<Weapon>();
+            Debug.Log(weaponInRange.GetType());
+        }
+    }
+
 
 
     void OnTriggerStay(Collider other){
@@ -57,6 +72,11 @@ public class Player : MonoBehaviour
         if(other.gameObject.CompareTag(NormalInfectantConstants.TAG)){
             other.gameObject.GetComponent<NormalInfectant>().UnChase();
         }
+         if(other.gameObject.CompareTag(WeaponsConstants.TAG)){
+            // Debug.Log("CHASE IN");
+           weaponInRange = null;
+        }
+        
     }
     
     
@@ -67,6 +87,7 @@ public class Player : MonoBehaviour
         muzzles = new Dictionary<string,GameObject>();
         InitializeCrossHairsAndMuzzles();
         weaponCamera = GameObject.Find(PlayerConstants.WEAPON_CAMERA);
+        cameraPosition = weaponCamera.transform.localPosition;
         isWeaponDrawn = false;
     }
 
@@ -169,6 +190,7 @@ public class Player : MonoBehaviour
              HandleDrawWeapon();
              crossHairs[weaponType].SetActive(true);
         }
+        cameraPosition = weaponCamera.transform.localPosition;
     
     }
     public void SetGrenade(Gernade grenade){
@@ -216,13 +238,19 @@ public class Player : MonoBehaviour
     // }
 
 
+    void HandleLift() {
+        if(Input.GetKeyDown(KeyCode.E)){
+            animator.SetTrigger("lift");
+        }
+    }
+
     void Update()
     {   
-        // Debug.Log(this.gernades.Count);
         HandleReload();
         HandlePutDownWeapon();
         HandleReloadTime();
         // HandleGrenade();
+        //HandleLift();
         
     }
    
@@ -236,12 +264,21 @@ public class Player : MonoBehaviour
     }
 
     // public void CraftGrenade(Gernade grenade){
+    //     Debug.Log("A7a");
     //     gernades.Add(grenade);
     // }
 
     public void SetIsWeaponDrawn(bool isWeaponDrawn)
     {
         this.isWeaponDrawn = isWeaponDrawn;
+    }
+
+    public Weapon GetWeaponInRange() {
+        return weaponInRange;
+    }
+
+    public void SetWeaponInRange(Weapon weapon) {
+        this.weaponInRange = weapon;
     }
   
 }
