@@ -17,6 +17,7 @@ public class SpecialInfectedSpitterClone : MonoBehaviour
     private GameObject player;
     private bool isChasing = false;
     private bool isAttacking = false;
+    private bool isDead = false;
     public GameObject spit;
 
     // Start is called before the first frame update
@@ -37,6 +38,10 @@ public class SpecialInfectedSpitterClone : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown("m"))
+            GetShot(20);
+        if (isDead)
+            return;
         if (!isChasing && !isAttacking)
             AlternatePosition();
         if (PlayerInRange() && !isChasing && !isAttacking)
@@ -118,5 +123,22 @@ public class SpecialInfectedSpitterClone : MonoBehaviour
         spitBall.GetComponent<Rigidbody>().AddForce(transform.forward * 300);
     }
 
-
+    public void GetShot(int damage)
+    {
+        if (isDead)
+            return;
+        HP = HP - damage;
+        if (HP <= 0)
+        {
+            CancelInvoke();
+            animator.SetTrigger("Dead");
+            manager.UpdateDeadMembers(gameObject);
+            agent.isStopped = true;
+            isDead = true;
+        }
+        else
+        {
+            animator.SetTrigger("GetShot");
+        }
+    }
 }

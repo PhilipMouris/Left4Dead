@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class SpitHandler : MonoBehaviour
 {
+    private GameManager gameManager;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     // Update is called once per frame
@@ -18,15 +20,38 @@ public class SpitHandler : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        GetComponent<Rigidbody>().velocity = Vector3.zero;
-        GetComponent<Rigidbody>().isKinematic = true;
-        transform.rotation = Quaternion.Euler(0, 0, 0);
-        transform.localScale += new Vector3(2, 0, 2);
-        Invoke("Destroy", 5);
+        if (collision.transform.root.gameObject.name == "Map_v1")
+        {
+            transform.GetChild(0).gameObject.SetActive(true);
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            GetComponent<Rigidbody>().isKinematic = true;
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+            transform.localScale += new Vector3(2, 0, 2);
+            Invoke("Destroy", 5);
+            GetComponent<SphereCollider>().isTrigger = true;
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.name == "FPSController 1")
+            InvokeRepeating("DecreaseHealth", 0, 1);
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.name == "FPSController 1")
+            CancelInvoke("DecreaseHealth");
     }
 
     public void Destroy()
     {
+        CancelInvoke("DecreaseHealth");
         Destroy(gameObject);
+    }
+
+    public void DecreaseHealth()
+    {
+        gameManager.SetHealth(gameManager.GetHealth() - 20);
     }
 }

@@ -17,6 +17,7 @@ TagManager:
   - cloth
   - Charger
   - Spitter
+  - Spit
   layers:
   - Default
   - TransparentFX
