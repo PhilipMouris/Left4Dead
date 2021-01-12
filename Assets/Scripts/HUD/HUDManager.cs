@@ -7,6 +7,9 @@ using UnityEngine.UI;
 public class HUDManager : MonoBehaviour
 {   
     private GameObject weaponUI;
+
+    private RageMeter rageMeter;
+
     private GameObject equipmentContainer;
 
     private bool isLastAddedRight;
@@ -39,6 +42,7 @@ public class HUDManager : MonoBehaviour
 
     
     void Awake(){
+        rageMeter = gameObject.AddComponent<RageMeter>();
         weaponUI = Resources.Load(HUDConstants.WEAPON_UI_PATH) as GameObject;
         equipmentContainer = GameObject.Find(HUDConstants.EQUIPMENT_CONTAINER);
         TextMeshProUGUI health = GameObject.Find(HUDConstants.HEALTH).GetComponent<TextMeshProUGUI>();
