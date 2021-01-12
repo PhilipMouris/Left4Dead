@@ -277,6 +277,7 @@ public class Player : MonoBehaviour
     }
 
     public void CraftGrenade(Gernade grenade){
+        Debug.Log("A7a");
         gernades.Add(grenade);
     }
 
