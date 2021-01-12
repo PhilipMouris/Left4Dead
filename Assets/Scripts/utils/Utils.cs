@@ -17,6 +17,11 @@ public class Utils
         return items[choice];
     }
 
+    public static (Vector3, int) RandomlyChooseFrom(Vector3[] items, bool returnIndex)
+    {
+        int choice = UnityEngine.Random.Range(0, items.Length);
+        return (items[choice],choice);
+    }
 
     public static string RandomlyChooseFrom(string[] items) {
          int choice = UnityEngine.Random.Range(0, items.Length);

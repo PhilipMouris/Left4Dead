@@ -36,6 +36,7 @@ public class Weapon : MonoBehaviour
     private AudioClip clip;
     private AudioClip reload;
     private AudioClip dryFire;
+    private int spawnIndex;
 
     private Vector3 cameraPosition;
 
@@ -182,10 +183,11 @@ public class Weapon : MonoBehaviour
         dryFire = Resources.Load<AudioClip>("Sounds/Weapons/dryFire");
     }
 
-    public void Initialize(string type, GameObject weapon) {
+    public void Initialize(string type, GameObject weapon,int spawnIndex) {
         this.type = type;
         this.weapon = weapon;
         reload = Resources.Load<AudioClip>("Sounds/Weapons/reload");
+        this.spawnIndex = spawnIndex;
     }
 
     public bool Reload() {
@@ -312,6 +314,9 @@ public class Weapon : MonoBehaviour
         }
     }
 
+    public int GetSpawnIndex() {
+        return spawnIndex;
+    }
 
     
 }

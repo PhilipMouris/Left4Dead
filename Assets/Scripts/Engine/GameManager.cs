@@ -120,11 +120,11 @@ public class GameManager : MonoBehaviour
             Weapon oldWeapon = weaponsManager.GetWeapon(weapon.GetType());
             if(!oldWeapon) {
                 InitializeWeapon(weapon.GetType(),false);
-                Destroy(weapon.GetWeapon());
+                weaponsManager.PickUp(weapon,false);
             }
             else {
                 oldWeapon.Reset();
-                weapon.PlayReloadAndDestroy();
+               weaponsManager.PickUp(weapon, true);
             }
          
         }
