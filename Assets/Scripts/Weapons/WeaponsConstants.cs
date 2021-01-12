@@ -270,7 +270,7 @@ public static string[] GRENADE_TYPES = {"molotov","pipe","stun"};
   public static int PIPE_MAX = 2;
 
   public static int STUN_MAX = 2;
-}
+
 
 
 
