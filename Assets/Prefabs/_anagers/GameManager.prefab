@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5681dabd55090574da2f6c9d9ad14ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CraftingScreen: {fileID: 1644584117862015060, guid: 269d39d7cb1d79044bc86f88509fdb9a, type: 3}
+  CraftingScreen: {fileID: 1644584117862015060, guid: 7b79632da66a13c4a8333b88c6be3763, type: 3}
   HUD: {fileID: 0}
 --- !u!114 &-1149774474911141090
 MonoBehaviour:
