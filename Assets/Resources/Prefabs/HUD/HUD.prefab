@@ -1233,14 +1233,14 @@ RectTransform:
   m_GameObject: {fileID: 5808617179399715707}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5808617180710349422}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 104.2, y: -50}
+  m_AnchoredPosition: {x: 150, y: -49.6}
   m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5808617179399715708
@@ -1271,11 +1271,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 3d8675433a508ec47b8f895201eacf20, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -4736,26 +4736,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5808617179366012248}
     m_Modifications:
-    - target: {fileID: 5132658525556127990, guid: 2cf9141413989544286b21c0ecfa897f, type: 3}
-      propertyPath: m_TagString
-      value: Ground
-      objectReference: {fileID: 0}
-    - target: {fileID: 5132658525649848317, guid: 2cf9141413989544286b21c0ecfa897f, type: 3}
-      propertyPath: m_TagString
-      value: Ground
-      objectReference: {fileID: 0}
-    - target: {fileID: 5132658526874560984, guid: 2cf9141413989544286b21c0ecfa897f, type: 3}
-      propertyPath: m_TagString
-      value: Ground
-      objectReference: {fileID: 0}
-    - target: {fileID: 5132658528122949551, guid: 2cf9141413989544286b21c0ecfa897f, type: 3}
-      propertyPath: m_TagString
-      value: Ground
-      objectReference: {fileID: 0}
-    - target: {fileID: 5132658528372946598, guid: 2cf9141413989544286b21c0ecfa897f, type: 3}
-      propertyPath: m_TagString
-      value: Ground
-      objectReference: {fileID: 0}
     - target: {fileID: 7991142033996960264, guid: dc9d3dd6b1f4c2745ac90556828719e9, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4847,6 +4827,26 @@ PrefabInstance:
     - target: {fileID: 7991142033996960265, guid: dc9d3dd6b1f4c2745ac90556828719e9, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5132658525556127990, guid: 2cf9141413989544286b21c0ecfa897f, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 5132658525649848317, guid: 2cf9141413989544286b21c0ecfa897f, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 5132658526874560984, guid: 2cf9141413989544286b21c0ecfa897f, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 5132658528122949551, guid: 2cf9141413989544286b21c0ecfa897f, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 5132658528372946598, guid: 2cf9141413989544286b21c0ecfa897f, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc9d3dd6b1f4c2745ac90556828719e9, type: 3}

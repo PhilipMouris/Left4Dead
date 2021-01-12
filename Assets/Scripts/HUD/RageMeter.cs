@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RageMeter : MonoBehaviour
 {   
@@ -15,11 +16,13 @@ public class RageMeter : MonoBehaviour
 
     public void ChangeRage(int amount) {
         rageBar.Change(amount);
+        ResetTimer();
 
     }
 
     public void resetBar() {
         ChangeRage(-100);
+        ResetTimer();
     }
 
     public void ActivateRageBar() {
@@ -34,6 +37,11 @@ public class RageMeter : MonoBehaviour
         resetBarTimer = 3f;
     }
 
+    public void SetRageBar(GameObject bar) {
+        rageBar = bar.AddComponent<AnimatedBar>();
+        rageBar.Initialize(2f,1f,0);
+
+    }
     // Update is called once per frame
     void Update()
     {   

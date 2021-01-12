@@ -63,7 +63,9 @@ public class HUDManager : MonoBehaviour
 
 
     void Awake()
-    {   rageMeter = gameObject.AddComponent<RageMeter>();
+    {   
+        rageMeter = gameObject.AddComponent<RageMeter>();
+        rageMeter.SetRageBar(GameObject.Find(HUDConstants.RAGE_BAR));
         weaponUI = Resources.Load(HUDConstants.WEAPON_UI_PATH) as GameObject;
         gernadeUI = Resources.Load(HUDConstants.GERNADE_UI_PATH) as GameObject;
         equipmentContainer = GameObject.Find(HUDConstants.EQUIPMENT_CONTAINER);
@@ -306,6 +308,10 @@ public class HUDManager : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void ChangeRage(int amount) {
+        rageMeter.ChangeRage(amount);
     }
    
 

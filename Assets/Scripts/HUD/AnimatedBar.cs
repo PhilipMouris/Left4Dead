@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class AnimatedBar : MonoBehaviour
 {   
@@ -25,6 +26,7 @@ public class AnimatedBar : MonoBehaviour
 
 
 
+
     public void Initialize(TextMeshProUGUI textReference, Color[] barColors, Color[] textColors, float waitTime, float step, int startingPercentage) {
         this.switchColors = true;
         this.textReference = textReference;
@@ -43,6 +45,7 @@ public class AnimatedBar : MonoBehaviour
         this.currentPercentage = startingPercentage;
         this.target = currentPercentage;
         image = this.gameObject.GetComponent<Image>();
+        image.fillAmount = startingPercentage/100;
     }
 
     public void Change(int amount) {
@@ -82,7 +85,7 @@ public class AnimatedBar : MonoBehaviour
     // Update is called once per frame
     void Update()
         {
-        if(currentPercentage == target || currentPercentage-target < 0.5) return;
+        if(currentPercentage == target || Math.Abs(currentPercentage-target) < 0.5) return;
         updateAmount = step/waitTime * Time.deltaTime;
         if(currentPercentage < target) image.fillAmount += updateAmount;
         if(currentPercentage > target) image.fillAmount -= updateAmount;

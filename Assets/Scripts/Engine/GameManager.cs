@@ -134,7 +134,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("NO GRENADES AVAILABLE");
+            
         }
     }
 
@@ -193,33 +193,13 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         HandleCraftingScreen();
-
         HandleSwitchWeapons();
         HandleSwitchGrenades();
         HandleThrowGrenade();
-        // if (Input.GetKeyDown("1"))
-        // {
-        //     InitializeWeapon(WeaponsConstants.SHOT_GUN_DATA,false);
-        // }
-        // if (Input.GetKeyDown("2"))
-        // {
-        //     InitializeWeapon(WeaponsConstants.SMG_DATA,false);
-        // }
-
-        // if (Input.GetKeyDown("3"))
-        // {
-        //     InitializeWeapon(WeaponsConstants.HUNTING_RIFLE_DATA,false);
-        // }
-
-        // if (Input.GetKeyDown("4"))
-        // {
-        //     InitializeWeapon(WeaponsConstants.ASSAULT_RIFLE_DATA,false);
-        // }
-
         HandlePickUpWeapon();
 
         if(Input.GetKeyDown(KeyCode.H)){
-            hudManager.ChangeHealth(-30);
+            hudManager.ChangeRage(+30);
         }
     }
 
