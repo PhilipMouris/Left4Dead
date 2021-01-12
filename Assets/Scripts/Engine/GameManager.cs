@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public GameObject CraftingScreen;
 
     public GameObject HUD;
+    
     private GameObject pauseScreen;
 
     private SoundManager soundManager;
@@ -137,6 +138,10 @@ public class GameManager : MonoBehaviour
         HandleSwitchWeapons();
 
         HandlePickUpWeapon();
+
+        if(Input.GetKeyDown(KeyCode.H)){
+            hudManager.ChangeHealth(-30);
+        }
     }
 
     private void HandlePause()
@@ -207,7 +212,7 @@ public class GameManager : MonoBehaviour
 
     public void SetHealth(int health)
     {
-        hudManager.SetHealth(health);
+        hudManager.ChangeHealth(health);
     }
 
     public int GetHealth()
