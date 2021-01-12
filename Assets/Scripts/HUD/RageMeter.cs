@@ -12,9 +12,17 @@ public class RageMeter : MonoBehaviour
 
     private float resetBarTimer = 3f;
 
+    private Light light;
+
+    private Color red = new Color(0.6f,0,0,1);
+
+    private Color original;
+
     void Awake() {
         rageBar = null;
         gameManager = GameObject.FindObjectOfType<GameManager>();
+        light = GameObject.Find("Directional Light").GetComponent<Light>();
+        original = light.color;
     }
 
     public void ChangeRage(int amount) {
@@ -25,6 +33,9 @@ public class RageMeter : MonoBehaviour
     }
 
     public void resetBar() {
+         if(light.color!=original) {
+                 light.color = original;
+         }  
         rageBar.Change(-100);
         ResetTimer();
         gameManager.SetRage(false);
@@ -32,6 +43,7 @@ public class RageMeter : MonoBehaviour
 
     public bool ActivateRage() {
         if(rageBar.GetPercentage() >= 100) {
+            light.color = red;
             gameManager.SetRage(true);
             resetBarTimer = 7f;
             return true;
