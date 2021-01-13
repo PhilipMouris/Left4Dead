@@ -41,7 +41,6 @@ public class Player : MonoBehaviour
 
     private Gernade currentGernade;
 
-    private bool thrown = false;
 
 
     

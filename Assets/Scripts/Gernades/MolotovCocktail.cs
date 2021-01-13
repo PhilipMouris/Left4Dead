@@ -34,7 +34,9 @@ public class MolotovCocktail : Gernade
             Debug.Log("INSIDEEe2");
             if (Input.GetKeyDown(KeyCode.E))
             {
-                bool collected= this.hudManager.CollectGernade(gameObject.GetComponent<Gernade>(),player);
+               GameObject copy = Instantiate(gameObject);
+                copy.SetActive(false);
+                bool collected= this.hudManager.CollectGernade(copy.GetComponent<Gernade>());
                 if(collected)
                     manager.UpdateLocations(gameObject);
                  

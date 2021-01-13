@@ -287,7 +287,7 @@ public class HUDManager : MonoBehaviour
             currentHeldGernade = gernade;
             currentHeldGernadeType = type;
     }
-    public bool CollectGernade(Gernade gernade, Player player)
+    public bool CollectGernade(Gernade gernade)
     {
         Debug.Log("Added Gernade");
         string type = gernade.GetGernadeType();
