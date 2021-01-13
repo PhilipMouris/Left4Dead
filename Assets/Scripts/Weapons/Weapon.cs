@@ -57,6 +57,8 @@ public class Weapon : MonoBehaviour
         
     }
 
+    
+
     public int GetDmg(){
         return dmg;
     }
