@@ -17,6 +17,7 @@ public class SpecialInfectedBoomer : MonoBehaviour
     private bool isChasing = false;
     private bool isAttacking = false;
     private bool isDead = false;
+    public GameObject bluryVision;
     public GameObject spit;
 
     // Start is called before the first frame update
@@ -117,9 +118,20 @@ public class SpecialInfectedBoomer : MonoBehaviour
 
     public void Spit()
     {
-        //GameObject spitBall = Instantiate(spit, transform.GetChild(2).transform.position, Quaternion.identity);
-        //spitBall.GetComponent<Rigidbody>().AddForce(transform.forward * 300);
-        Debug.Log("spit");
+        bluryVision.SetActive(true);
+        InvokeRepeating("Spawn", 0, 1);
+        Invoke("RemoveSpit", 4);
+    }
+
+    public void Spawn()
+    {
+        Debug.Log("Spawn");
+    }
+
+    public void RemoveSpit()
+    {
+        CancelInvoke("Spawn");
+        bluryVision.SetActive(false);
     }
 
     public void GetShot(int damage)
