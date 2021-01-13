@@ -25,7 +25,6 @@ public class NormalInfectant : MonoBehaviour
     private bool isAttracted;
     private NormalInfectantsManager manager;
     private HUDManager hudManager;
-    private Transform previousDestination;
 
     void Start()
     {
@@ -52,7 +51,6 @@ public class NormalInfectant : MonoBehaviour
             {
                 UnChase();
                 UnAttack();
-                UpdateDestination();
             }
         }
 
@@ -65,10 +63,7 @@ public class NormalInfectant : MonoBehaviour
         //     CheckAttack();
         // }
     }
-    public Transform GetPreviousDestination()
-    {
-        return previousDestination;
-    }
+
     public bool isDead()
     {
         return dead;
@@ -77,7 +72,6 @@ public class NormalInfectant : MonoBehaviour
     {
         if (!isAttracted)
         {
-            previousDestination = mainPlayer.transform;
             agent.destination = mainPlayer.transform.position;
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
@@ -174,14 +168,7 @@ public class NormalInfectant : MonoBehaviour
         int index = Random.Range(0, locations.Length - 1);
         return locations[index];
     }
-    private void UpdateDestination()
-    {
-        if (agent.remainingDistance <= agent.stoppingDistance)
-        {
-            previousDestination = GetRandomLocation();
-            agent.destination = previousDestination.position;
-        }
-    }
+    
     private void DecreaseHealth(){
         // Debug.Log("CHANGE HEALTH");
         hudManager.ChangeHealth(-dps);
@@ -198,8 +185,6 @@ public class NormalInfectant : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         animator.SetBool("Chase", false);
-        previousDestination = GetRandomLocation();
-        agent.destination = previousDestination.position;
         agent.speed = 0.1f;
         chasing = false;
     }
@@ -211,7 +196,6 @@ public class NormalInfectant : MonoBehaviour
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
             animator.SetBool("Chase", true);
-            previousDestination = mainPlayer.transform;
             agent.destination = mainPlayer.transform.position;
             agent.speed = 0.5f;
             chasing = true;
@@ -223,7 +207,6 @@ public class NormalInfectant : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         animator.SetBool("Chase", true);
-        previousDestination = grenadeDestination;
         agent.destination = grenadeDestination.position;
         Debug.Log("Agent Destination");
         Debug.Log(agent.destination);
