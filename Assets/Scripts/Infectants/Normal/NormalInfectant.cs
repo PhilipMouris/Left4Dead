@@ -24,11 +24,14 @@ public class NormalInfectant : MonoBehaviour
     private bool attacking = false;
     private bool isAttracted;
     private NormalInfectantsManager manager;
+    private HUDManager hudManager;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         manager = FindObjectOfType<NormalInfectantsManager>();
+        hudManager = FindObjectOfType<HUDManager>();
     }
 
     // Update is called once per frame
@@ -165,6 +168,11 @@ public class NormalInfectant : MonoBehaviour
         int index = Random.Range(0, locations.Length - 1);
         return locations[index];
     }
+    
+    private void DecreaseHealth(){
+        // Debug.Log("CHANGE HEALTH");
+        hudManager.ChangeHealth(-dps);
+    }
     public void initialize(int HP, int dps, Transform[] locations, GameObject player)
     {
         this.HP = HP;
@@ -214,6 +222,7 @@ public class NormalInfectant : MonoBehaviour
             attacking = true;
             chasing = false;
             animator.SetBool("Attack", true);
+            InvokeRepeating("DecreaseHealth", 0.1f, 1f);
             RotateToPlayer();
         }
     }
