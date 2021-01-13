@@ -155,9 +155,9 @@ public class SpecialInfectedCharger : MonoBehaviour
         if (HP <= 0)
         {
             animator.SetBool("Dead", true);
-            manager.UpdateDeadMembers(gameObject);
             agent.isStopped = true;
             isDead = true;
+            manager.UpdateDeadMembers(gameObject);
         }
         else
         {

@@ -1,6 +1,7 @@
 public class HUDConstants {
 
     public const string  WEAPON_UI_PATH = "Prefabs/HUD/HUDWeapon";
+    public const string  GERNADE_UI_PATH = "Prefabs/HUD/HUDGernade_New";
 
     public const string EQUIPMENT_CONTAINER = "EquipmentContainer";
 
@@ -14,6 +15,10 @@ public class HUDConstants {
 
     public const string HEALTH = "Health";
     public const string HEALTH_BAR = "HealthBar";
+
+    public const string RAGE_BAR = "RageBar";
+
+    public const string POWER_BAR = "PowerBar";
 
 
 

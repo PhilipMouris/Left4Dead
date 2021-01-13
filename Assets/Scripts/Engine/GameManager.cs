@@ -13,10 +13,12 @@ public class GameManager : MonoBehaviour
     public GameObject CraftingScreen;
 
     public GameObject HUD;
+    
     private GameObject pauseScreen;
 
     private SoundManager soundManager;
-    
+    private Craft craftingManager;
+
     private bool isPaused;
 
     private Level1Manager level1Manager;
@@ -24,8 +26,10 @@ public class GameManager : MonoBehaviour
     private Level2Manager level2Manager;
 
     private Level3Manager level3Manager;
-    
+
     private WeaponsManager weaponsManager;
+
+    private GernadeManager gernadeManager;
 
     private Player player;
 
@@ -39,45 +43,62 @@ public class GameManager : MonoBehaviour
 
     private Camera TPS;
 
+<<<<<<< HEAD
     private static String companion;
 
     public bool isChasing;
 
     
 
+=======
+    private float throwingPower = 3;
+>>>>>>> 766545410e78e5b7cbfa506db775010484ee650a
 
     public static bool crafting_bool;
+
+    private bool isRaged ;
+
+
     // Start is called before the first frame update
     void Awake()
-    {   
-      crafting_bool = false;  
-      FPS = GameObject.Find("FirstPersonCharacter").GetComponent<Camera>();
-      craftingCamera = GameObject.Find("CraftingCamera").GetComponent<Camera>();
-      TPS = GameObject.Find("ThirdPersonCamera").GetComponent<Camera>();
-      FPS.enabled = true;
-      TPS.enabled = true;
-      craftingCamera.enabled = false;
-    //   Debug.Log(FPS.enabled + " FPS");
-    //   De
+    {
+        crafting_bool = false;
+        FPS = GameObject.Find("FirstPersonCharacter").GetComponent<Camera>();
+        craftingCamera = GameObject.Find("CraftingCamera").GetComponent<Camera>();
+        TPS = GameObject.Find("ThirdPersonCamera").GetComponent<Camera>();
+        craftingManager = GameObject.Find("CraftingManager").GetComponent<Craft>();
+        FPS.enabled = true;
+        TPS.enabled = true;
+        craftingCamera.enabled = false;
+        //   Debug.Log(FPS.enabled + " FPS");
+        //   De
     }
 
-    void InitializeWeapon(string type, bool isSelected) {
+    void InitializeWeapon(string type, bool isSelected)
+    {
         Weapon weapon = weaponsManager.InitializeWeapon(type);
-        if(isSelected)
+        if (isSelected)
             player.SetWeapon(weapon);
         hudManager.AddWeapon(weapon, isSelected);
     }
-
-
-    private void InitializeLevelManagers() {
-         level1Manager = ScriptableObject.CreateInstance("Level1Manager") as Level1Manager;
-         level2Manager = ScriptableObject.CreateInstance("Level2Manager") as Level2Manager;
-         level3Manager = ScriptableObject.CreateInstance("Level3Manager") as Level3Manager;
+    void InitializeGernades()
+    {
+        hudManager.AddAllGernades();
     }
 
 
-    private void InitializeScene(){
-        switch(level){
+    private void InitializeLevelManagers()
+    {
+        level1Manager = ScriptableObject.CreateInstance("Level1Manager") as Level1Manager;
+        level2Manager = ScriptableObject.CreateInstance("Level2Manager") as Level2Manager;
+        level3Manager = ScriptableObject.CreateInstance("Level3Manager") as Level3Manager;
+    }
+
+
+    private void InitializeScene()
+    {
+        switch (level)
+        {
             case 1:
                 level1Manager.Initialize();
                 break;
@@ -85,12 +106,54 @@ public class GameManager : MonoBehaviour
             //level2Manager.Initialize();
             default:
                 break;
-            //level3Manager.Initialize();
+                //level3Manager.Initialize();
 
         }
     }
 
+    private void HandleSwitchGrenades()
+    {
+        if (Input.GetButtonDown(PlayerConstants.SWITCH_GRENADE))
+        {
+            // hudManager.SetHealth(50);
+            Debug.Log("Switching");
+            Gernade gernade = hudManager.SwitchGrenade();
+            player.SetGrenade(gernade);
 
+        }
+    }
+    public void ResetGrenadeInfo()
+    {
+        throwingPower = 3f;
+
+    }
+    private void HandleThrowGrenade()
+    {
+        if (!hudManager.CheckAllEmptyGrenades())
+        {
+            if (Input.GetMouseButton(1))
+            {  if (throwingPower < PlayerConstants.THROWING_POWER_MAX)
+                {   
+                    throwingPower += 0.2f;
+                    hudManager.ChangePowerBar(Convert.ToInt32((0.2/7f) * 100));
+                }
+            }
+            if (Input.GetMouseButtonUp(1))
+            {
+                // Debug.Log(gernades.Count + " COUNT?????");
+                hudManager.ChangePowerBar(-100);
+                player.ThrowGrenade(throwingPower);
+                hudManager.RemoveCurrentGernade();
+                this.ResetGrenadeInfo();
+            }
+        }
+        else
+        {
+            // Debug.Log("NO GRENADES AVAILABLE");
+        }
+    }
+
+<<<<<<< HEAD
     public static void SetCompanion(String companionName) {
         companion = companionName;
         Debug.Log(companion);
@@ -98,26 +161,39 @@ public class GameManager : MonoBehaviour
 
     private void HandleSwitchWeapons() {
         if(Input.GetButtonDown(PlayerConstants.DRAW_WEAPON_INPUT)){
+=======
+
+    private void HandleSwitchWeapons()
+    {
+        if (Input.GetButtonDown(PlayerConstants.DRAW_WEAPON_INPUT))
+        {
+>>>>>>> 766545410e78e5b7cbfa506db775010484ee650a
             // hudManager.SetHealth(50);
-            if(!player.GetIsweaponDrawn()) {
+            if (!player.GetIsweaponDrawn())
+            {
                 player.HandleDrawWeapon();
-            } else {
-                  Weapon weapon = hudManager.SwitchWeapon();
-                  player.SetWeapon(weapon);
+            }
+            else
+            {
+                Weapon weapon = hudManager.SwitchWeapon();
+                player.SetWeapon(weapon);
             }
         }
     }
 
 
-    private void HandleCraftingScreen() {
+    private void HandleCraftingScreen()
+    {
         if (Input.GetKeyDown(KeyCode.I))
-        {   
+        {
             crafting_bool = !crafting_bool;
-            FPS.enabled = false ;
+            FPS.enabled = false;
             TPS.enabled = false;
             craftingCamera.enabled = true;
             CraftingScreen.SetActive(crafting_bool);
-            GameObject.Find("FPSController").GetComponent<FirstPersonController>().isCrafting = crafting_bool;
+            
+            GameObject.Find("FPSController").GetComponent<FirstPersonController>().GetMouseLook().SetCursorLock(!crafting_bool);
+            this.craftingManager.FindObjects();
             HandlePause();
         }
     }
@@ -125,7 +201,6 @@ public class GameManager : MonoBehaviour
 
     private void HandlePickUpWeapon() {
         if(Input.GetKeyDown(KeyCode.E)){
-            Debug.Log("HEREEE");
             Weapon weapon = player.GetWeaponInRange();
             if(!weapon) return;
             Weapon oldWeapon = weaponsManager.GetWeapon(weapon.GetType());
@@ -141,15 +216,45 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void EnemyDead(string type) {
+        if(type=="normal"){
+            hudManager.ChangeRage(10);
+        }
+        else hudManager.ChangeRage(50);
+    }
+
+    private void HandleActivateRage() {
+        if(isRaged) return;
+        if(Input.GetKeyDown(KeyCode.F)) hudManager.ActivateRage();
+    }
+
+    public void SetRage(bool rage) {
+        this.isRaged = rage;
+    }
+
+    public bool GetIsRaged() {
+        return isRaged;
+    }
+
+
+
     void Update()
     {
         HandleCraftingScreen();
-
         HandleSwitchWeapons();
-
+        HandleSwitchGrenades();
+        HandleThrowGrenade();
         HandlePickUpWeapon();
+<<<<<<< HEAD
         
         HandleMusic();
+=======
+        HandleActivateRage();
+
+        if(Input.GetKeyDown(KeyCode.H)){
+            hudManager.ChangeRage(+30);
+        }
+>>>>>>> 766545410e78e5b7cbfa506db775010484ee650a
     }
 
     private void HandlePause()
@@ -171,10 +276,34 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-       
+
         player = GameObject.Find(EngineConstants.PLAYER).GetComponent<Player>();
         hudManager = GameObject.Find(EngineConstants.HUD).GetComponent<HUDManager>();
         weaponsManager = GameObject.Find(EngineConstants.WEAPONS_MANAGER).GetComponent<WeaponsManager>();
+        //level = 1;
+        //isPaused = false;
+        //pauseScreen = GameObject.Find(EngineConstants.PAUSE);
+        //SetButtonListeners();
+        //pauseScreen.SetActive(false);
+        //this.soundManager = GameObject.Find(MenuConstants.AUDIO_MANAGER).GetComponent<SoundManager>();
+        //InitializeLevelManagers();
+        //InitializeScene();
+        //InitializePistol();
+      
+        hudManager.SetPlayer(player);
+
+        // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["PISTOL"], true);
+        // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["ASSAULT_RIFLE"], false);
+        // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["SMG"], false);
+        // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["HUNTING_RIFLE"], false);
+        // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["SHOTGUN"], false);
+
+        InitializeGernades();
+        // InitializeGernade(WeaponsConstants.WEAPON_TYPES["MOLOTOV_COCKTAIL"],false);
+        // InitializeGernade(WeaponsConstants.WEAPON_TYPES["PIPE_BOMB"],false);
+        // InitializeGernade(WeaponsConstants.WEAPON_TYPES["STUN_BOMB"],false);
+
+
         InitializeWeapon(WeaponsConstants.WEAPON_TYPES["PISTOL"], true);
         
         // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["ASSAULT_RIFLE"],false);
@@ -183,10 +312,6 @@ public class GameManager : MonoBehaviour
         // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["SHOTGUN"],false);
         //GameObject.Find("MusicManager").GetComponent<MusicManager>().PlayExplore();
 
-    
-    
-    
-    
     }
 
     private void onQuit()
@@ -235,13 +360,13 @@ public class GameManager : MonoBehaviour
     }
 
     private void onResume()
-    {   
+    {
         this.soundManager.PlayButtonClick();
         HandlePause();
     }
 
     private void SetButtonListeners()
-    {    
+    {
         // GameObject[] restartButtons = GameObject.FindGameObjectsWithTag(Constants.RESTART_BUTTON);
         GameObject[] quitButtons = GameObject.FindGameObjectsWithTag(Constants.QUIT_BUTTON);
 
@@ -250,7 +375,7 @@ public class GameManager : MonoBehaviour
 
             quitButtons[i].GetComponent<Button>().onClick.AddListener(onQuit);
         }
-       
+
         GameObject.Find(EngineConstants.RESUME).GetComponent<Button>().onClick.AddListener(onResume);
 
     }
@@ -260,7 +385,7 @@ public class GameManager : MonoBehaviour
 
     public void SetHealth(int health)
     {
-        hudManager.SetHealth(health);
+        hudManager.ChangeHealth(health);
     }
 
     public int GetHealth()

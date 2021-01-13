@@ -38,14 +38,14 @@ public class Ingredients : MonoBehaviour
     {
         if (player.gameObject.CompareTag("Player"))
         {
-            
+            GameObject.Find("CraftingManager").GetComponent<Craft>().AddIngredient(this.gameObject);
             manager.UpdateLocations(gameObject);
             //Player current_player = player.GetComponent<Player>();
             //GameObject ingredient = this.gameObject.GetComponent<Ingredients>();
             Debug.Log("Add");
             //Craft current_ingredient = player.GetComponent<Craft>();
             //current_ingredient.AddIngredient(ingredient);
-            GameObject.Find("GameManager").GetComponent<Craft>().AddIngredient(this.gameObject);
+            
             
         }
 

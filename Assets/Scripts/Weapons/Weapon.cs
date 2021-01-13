@@ -37,6 +37,8 @@ public class Weapon : MonoBehaviour
     private AudioClip reload;
     private AudioClip dryFire;
     private int spawnIndex;
+    private GameObject specialInfectantInRange;
+    private GameManager gameManager;
 
     private Vector3 cameraPosition;
 
@@ -97,6 +99,7 @@ public class Weapon : MonoBehaviour
         }
         else return;
          normalInfectantInRange = null;
+         specialInfectantInRange = null;
          RaycastHit hit;
           if (Physics.Raycast(ray, out hit, range)) {
               hitPoint = hit.point;
@@ -106,8 +109,12 @@ public class Weapon : MonoBehaviour
                    SetCrossHairRed();
                    return;
              //Debugging
-          
             }
+            // if(collided.CompareTag("SPECIAL TAG GOES HERE")){
+            //        specialInfectantInRange = collided;
+            //        SetCrossHairRed();
+            // }
+
           }
              //Debug.DrawLine(ray.origin, hit.point);
         SetCrossHairGreen();
@@ -140,7 +147,7 @@ public class Weapon : MonoBehaviour
     }
 
 
-    public void  HandleFire() {
+    public void HandleFire() {
          if(Input.GetButton("Fire1") && isDrawn){
              if(currentAmmo<=0) {
                  if(!outOfAmmo.isPlaying) {
@@ -153,7 +160,18 @@ public class Weapon : MonoBehaviour
              if(type!= WeaponsConstants.WEAPON_TYPES["PISTOL"] && !muzzle.active) muzzle.SetActive(true);
              if(animator) animator.SetTrigger(WeaponsConstants.FIRE);
              if(collided && ! collided.CompareTag(NormalInfectantConstants.TAG) ) DrawBulletHole();
-             if(normalInfectantInRange) normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(dmg);   
+             if(normalInfectantInRange) {
+                int dealtDamage = gameManager.GetIsRaged() ? 2*dmg : dmg;
+                normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(dealtDamage);
+                //if(isDead) gameManager.EnemyDead("normal");
+             }
+             else {
+                if(specialInfectantInRange){
+                 //isDead = GetShot(dmg)
+                 //if(isDead) gameManager.EnemyDead("special");
+                } 
+             }  
+
              currentAmmo -= 1;
              nextFire = 1/(rateOfFire/60.0);
              hidMuzzleAfter = 0.15f;
@@ -178,9 +196,16 @@ public class Weapon : MonoBehaviour
         this.aim = aim;
         outOfAmmo =  gameObject.AddComponent<AudioSource>();
         outOfAmmo.playOnAwake = false;
+<<<<<<< HEAD
         clip =  Resources.Load<AudioClip>($"Audio/SFX/{type}");
         reload = Resources.Load<AudioClip>("Audio/SFX/reload");
         dryFire = Resources.Load<AudioClip>("Audio/SFX/dryFire");
+=======
+        clip =  Resources.Load<AudioClip>($"Sounds/Weapons/{type}");
+        reload = Resources.Load<AudioClip>("Sounds/Weapons/reload");
+        dryFire = Resources.Load<AudioClip>("Sounds/Weapons/dryFire");
+        gameManager = GameObject.FindObjectOfType<GameManager>();
+>>>>>>> 766545410e78e5b7cbfa506db775010484ee650a
     }
 
     public void Initialize(string type, GameObject weapon,int spawnIndex) {
