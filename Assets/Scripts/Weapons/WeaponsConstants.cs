@@ -178,6 +178,22 @@ public static (Vector3 position,
                                              165, 
                                             "Prefabs/Weapons/HuntingRifle/Prefab/Scar"
                                              );
+
+
+   public static (string TYPE,  
+                int RANGE, 
+                int DAMAGE, 
+                int RATE_OF_FIRE, 
+                int CLIP_CAPACITY, 
+                int MAX_AMMO, 
+                string PATH) HUNTING_RIFLE_COMPANION_DATA = ( "huntingRifle",
+                                             70, 
+                                             90, 
+                                             240, 
+                                             15, 
+                                             15*6, 
+                                            "Prefabs/Weapons/HuntingRifle/Prefab/Scar"
+                                             );
  
    public static  (Vector3 position, 
                     Vector3 scale, 

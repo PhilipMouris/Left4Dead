@@ -254,7 +254,7 @@ public class GameManager : MonoBehaviour
         zoeyInstance.transform.localRotation = Quaternion.Euler(transformations.Item2);
         Companion companion = zoeyInstance.AddComponent<Companion>();
         Weapon companionWeapon = GameObject.Find("WeaponEQCompanion").transform.GetChild(0).gameObject.AddComponent<Weapon>();
-        companionWeapon.InitializeCompanionWeapon(WeaponsConstants.HUNTING_RIFLE_DATA);
+        companionWeapon.InitializeCompanionWeapon(WeaponsConstants.HUNTING_RIFLE_COMPANION_DATA);
         //INITIALIZE
 
     }
