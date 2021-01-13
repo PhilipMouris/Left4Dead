@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Weapon : MonoBehaviour
 {
@@ -40,6 +41,7 @@ public class Weapon : MonoBehaviour
     private GameObject specialInfectantInRange;
     private GameManager gameManager;
 
+    private AudioMixerGroup SFXGroup;
     private Vector3 cameraPosition;
 
 
@@ -135,12 +137,14 @@ public class Weapon : MonoBehaviour
 
     public void PlayReloadAndDestroy() {
         AudioSource audioSource =  gameObject.AddComponent<AudioSource>();
+        audioSource.outputAudioMixerGroup = SFXGroup;
         audioSource.clip = reload;
         audioSource.Play();
         Destroy(gameObject, audioSource.clip.length);
     }
     private void PlayAudio(AudioClip clip) {
         AudioSource audioSource =  gameObject.AddComponent<AudioSource>();
+        audioSource.outputAudioMixerGroup = SFXGroup;
         audioSource.clip = clip;
         audioSource.Play();
         Destroy(audioSource, audioSource.clip.length);
@@ -151,6 +155,7 @@ public class Weapon : MonoBehaviour
          if(Input.GetButton("Fire1") && isDrawn){
              if(currentAmmo<=0) {
                  if(!outOfAmmo.isPlaying) {
+                    outOfAmmo.outputAudioMixerGroup = SFXGroup; 
                     outOfAmmo.clip = dryFire;
                     outOfAmmo.Play();
                  }
@@ -199,6 +204,7 @@ public class Weapon : MonoBehaviour
         clip =  Resources.Load<AudioClip>($"Audio/SFX/{type}");
         reload = Resources.Load<AudioClip>("Audio/SFX/reload");
         dryFire = Resources.Load<AudioClip>("Audio/SFX/dryFire");
+        SFXGroup = GameObject.Find("SFXManager").GetComponent<SFXManager>().SFXGroup;
         //clip =  Resources.Load<AudioClip>($"Sounds/Weapons/{type}");
         //reload = Resources.Load<AudioClip>("Sounds/Weapons/reload");
         //dryFire = Resources.Load<AudioClip>("Sounds/Weapons/dryFire");

@@ -476,6 +476,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5907092261773830370, guid: 85fa765fcb15ca44e9ac6712a4bb6f3c, type: 3}
+      propertyPath: SFXGroup
+      value: 
+      objectReference: {fileID: -7327370076100329966, guid: 095768482299d124f87685924985f74c, type: 2}
     - target: {fileID: 5907092261779250978, guid: 85fa765fcb15ca44e9ac6712a4bb6f3c, type: 3}
       propertyPath: m_Enabled
       value: 1

@@ -351,8 +351,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -6682778361356277029, guid: 38fd8f8026e99554985eadd3143a14cf, type: 3}
-        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+      - m_Target: {fileID: 301363228878760285}
+        m_TargetAssemblyTypeName: CompanionScreen, Assembly-CSharp
         m_MethodName: CompanionToManager
         m_Mode: 5
         m_Arguments:
@@ -628,8 +628,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -6682778361356277029, guid: 38fd8f8026e99554985eadd3143a14cf, type: 3}
-        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+      - m_Target: {fileID: 301363228878760285}
+        m_TargetAssemblyTypeName: CompanionScreen, Assembly-CSharp
         m_MethodName: CompanionToManager
         m_Mode: 5
         m_Arguments:
@@ -761,8 +761,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -6682778361356277029, guid: 38fd8f8026e99554985eadd3143a14cf, type: 3}
-        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+      - m_Target: {fileID: 301363228878760285}
+        m_TargetAssemblyTypeName: CompanionScreen, Assembly-CSharp
         m_MethodName: CompanionToManager
         m_Mode: 5
         m_Arguments:
@@ -886,8 +886,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000015258789, y: -0}
-  m_SizeDelta: {x: 757, y: 315}
+  m_AnchoredPosition: {x: 0.000015258789, y: -0.000015259}
+  m_SizeDelta: {x: 757, y: 402}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6398516964049959832
 CanvasRenderer:
@@ -1178,8 +1178,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+      - m_Target: {fileID: 301363228878760285}
+        m_TargetAssemblyTypeName: CompanionScreen, Assembly-CSharp
         m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
@@ -1202,7 +1202,7 @@ GameObject:
   - component: {fileID: 6398516964978194409}
   - component: {fileID: 6398516964978194408}
   - component: {fileID: 6398516964978194411}
-  - component: {fileID: 2905082999752821151}
+  - component: {fileID: 301363228878760285}
   m_Layer: 5
   m_Name: CompanionScreen
   m_TagString: Untagged
@@ -1297,7 +1297,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2905082999752821151
+--- !u!114 &301363228878760285
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1306,10 +1306,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6398516964978194410}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78ae887f21f39244487b13f8fc34c4f3, type: 3}
+  m_Script: {fileID: 11500000, guid: 76635eba0eee04d46833642b0efd2179, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button: {fileID: 0}
+  companionError: {fileID: 8568236858097218697}
 --- !u!1 &6516983355551980641
 GameObject:
   m_ObjectHideFlags: 0
@@ -1781,8 +1781,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -6682778361356277029, guid: 38fd8f8026e99554985eadd3143a14cf, type: 3}
-        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+      - m_Target: {fileID: 301363228878760285}
+        m_TargetAssemblyTypeName: CompanionScreen, Assembly-CSharp
         m_MethodName: CompanionToManager
         m_Mode: 5
         m_Arguments:
@@ -1894,6 +1894,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e637d78f087019a42a694921cba3ac45, type: 3}
+--- !u!1 &8568236858097218697 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9013684618385506184, guid: e637d78f087019a42a694921cba3ac45, type: 3}
+  m_PrefabInstance: {fileID: 864537616694774529}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1995354652341583002 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1175325281438676891, guid: e637d78f087019a42a694921cba3ac45, type: 3}

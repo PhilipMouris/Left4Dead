@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Gernade : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class Gernade : MonoBehaviour
   protected int maxCapacity;
 
   protected GameManager gameManager;
+
+  protected AudioMixerGroup SFXGroup;
      
 protected string type;
     
@@ -25,6 +28,7 @@ protected string type;
         manager = FindObjectOfType<GernadeManager>();
         infectantManager = FindObjectOfType<NormalInfectantsManager>();
         hudManager = FindObjectOfType<HUDManager>();
+        SFXGroup = GameObject.Find("SFXManager").GetComponent<SFXManager>().SFXGroup;
         
     }
     public string GetGernadeType(){
@@ -38,5 +42,7 @@ protected string type;
         return manager.source;
     }
     // Update is called once per frame
-
+    public AudioMixerGroup GetAudioMixerGroup() {
+        return SFXGroup;
+    }
 }
