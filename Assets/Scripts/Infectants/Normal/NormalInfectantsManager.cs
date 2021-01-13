@@ -102,7 +102,7 @@ public class NormalInfectantsManager : MonoBehaviour
         {
             GameObject instantiated = Instantiate(model, locations_list[i].position, Quaternion.identity);
             NormalInfectant infectant = instantiated.GetComponent<NormalInfectant>();
-            infectant.initialize(50, 10, locations_list, player);
+            infectant.initialize(50, 5, locations_list, player);
             infected_members[i] = instantiated;
 
 
