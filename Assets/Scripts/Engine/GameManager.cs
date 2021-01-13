@@ -12,11 +12,14 @@ public class GameManager : MonoBehaviour
 
     public GameObject CraftingScreen;
 
+    public GameObject PauseScreen;
+
     public GameObject HUD;
     
     private GameObject pauseScreen;
 
     private SoundManager soundManager;
+    
     private Craft craftingManager;
 
     private bool isPaused;
@@ -42,19 +45,18 @@ public class GameManager : MonoBehaviour
     private Camera craftingCamera;
 
     private Camera TPS;
+    
+    private Camera pauseCamera;
 
-<<<<<<< HEAD
     private static String companion;
 
-    public bool isChasing;
+    private bool isChasing;
 
-    
-
-=======
     private float throwingPower = 3;
->>>>>>> 766545410e78e5b7cbfa506db775010484ee650a
 
     public static bool crafting_bool;
+    
+    public static bool isPauseScreen;
 
     private bool isRaged ;
 
@@ -65,11 +67,13 @@ public class GameManager : MonoBehaviour
         crafting_bool = false;
         FPS = GameObject.Find("FirstPersonCharacter").GetComponent<Camera>();
         craftingCamera = GameObject.Find("CraftingCamera").GetComponent<Camera>();
+        pauseCamera = GameObject.Find("PauseCamera").GetComponent<Camera>();
         TPS = GameObject.Find("ThirdPersonCamera").GetComponent<Camera>();
         craftingManager = GameObject.Find("CraftingManager").GetComponent<Craft>();
         FPS.enabled = true;
         TPS.enabled = true;
         craftingCamera.enabled = false;
+        pauseCamera.enabled = false;
         //   Debug.Log(FPS.enabled + " FPS");
         //   De
     }
@@ -153,21 +157,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
-<<<<<<< HEAD
+    
+
     public static void SetCompanion(String companionName) {
         companion = companionName;
         Debug.Log(companion);
     }
 
-    private void HandleSwitchWeapons() {
-        if(Input.GetButtonDown(PlayerConstants.DRAW_WEAPON_INPUT)){
-=======
+    //private void HandleSwitchWeapons() {
+      //  if(Input.GetButtonDown(PlayerConstants.DRAW_WEAPON_INPUT)){
 
     private void HandleSwitchWeapons()
     {
         if (Input.GetButtonDown(PlayerConstants.DRAW_WEAPON_INPUT))
         {
->>>>>>> 766545410e78e5b7cbfa506db775010484ee650a
             // hudManager.SetHealth(50);
             if (!player.GetIsweaponDrawn())
             {
@@ -198,6 +201,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void HandlePauseScreen() {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            PauseScreen.SetActive(true);
+            CraftingScreen.SetActive(false);
+            FPS.enabled = false;
+            TPS.enabled = false;
+            craftingCamera.enabled = false;
+            pauseCamera.enabled = true;
+            isPauseScreen = true;
+            GameObject.Find("FPSController").GetComponent<FirstPersonController>().GetMouseLook().SetCursorLock(false);
+            HandlePause();
+        }
+        
+    }
 
     private void HandlePickUpWeapon() {
         if(Input.GetKeyDown(KeyCode.E)){
@@ -245,16 +262,13 @@ public class GameManager : MonoBehaviour
         HandleSwitchGrenades();
         HandleThrowGrenade();
         HandlePickUpWeapon();
-<<<<<<< HEAD
-        
+        HandlePauseScreen();
         HandleMusic();
-=======
         HandleActivateRage();
 
         if(Input.GetKeyDown(KeyCode.H)){
             hudManager.ChangeRage(+30);
         }
->>>>>>> 766545410e78e5b7cbfa506db775010484ee650a
     }
 
     private void HandlePause()
@@ -273,6 +287,23 @@ public class GameManager : MonoBehaviour
         HUD.SetActive(true);
     }
 
+    public void ResumeGame() {
+        PauseScreen.SetActive(false);
+        FPS.enabled = true;
+        TPS.enabled = true;
+        craftingCamera.enabled = false;
+        pauseCamera.enabled = false;
+        isPauseScreen = false;
+        HandlePause();
+    }
+
+    public void RestartGame() {
+         SceneManager.LoadScene("OutdoorsLevel");
+    }
+
+    public void QuitToMain() {
+        SceneManager.LoadScene("Menus");
+    }
 
     void Start()
     {
