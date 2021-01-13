@@ -208,6 +208,29 @@ public class Weapon : MonoBehaviour
         reload = Resources.Load<AudioClip>("Sounds/Weapons/reload");
         this.spawnIndex = spawnIndex;
     }
+    // string TYPE,  
+    //             int RANGE, 
+    //             int DAMAGE, 
+    //             int RATE_OF_FIRE, 
+    //             int CLIP_CAPACITY, 
+    //             int MAX_AMMO, 
+    //             string PATH 
+    public void InitializeCompanionWeapon((string TYPE,  
+                int RANGE, 
+                int DAMAGE, 
+                int RATE_OF_FIRE, 
+                int CLIP_CAPACITY, 
+                int MAX_AMMO, 
+                string PATH) data) {
+        var (TYPE,RANGE,DAMAGE,RATE_OF_FIRE,CLIP_CAPACITY,MAX_AMMO,PATH) = data;
+        this.type = TYPE;
+        this.dmg = RANGE;
+        this.clipCapacity = DAMAGE;
+        this.rateOfFire = RATE_OF_FIRE;
+        this.range = CLIP_CAPACITY;
+        this.maxAmmo = MAX_AMMO;
+        Destroy( this.gameObject.GetComponentInChildren<ParticleSystem>() );
+    }
 
     public bool Reload() {
         if(type== WeaponsConstants.WEAPON_TYPES["PISTOL"]){

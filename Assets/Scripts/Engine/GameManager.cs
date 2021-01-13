@@ -246,12 +246,25 @@ public class GameManager : MonoBehaviour
     }
 
 
+
+    private void InitializeCompanion(string type) {
+        GameObject zoey = Resources.Load(CompanionConstants.COMPANION_PATHS["ZOEY"]) as GameObject;
+        (Vector3,Vector3) transformations = CompanionConstants.COMPANION_TRANSFORMATION["ZOEY"];
+        GameObject zoeyInstance =  Instantiate(zoey,transformations.Item1, Quaternion.identity);
+        zoeyInstance.transform.localRotation = Quaternion.Euler(transformations.Item2);
+        Companion companion = zoeyInstance.AddComponent<Companion>();
+        Weapon companionWeapon = GameObject.Find("WeaponEQCompanion").transform.GetChild(0).gameObject.AddComponent<Weapon>();
+        companionWeapon.InitializeCompanionWeapon(WeaponsConstants.HUNTING_RIFLE_DATA);
+        //INITIALIZE
+
+    }
     void Start()
     {
 
         player = GameObject.Find(EngineConstants.PLAYER).GetComponent<Player>();
         hudManager = GameObject.Find(EngineConstants.HUD).GetComponent<HUDManager>();
         weaponsManager = GameObject.Find(EngineConstants.WEAPONS_MANAGER).GetComponent<WeaponsManager>();
+        InitializeCompanion("zoey");
         //level = 1;
         //isPaused = false;
         //pauseScreen = GameObject.Find(EngineConstants.PAUSE);
