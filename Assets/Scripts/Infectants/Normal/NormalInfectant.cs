@@ -25,21 +25,35 @@ public class NormalInfectant : MonoBehaviour
     private bool isAttracted;
     private NormalInfectantsManager manager;
     private Transform previousDestination;
+
+    private bool stoppedChasing;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         manager = FindObjectOfType<NormalInfectantsManager>();
+        stoppedChasing = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+        if(!stoppedChasing) {
+
         if (!isAttracted)
         {
             if (PlayerInRange() && !chasing && !attacking)
                 StartChasing();
+            
+             if(chasing && isDead()){
+                UnChase();
+                GameObject.Find("GameManager").GetComponent<GameManager>().SetChasing(chasing);
+                stoppedChasing = true;
+            }    
             if (chasing)
+                GameObject.Find("GameManager").GetComponent<GameManager>().SetChasing(chasing);
+                //stoppedChasing = false;
                 Chase();
             if (PlayerAtStoppingDistance() && chasing && !attacking)
                 Attack();
@@ -50,7 +64,9 @@ public class NormalInfectant : MonoBehaviour
                 UnChase();
                 UnAttack();
                 UpdateDestination();
+                //GameObject.Find("GameManager").GetComponent<GameManager>().SetChasing(chasing);
             }
+        }
         }
 
         // if (!chasing &!attacking & !isAttracted)

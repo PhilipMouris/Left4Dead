@@ -41,6 +41,10 @@ public class GameManager : MonoBehaviour
 
     private static String companion;
 
+    public bool isChasing;
+
+    
+
 
     public static bool crafting_bool;
     // Start is called before the first frame update
@@ -144,6 +148,8 @@ public class GameManager : MonoBehaviour
         HandleSwitchWeapons();
 
         HandlePickUpWeapon();
+        
+        HandleMusic();
     }
 
     private void HandlePause()
@@ -170,11 +176,12 @@ public class GameManager : MonoBehaviour
         hudManager = GameObject.Find(EngineConstants.HUD).GetComponent<HUDManager>();
         weaponsManager = GameObject.Find(EngineConstants.WEAPONS_MANAGER).GetComponent<WeaponsManager>();
         InitializeWeapon(WeaponsConstants.WEAPON_TYPES["PISTOL"], true);
+        
         // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["ASSAULT_RIFLE"],false);
         // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["SMG"],false);
         // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["HUNTING_RIFLE"],false);
         // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["SHOTGUN"],false);
-        
+        //GameObject.Find("MusicManager").GetComponent<MusicManager>().PlayExplore();
 
     
     
@@ -186,6 +193,45 @@ public class GameManager : MonoBehaviour
     {
         soundManager.PlayButtonClick();
         SceneManager.LoadScene(MenuConstants.MENU_SCENE);
+    }
+
+    private void PlayExplore() {
+        GameObject.Find("MusicManager").GetComponent<MusicManager>().PlayExplore();
+    }
+
+    private void PlayFight() {
+        GameObject.Find("MusicManager").GetComponent<MusicManager>().PlayFight();
+    }
+
+    private void StopFight() {
+        GameObject.Find("MusicManager").GetComponent<MusicManager>().StopFight();
+    }
+
+    private void StopExplore() {
+        GameObject.Find("MusicManager").GetComponent<MusicManager>().StopExplore();
+    }
+    
+    private void HandleMusic() {
+        Debug.Log(isChasing + "chasing");
+        if(!isChasing) {
+            if(!GameObject.Find("MusicManager").GetComponent<MusicManager>().isExplorePlaying()) {
+                PlayExplore();
+                StopFight();
+            }
+            
+        }
+
+        else {
+            if(!GameObject.Find("MusicManager").GetComponent<MusicManager>().isFightPlaying()) {
+                PlayFight();
+                StopExplore();
+            }
+        }
+    }
+
+    public void SetChasing(bool chasing) {
+        isChasing = chasing;
+
     }
 
     private void onResume()

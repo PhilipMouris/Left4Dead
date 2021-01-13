@@ -178,9 +178,9 @@ public class Weapon : MonoBehaviour
         this.aim = aim;
         outOfAmmo =  gameObject.AddComponent<AudioSource>();
         outOfAmmo.playOnAwake = false;
-        clip =  Resources.Load<AudioClip>($"Sounds/Weapons/{type}");
-        reload = Resources.Load<AudioClip>("Sounds/Weapons/reload");
-        dryFire = Resources.Load<AudioClip>("Sounds/Weapons/dryFire");
+        clip =  Resources.Load<AudioClip>($"Audio/SFX/{type}");
+        reload = Resources.Load<AudioClip>("Audio/SFX/reload");
+        dryFire = Resources.Load<AudioClip>("Audio/SFX/dryFire");
     }
 
     public void Initialize(string type, GameObject weapon,int spawnIndex) {

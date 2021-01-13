@@ -8,10 +8,14 @@ public class MainMenu : MonoBehaviour
     private bool isCompanionSelected;
 
     public GameObject button;
+
+    void Start() {
+        GameObject.Find("MusicManager").GetComponent<MusicManager>().PlayMenu();
+    }
     public void StartGame() {
         if (isCompanionSelected) {
             Debug.Log("Start Game");
-            //SceneManager.LoadScene("OutdoorsLevel");
+            SceneManager.LoadScene("OutdoorsLevel");
         }
 
         else {
