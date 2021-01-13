@@ -351,7 +351,6 @@ public class Weapon : MonoBehaviour
         if (collidedPlayer.gameObject.CompareTag("Player"))
         {   
             collidedPlayer.gameObject.GetComponentInChildren<Player>().SetWeaponInRange(null);
-            Debug.Log("HEREEEE");
          
         }
     }

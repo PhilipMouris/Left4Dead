@@ -41,8 +41,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_NextStep;
         private bool m_Jumping;
         private AudioSource m_AudioSource;
+        public float exportedSpeed;
         
         public bool isCrafting;
+        public MouseLook GetMouseLook(){
+            return m_MouseLook;
+        }
 
         // Use this for initialization
         private void Start()

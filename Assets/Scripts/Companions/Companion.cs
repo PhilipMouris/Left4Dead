@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using System;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class Companion : MonoBehaviour
 {   
@@ -13,64 +14,62 @@ public class Companion : MonoBehaviour
     private bool isMoving;
     private bool isRunning;
     private bool isShooting;
+    private bool isWalking;
     private string currentState = "idle";
     private bool  MoveAcrossNavMeshesStarted = false;
     private CharacterController m_CharacterController;
     private float m_StickToGroundForce=10f;
     private float m_GravityMultiplier = 2f;
     private CollisionFlags m_CollisionFlags;
-
-    //private LerpControlledBob m_JumpBob = new LerpControlledBob();
-    
+    private FirstPersonController fps;
     private Vector3 m_MoveDir = Vector3.zero;
     private float m_JumpSpeed = 10f;
     private bool m_Jump = false;
     private bool m_Jumping = false;
     private bool m_PreviouslyGrounded;
     float speed = 10f;
+    private Vector3 endPoint;
 
     private void FixedUpdate() {
             if (m_CharacterController.isGrounded)
             {
-                m_MoveDir.y = -m_StickToGroundForce;
-
+                m_MoveDir.z = transform.forward.z >= 0 ? 3f : -3f;
                 if (m_Jump)
                 {   
+                    
+                    m_CharacterController.enabled = true;
+                    agent.Stop();
                     m_MoveDir.y = m_JumpSpeed;
-                    //PlayJumpSound();
                     m_Jump = false;
                     m_Jumping = true;
                 }
             }
              else
-            {
+            {  
+
                 m_MoveDir += Physics.gravity*m_GravityMultiplier*Time.fixedDeltaTime;
             }
             if(m_CharacterController.enabled) {
              m_CollisionFlags =  m_CharacterController.Move(m_MoveDir*Time.fixedDeltaTime);
             }
-            
-             //ProgressStepCycle(speed);
+        
     }
 
         void Update()
     {   
-        //Debug.Log(agent.velocity + " VELOCITYYYY");
-        //agent.destination = player.gameObject.transform.position;
-
-          if (!m_Jump)
+        if(!m_Jumping){
+            agent.destination = player.gameObject.transform.position;
+            HandleOffLink();
+        }   
+        if (!m_PreviouslyGrounded && m_CharacterController.isGrounded)
                 {
-                    m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
                   
-                
-                }
-
-                if (!m_PreviouslyGrounded && m_CharacterController.isGrounded)
-                {
-                    //StartCoroutine(m_JumpBob.DoBobCycle());
-                    //PlayLandingSound();
+                    agent.CompleteOffMeshLink();
                     m_MoveDir.y = 0f;
                     m_Jumping = false;
+                    m_CharacterController.enabled = false;
+                    animator.SetBool("jump", false);
+                    agent.Resume();
                 }
                 if (!m_CharacterController.isGrounded && !m_Jumping && m_PreviouslyGrounded)
                 {
@@ -78,9 +77,33 @@ public class Companion : MonoBehaviour
                 }
 
                 m_PreviouslyGrounded = m_CharacterController.isGrounded;
-        //HandleAnimation();
+        if(!m_Jumping || !m_Jump) {
+            HandleAnimation();
+        }
         
     }
+
+
+    public void HandleOffLink(){
+
+        if(!agent.isOnOffMeshLink) return;
+             UnityEngine.AI.OffMeshLinkData data = agent.currentOffMeshLinkData;
+            endPoint = data.endPos + Vector3.up * agent.baseOffset;
+            transform.LookAt(endPoint);
+            SetJump();
+        
+    }
+
+
+    private void SetJump() {
+           if (!m_Jump)
+                {   
+                    m_Jump = true;
+                    m_CharacterController.enabled = true;
+                    animator.SetBool("jump", true);
+                    }
+                }
+    
 
 
     UnityEngine.AI.NavMeshAgent agent;
@@ -91,9 +114,9 @@ public class Companion : MonoBehaviour
         animator = GetComponent<Animator>();
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         player = GameObject.FindObjectOfType<Player>();
-        //agent.destination = GameObject.Find("FPSController").transform.position;
-        //m_CharacterController.enabled = false;
-        agent.stoppingDistance = 0;
+        m_CharacterController.enabled = false;
+        agent.stoppingDistance = 7;
+        fps = GameObject.FindObjectOfType<FirstPersonController>();
        
     }
 
@@ -135,16 +158,20 @@ public class Companion : MonoBehaviour
     private void HandleAnimation() {
        
         //HandleJump();
-    
 
+        bool wasRunning = isRunning;
+        bool wasWalking = isWalking;
+        isWalking = wasWalking || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D); 
+        isRunning = wasRunning || Input.GetKey(KeyCode.LeftShift) && isWalking;
+
+    
         if(isZeroVelocity()){
             Idle();
+             isRunning = false;
+            isMoving = false;
             return;
         }
-        isMoving = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A)
-                        || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D);
-        isRunning = Input.GetKey(KeyCode.LeftShift);
-        
+     
         if(isShooting){
             Fire();
             return;
@@ -153,21 +180,17 @@ public class Companion : MonoBehaviour
             Run();
             return;
         }
-        if(isMoving) {
+        if(isWalking) {
             Walk();
             return;
         }
     }
 
-    private bool isZeroVelocity() {
-        return (agent.velocity.y == 0) && (agent.velocity.x == 0) && (agent.velocity.z == 0);
+    
+    public bool isZeroVelocity() {
+        return (agent.velocity.x==0) && (agent.velocity.y==0) && (agent.velocity.z==0);
     }
 
-    private bool isJumping() {
-        //return Math.Abs(agent.velocity.y )> 2;
-        //Math.Abs(agent.currenOfMeshLinkData.startPos.y -agent.currenOfMeshLinkData.startPos.y) > 0.8;
-        return agent.isOnOffMeshLink;
-    }
     void Start()
     {
         
@@ -180,20 +203,4 @@ public class Companion : MonoBehaviour
     }
 
 
-    // private void OnControllerColliderHit(ControllerColliderHit hit)
-    //     {  
-    //         Rigidbody body = hit.collider.attachedRigidbody;
-    //         //dont move the rigidbody if the character is on top of it
-    //         Debug.Log(hit.collider.gameObject + " OKK???");
-    //         if (m_CollisionFlags == CollisionFlags.Below)
-    //         {
-    //             return;
-    //         }
-
-    //         if (body == null || body.isKinematic)
-    //         {
-    //             return;
-    //         }
-    //         body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
-    //     }
 }
