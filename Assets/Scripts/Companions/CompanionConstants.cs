@@ -8,7 +8,8 @@ public class CompanionConstants
 
    private static string zoey = "ZOEY";
    public static (Vector3,Vector3) ZOEY_TRANSFORMATION_DATA = (
-       new Vector3(60.7964401f,4.08500004f,21.1779518f),
+       //new Vector3(60.7964401f,4.08500004f,21.1779518f),
+       new Vector3(60.6318398f,4.08599997f,19.9802818f),
        new Vector3(0f,187.903458f,0f)
    );
 

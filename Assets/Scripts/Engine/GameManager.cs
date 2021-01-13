@@ -264,7 +264,7 @@ public class GameManager : MonoBehaviour
         player = GameObject.Find(EngineConstants.PLAYER).GetComponent<Player>();
         hudManager = GameObject.Find(EngineConstants.HUD).GetComponent<HUDManager>();
         weaponsManager = GameObject.Find(EngineConstants.WEAPONS_MANAGER).GetComponent<WeaponsManager>();
-        InitializeCompanion("zoey");
+        //InitializeCompanion("zoey");
         //level = 1;
         //isPaused = false;
         //pauseScreen = GameObject.Find(EngineConstants.PAUSE);
