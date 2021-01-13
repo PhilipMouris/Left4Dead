@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6588300598942006006}
   - component: {fileID: 8047877700105935160}
+  - component: {fileID: 7980895897714624173}
   m_Layer: 0
   m_Name: NormalInfectedManager
   m_TagString: Untagged
@@ -46,3 +47,16 @@ MonoBehaviour:
   model: {fileID: 1093347217958304093, guid: ab318251888cb2b4b916f98fa97de4c1, type: 3}
   locations: {fileID: 8898018933239856326, guid: 930e342eced31224b847f446c2365650, type: 3}
   player: {fileID: 1352683324928362578, guid: 603ca1e08ca3aeb4fb8f08f86cf569b0, type: 3}
+--- !u!65 &7980895897714624173
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5959802049682257332}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 111.72479, y: 20, z: 60.866966}
+  m_Center: {x: 1.1376038, y: 0, z: 4.796482}
