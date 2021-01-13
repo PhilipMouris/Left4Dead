@@ -130,11 +130,12 @@ public class SpecialInfectedSpitterClone : MonoBehaviour
         HP = HP - damage;
         if (HP <= 0)
         {
+            Debug.Log("ttttttt");
             CancelInvoke();
             animator.SetTrigger("Dead");
-            manager.UpdateDeadMembers(gameObject);
             agent.isStopped = true;
             isDead = true;
+            manager.UpdateDeadMembers(gameObject);
         }
         else
         {

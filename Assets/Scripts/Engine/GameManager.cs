@@ -133,7 +133,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("NO GRENADES AVAILABLE");
+            //Debug.Log("NO GRENADES AVAILABLE");
         }
     }
 

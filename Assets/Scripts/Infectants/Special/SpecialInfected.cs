@@ -123,8 +123,8 @@ public class SpecialInfected : MonoBehaviour
         if (HP <= 0)
         {
             animator.SetBool("Dead", true);
-            manager.UpdateDeadMembers(gameObject);
             agent.isStopped = true;
+            manager.UpdateDeadMembers(gameObject);
         }
         else
         {

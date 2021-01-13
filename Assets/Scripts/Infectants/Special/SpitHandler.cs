@@ -34,13 +34,13 @@ public class SpitHandler : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name == "FPSController 1")
+        if (other.gameObject.name == "FPSController")
             InvokeRepeating("DecreaseHealth", 0, 1);
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.name == "FPSController 1")
+        if (other.gameObject.name == "FPSController")
             CancelInvoke("DecreaseHealth");
     }
 
