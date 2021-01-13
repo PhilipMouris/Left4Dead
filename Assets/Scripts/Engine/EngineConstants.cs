@@ -11,6 +11,7 @@ public class EngineConstants
     public const string HUD = "HUD";
 
     public const string WEAPONS_MANAGER = "WeaponsManager";
+     public const float THROWING_POWER_MAX = 12f;
 
 
 }

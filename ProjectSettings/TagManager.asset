@@ -6,8 +6,25 @@ TagManager:
   tags:
   - QuitButton
   - NormalInfected
+  - Ground
   - WeaponCamera
+<<<<<<< HEAD
   - AmmoPack
+=======
+  - SpecialInfected
+  - Tank
+  - alcohol
+  - health_pack
+  - gunpowder
+  - canister
+  - sugar
+  - cloth
+  - Charger
+  - Spitter
+  - Spit
+  - fps
+  - weapon
+>>>>>>> 766545410e78e5b7cbfa506db775010484ee650a
   layers:
   - Default
   - TransparentFX

@@ -32,11 +32,11 @@ public class HealthPackManager : MonoBehaviour
         occupied_locations = new List<GameObject>();
         free_locations = new List<GameObject>();
         Transform[] all_locations =  locations.GetComponentsInChildren<Transform>();
-        all_items = new GameObject[all_locations.Length];
-        for (int i =0;i<all_locations.Length;i++){
+        all_items = new GameObject[all_locations.Length-1];
+        for (int i =1;i<all_locations.Length;i++){
             GameObject item = Instantiate(model,all_locations[i].position,Quaternion.identity);
             item.SetActive(false);
-            all_items[i] = item;
+            all_items[i-1] = item;
         }
         for (int i =0;i<all_items.Length;i++){
             if(i<occupied_num+1){

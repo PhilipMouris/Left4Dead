@@ -19,6 +19,10 @@ public class WeaponUI : MonoBehaviour
 
     private int index;
 
+    private Color orange = new Color(255,126,0,255);
+
+    private Color red = new Color (134, 0, 0,255);
+
     //public int test;
 
     private bool isSelected;
@@ -52,15 +56,26 @@ public class WeaponUI : MonoBehaviour
         if(amount < 100) textObject.text = " " + amount;
         else textObject.text = "" + amount;
     }
+
+
+    private void SetTextColor( TextMeshProUGUI textObject, int current, int total ) {
+        float ratio = (float)current/total;
+        if(ratio>0.5) textObject.color = white;
+        if(ratio<0.5) textObject.color = orange;
+        if(ratio<0.25) textObject.color = red;
+    }
     private void SetCurrentAmmo(){
         int ammo = weapon.GetCurrentAmmo();
+        int clipCapacity = weapon.GetClipCapacity();
         SetText(ammo, currentAmmo);
+        SetTextColor(currentAmmo, ammo, weapon.GetClipCapacity());
       
     }
 
     private void SetTotalAmmo() {
         int ammo = weapon.GetTotalAmmo();
         SetText(ammo,totalAmmo);
+        SetTextColor(totalAmmo, ammo, weapon.GetMaxAmmo());
     }
 
     private void SetColor() {
