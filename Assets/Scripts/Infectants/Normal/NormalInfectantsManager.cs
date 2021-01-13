@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+
+
 public class NormalInfectantsManager : MonoBehaviour
 {
     public GameObject model;
@@ -10,14 +12,20 @@ public class NormalInfectantsManager : MonoBehaviour
     private Transform[] locations_list;
     private GameObject[] infected_members;
     private List<GameObject> dead_members = new List<GameObject>();
+    private GameManager gameManager;
 
     // Start is called before the first frame update
     void Start()
-    {
+    {   
+        gameManager = GameObject.FindObjectOfType<GameManager>();
         infected_members = new GameObject[20];
         locations_list = locations.GetComponentsInChildren<Transform>();
 
         Spawn();
+    }
+
+    public void Die() {
+        gameManager.EnemyDead("normal");
     }
 
     // Update is called once per frame
@@ -94,7 +102,7 @@ public class NormalInfectantsManager : MonoBehaviour
         {
             GameObject instantiated = Instantiate(model, locations_list[i].position, Quaternion.identity);
             NormalInfectant infectant = instantiated.GetComponent<NormalInfectant>();
-            infectant.initialize(50, 10, locations_list, player);
+            infectant.initialize(50, 5, locations_list, player);
             infected_members[i] = instantiated;
 
 

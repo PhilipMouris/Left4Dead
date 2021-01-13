@@ -10,8 +10,12 @@ public class Gernade : MonoBehaviour
      protected GernadeManager manager;
      
   protected NormalInfectantsManager infectantManager;
+  protected HUDManager hudManager;
+  protected int maxCapacity;
+
+  protected GameManager gameManager;
      
-     
+protected string type;
     
     // Start is called before the first frame update
     
@@ -20,7 +24,14 @@ public class Gernade : MonoBehaviour
     {
         manager = FindObjectOfType<GernadeManager>();
         infectantManager = FindObjectOfType<NormalInfectantsManager>();
+        hudManager = FindObjectOfType<HUDManager>();
         
+    }
+    public string GetGernadeType(){
+        return type;
+    }
+    public int GetMaxCapacity(){
+        return maxCapacity;
     }
    
     public AudioSource GetAudioSource(){
