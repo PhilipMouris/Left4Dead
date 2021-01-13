@@ -35,7 +35,7 @@ public class Companion : MonoBehaviour
                 m_MoveDir.y = -m_StickToGroundForce;
 
                 if (m_Jump)
-                {
+                {   
                     m_MoveDir.y = m_JumpSpeed;
                     //PlayJumpSound();
                     m_Jump = false;
@@ -46,18 +46,23 @@ public class Companion : MonoBehaviour
             {
                 m_MoveDir += Physics.gravity*m_GravityMultiplier*Time.fixedDeltaTime;
             }
-            m_CharacterController.Move(m_MoveDir*Time.fixedDeltaTime);
-
+            if(m_CharacterController.enabled) {
+             m_CollisionFlags =  m_CharacterController.Move(m_MoveDir*Time.fixedDeltaTime);
+            }
+            
+             //ProgressStepCycle(speed);
     }
 
         void Update()
     {   
         //Debug.Log(agent.velocity + " VELOCITYYYY");
-        agent.destination = player.gameObject.transform.position;
+        //agent.destination = player.gameObject.transform.position;
 
           if (!m_Jump)
                 {
                     m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
+                  
+                
                 }
 
                 if (!m_PreviouslyGrounded && m_CharacterController.isGrounded)
@@ -87,7 +92,8 @@ public class Companion : MonoBehaviour
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         player = GameObject.FindObjectOfType<Player>();
         //agent.destination = GameObject.Find("FPSController").transform.position;
-        agent.stoppingDistance = 7;
+        //m_CharacterController.enabled = false;
+        agent.stoppingDistance = 0;
        
     }
 
@@ -167,38 +173,6 @@ public class Companion : MonoBehaviour
         
     }
 
-// public void HandleJump() {
-//      if(agent.isOnOffMeshLink && !MoveAcrossNavMeshesStarted){
-//          Debug.Log("HEREEE");
-//          StartCoroutine(MoveAcrossNavMeshLink());
-//          MoveAcrossNavMeshesStarted=true;
-//     }
- 
-// }
-   
-// IEnumerator MoveAcrossNavMeshLink()
-// {
-//         UnityEngine.AI.OffMeshLinkData data = agent.currentOffMeshLinkData;
-//         agent.updateRotation = false;
- 
-//         Vector3 startPos = agent.transform.position;
-//         Vector3 endPos = data.endPos + Vector3.up * agent.baseOffset;
-//         float duration = (endPos-startPos).magnitude/agent.velocity.magnitude;
-//         float t = 0.0f;
-//         float tStep = 1.0f/duration;
-//         while(t<1.0f){
-//             transform.position = Vector3.Lerp(startPos,endPos,t);
-//             agent.destination = transform.position;
-//             t+=tStep*Time.deltaTime;
-//             yield return null;
-//         }
-//         transform.position = endPos;
-//         agent.updateRotation = true;
-//         agent.CompleteOffMeshLink();
-//         MoveAcrossNavMeshesStarted = false;
- 
-// }
-    // Update is called once per frame
 
 
     public void SetIsShooting(bool isShooting) {
@@ -206,19 +180,20 @@ public class Companion : MonoBehaviour
     }
 
 
-         private void OnControllerColliderHit(ControllerColliderHit hit)
-        {
-            Rigidbody body = hit.collider.attachedRigidbody;
-            //dont move the rigidbody if the character is on top of it
-            if (m_CollisionFlags == CollisionFlags.Below)
-            {
-                return;
-            }
+    // private void OnControllerColliderHit(ControllerColliderHit hit)
+    //     {  
+    //         Rigidbody body = hit.collider.attachedRigidbody;
+    //         //dont move the rigidbody if the character is on top of it
+    //         Debug.Log(hit.collider.gameObject + " OKK???");
+    //         if (m_CollisionFlags == CollisionFlags.Below)
+    //         {
+    //             return;
+    //         }
 
-            if (body == null || body.isKinematic)
-            {
-                return;
-            }
-            body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
-        }
+    //         if (body == null || body.isKinematic)
+    //         {
+    //             return;
+    //         }
+    //         body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
+    //     }
 }

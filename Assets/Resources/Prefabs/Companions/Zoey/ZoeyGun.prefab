@@ -966,7 +966,6 @@ GameObject:
   - component: {fileID: 4608069645967200485}
   - component: {fileID: 7571406639163460255}
   - component: {fileID: -7243295059557837384}
-  - component: {fileID: -6112198964178365211}
   - component: {fileID: 2522911361110999335}
   m_Layer: 0
   m_Name: ZoeyGun
@@ -983,7 +982,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3799057045635910239}
   m_LocalRotation: {x: -0, y: 0.99762255, z: -0, w: -0.06891598}
-  m_LocalPosition: {x: 60.63184, y: 4.02, z: 19.980282}
+  m_LocalPosition: {x: 60.63184, y: 4.573, z: 19.980282}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4578972526315231212}
@@ -1032,22 +1031,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!54 &-6112198964178365211
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3799057045635910239}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!143 &2522911361110999335
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1065,7 +1048,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &3801149916028680273
 GameObject:
   m_ObjectHideFlags: 0
@@ -1433,7 +1416,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4776906150696886239}
   m_LocalRotation: {x: 4.5591885e-20, y: -0.0000000010039103, z: 0.000000031871284, w: 1}
-  m_LocalPosition: {x: 0.00123339, y: 1.1345675, z: 0.013652409}
+  m_LocalPosition: {x: 0.00123339, y: 1.15, z: 0.013652409}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 828120229794101339}
