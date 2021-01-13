@@ -118,7 +118,7 @@ public class PipeBomb : Gernade
         foreach (Collider touchedObject in touchedObjects)
         {
             if (touchedObject.CompareTag("NormalInfected"))
-            {
+            {   
                 Rigidbody rigidbody = touchedObject.gameObject.AddComponent<Rigidbody>();
                 rigidbody.mass = 5;
                 if (rigidbody != null)

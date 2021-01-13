@@ -19,7 +19,6 @@ public class GernadeManager : MonoBehaviour
 
     void Awake() {
          player = GameObject.Find(EngineConstants.PLAYER);
-         Debug.Log(player.name + " NAMEEE");
     }
     void Start()
     {

@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public GameObject CraftingScreen;
 
     public GameObject HUD;
+    
     private GameObject pauseScreen;
 
     private SoundManager soundManager;
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
     private Level3Manager level3Manager;
 
     private WeaponsManager weaponsManager;
+
     private GernadeManager gernadeManager;
 
     private Player player;
@@ -40,9 +42,12 @@ public class GameManager : MonoBehaviour
     private Camera craftingCamera;
 
     private Camera TPS;
-    private float throwingPower;
+
+    private float throwingPower = 3;
 
     public static bool crafting_bool;
+
+    private bool isRaged ;
 
 
     // Start is called before the first frame update
@@ -118,16 +123,16 @@ public class GameManager : MonoBehaviour
         if (!hudManager.CheckAllEmptyGrenades())
         {
             if (Input.GetMouseButton(1))
-            {
-                if (throwingPower < PlayerConstants.THROWING_POWER_MAX)
-                {
+            {  if (throwingPower < PlayerConstants.THROWING_POWER_MAX)
+                {   
                     throwingPower += 0.2f;
+                    hudManager.ChangePowerBar(Convert.ToInt32((0.2/7f) * 100));
                 }
             }
             if (Input.GetMouseButtonUp(1))
             {
                 // Debug.Log(gernades.Count + " COUNT?????");
-
+                hudManager.ChangePowerBar(-100);
                 player.ThrowGrenade(throwingPower);
                 hudManager.RemoveCurrentGernade();
                 this.ResetGrenadeInfo();
@@ -177,7 +182,6 @@ public class GameManager : MonoBehaviour
 
     private void HandlePickUpWeapon() {
         if(Input.GetKeyDown(KeyCode.E)){
-            Debug.Log("HEREEE");
             Weapon weapon = player.GetWeaponInRange();
             if(!weapon) return;
             Weapon oldWeapon = weaponsManager.GetWeapon(weapon.GetType());
@@ -193,33 +197,40 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void EnemyDead(string type) {
+        if(type=="normal"){
+            hudManager.ChangeRage(10);
+        }
+        else hudManager.ChangeRage(50);
+    }
+
+    private void HandleActivateRage() {
+        if(isRaged) return;
+        if(Input.GetKeyDown(KeyCode.F)) hudManager.ActivateRage();
+    }
+
+    public void SetRage(bool rage) {
+        this.isRaged = rage;
+    }
+
+    public bool GetIsRaged() {
+        return isRaged;
+    }
+
+
+
     void Update()
     {
         HandleCraftingScreen();
-
         HandleSwitchWeapons();
         HandleSwitchGrenades();
         HandleThrowGrenade();
-        // if (Input.GetKeyDown("1"))
-        // {
-        //     InitializeWeapon(WeaponsConstants.SHOT_GUN_DATA,false);
-        // }
-        // if (Input.GetKeyDown("2"))
-        // {
-        //     InitializeWeapon(WeaponsConstants.SMG_DATA,false);
-        // }
-
-        // if (Input.GetKeyDown("3"))
-        // {
-        //     InitializeWeapon(WeaponsConstants.HUNTING_RIFLE_DATA,false);
-        // }
-
-        // if (Input.GetKeyDown("4"))
-        // {
-        //     InitializeWeapon(WeaponsConstants.ASSAULT_RIFLE_DATA,false);
-        // }
-
         HandlePickUpWeapon();
+        HandleActivateRage();
+
+        if(Input.GetKeyDown(KeyCode.H)){
+            hudManager.ChangeRage(+30);
+        }
     }
 
     private void HandlePause()
@@ -310,7 +321,7 @@ public class GameManager : MonoBehaviour
 
     public void SetHealth(int health)
     {
-        hudManager.SetHealth(health);
+        hudManager.ChangeHealth(health);
     }
 
     public int GetHealth()
