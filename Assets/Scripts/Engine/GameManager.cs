@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     private GameObject pauseScreen;
 
     private SoundManager soundManager;
+    private Craft craftingManager;
 
     private bool isPaused;
 
@@ -56,6 +57,7 @@ public class GameManager : MonoBehaviour
         FPS = GameObject.Find("FirstPersonCharacter").GetComponent<Camera>();
         craftingCamera = GameObject.Find("CraftingCamera").GetComponent<Camera>();
         TPS = GameObject.Find("ThirdPersonCamera").GetComponent<Camera>();
+        craftingManager = GameObject.Find("CraftingManager").GetComponent<Craft>();
         FPS.enabled = true;
         TPS.enabled = true;
         craftingCamera.enabled = false;
@@ -138,7 +140,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            
+            // Debug.Log("NO GRENADES AVAILABLE");
         }
     }
 
@@ -170,7 +172,9 @@ public class GameManager : MonoBehaviour
             TPS.enabled = false;
             craftingCamera.enabled = true;
             CraftingScreen.SetActive(crafting_bool);
-            GameObject.Find("FPSController").GetComponent<FirstPersonController>().isCrafting = crafting_bool;
+            
+            GameObject.Find("FPSController").GetComponent<FirstPersonController>().GetMouseLook().SetCursorLock(!crafting_bool);
+            this.craftingManager.FindObjects();
             HandlePause();
         }
     }
