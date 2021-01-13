@@ -12,6 +12,8 @@ public class Gernade : MonoBehaviour
   protected NormalInfectantsManager infectantManager;
   protected HUDManager hudManager;
   protected int maxCapacity;
+
+  protected GameManager gameManager;
      
 protected string type;
     

@@ -43,6 +43,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private AudioSource m_AudioSource;
         
         public bool isCrafting;
+        public MouseLook GetMouseLook(){
+            return m_MouseLook;
+        }
 
         // Use this for initialization
         private void Start()

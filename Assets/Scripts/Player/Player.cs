@@ -16,10 +16,6 @@ public class Player : MonoBehaviour
 
     private Companion companion;
 
- 
-
-    private RageMeter rageMeter;
-
     private bool isWeaponDrawn;
 
     private GameObject weaponCamera;
@@ -41,7 +37,6 @@ public class Player : MonoBehaviour
 
     private Gernade currentGernade;
 
-    private bool thrown = false;
 
 
     
@@ -78,7 +73,8 @@ public class Player : MonoBehaviour
         }
         
     }
-    
+
+  
     
     void Awake()
     {  

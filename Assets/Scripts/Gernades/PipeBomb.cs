@@ -34,7 +34,9 @@ public class PipeBomb : Gernade
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                bool collected= this.hudManager.CollectGernade(gameObject.GetComponent<Gernade>(),player);
+                 GameObject copy = Instantiate(gameObject);
+                copy.SetActive(false);
+                bool collected= this.hudManager.CollectGernade(copy.GetComponent<Gernade>());
                 if(collected)
                     manager.UpdateLocations(gameObject);
             }
@@ -116,7 +118,7 @@ public class PipeBomb : Gernade
         foreach (Collider touchedObject in touchedObjects)
         {
             if (touchedObject.CompareTag("NormalInfected"))
-            {
+            {   
                 Rigidbody rigidbody = touchedObject.gameObject.AddComponent<Rigidbody>();
                 rigidbody.mass = 5;
                 if (rigidbody != null)

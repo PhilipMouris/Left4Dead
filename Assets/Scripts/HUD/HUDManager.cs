@@ -7,6 +7,9 @@ using UnityEngine.UI;
 public class HUDManager : MonoBehaviour
 {
     private GameObject weaponUI;
+
+    private RageMeter rageMeter;
+
     private GameObject gernadeUI;
     private Player player;
     private GameObject equipmentContainer;
@@ -35,11 +38,7 @@ public class HUDManager : MonoBehaviour
 
     private GameObject healthBar;
 
-    private Image healthBarImage;
-
-    private TextMeshProUGUI health;
-
-    private Color textGreen = new Color(0.08627450980392157f, 0.5098039215686274f, .058823529411764705f, 1f);
+    private Color textGreen = new Color(0.08627450980392157f,0.5098039215686274f,.058823529411764705f,1f);
 
     private Color healthGreen = new Color(0.147f, 0.566f, 0.142f, 1.000f);
 
@@ -48,16 +47,8 @@ public class HUDManager : MonoBehaviour
 
     private Color red = new Color(134, 0, 0, 255);
 
-
-    private int healthPercentage = 100;
-
-    private int previousHealth;
-
-    private bool increaseHealthBar;
-
-    private bool deacreaseHealthBar;
-
-    private int currentHealth = 100;
+    private  AnimatedBar animatedHealthBar;
+    private AnimatedBar animatedPowerBar;
     private List<Gernade> gernades = new List<Gernade>();
     public static IDictionary<string, List<Gernade>> all_gernades = new Dictionary<string, List<Gernade>>(){
         {"molotov", new List<Gernade>()},
@@ -66,23 +57,48 @@ public class HUDManager : MonoBehaviour
     };
     private List<GrenadeUI> gernadeUIs = new List<GrenadeUI>();
 
+
+
+
+
+
     // Start is called before the first frame update
 
-    public void SetPlayer(Player mainPlayer){
-        this.player = mainPlayer;
-    }
+
     void Awake()
-    {
+    {   
+        rageMeter = gameObject.AddComponent<RageMeter>();
+        rageMeter.SetRageBar(GameObject.Find(HUDConstants.RAGE_BAR));
         weaponUI = Resources.Load(HUDConstants.WEAPON_UI_PATH) as GameObject;
         gernadeUI = Resources.Load(HUDConstants.GERNADE_UI_PATH) as GameObject;
         equipmentContainer = GameObject.Find(HUDConstants.EQUIPMENT_CONTAINER);
-        health = GameObject.Find(HUDConstants.HEALTH).GetComponent<TextMeshProUGUI>(); ;
+        TextMeshProUGUI health = GameObject.Find(HUDConstants.HEALTH).GetComponent<TextMeshProUGUI>();
         healthBar = GameObject.Find(HUDConstants.HEALTH_BAR);
-        healthBarImage = healthBar.GetComponent<Image>();
+        GameObject powerBar = GameObject.Find(HUDConstants.POWER_BAR);
+        healthBar.AddComponent<AnimatedBar>();
+        animatedPowerBar = powerBar.AddComponent<AnimatedBar>();
+        animatedHealthBar = healthBar.GetComponent<AnimatedBar>();
+        animatedPowerBar.SetSwitchColor(true);
+        animatedHealthBar.Initialize(
+            health,
+            new Color[] {healthGreen,orange,red},
+            new Color[] {textGreen,orange,red},
+            2f,
+            0.7f,
+            100
+        );
+        animatedPowerBar.Initialize(2f,0.7f,0);
+        //healthBarImage = healthBar.GetComponent<Image>();
         isLastAddedRight = false;
         rightAddedCount = 0;
         leftAddedCount = 0;
 
+    }
+
+
+
+        public void SetPlayer(Player mainPlayer){
+        this.player = mainPlayer;
     }
 
     public Weapon SwitchWeapon()
@@ -236,27 +252,14 @@ public class HUDManager : MonoBehaviour
 
     }
 
-    public void SetHealth(int health)
-    {
-        currentHealth = health;
-        this.health.text = "+" + health;
-        this.healthPercentage = health;
-        if (previousHealth > health)
-        {
-            this.increaseHealthBar = true;
-            this.deacreaseHealthBar = false;
-        }
-        else
-        {
-            this.increaseHealthBar = false;
-            this.deacreaseHealthBar = true;
-        }
-        // previousHealth = health;
+    public void ChangeHealth(int health) {
+        animatedHealthBar.Change(health);
     }
 
     public int GetHealth()
-    {
-        return currentHealth;
+    {   
+        return 0;
+        //return currentHealth;
     }
     public void SelectGrenadeUI(string type)
     {
@@ -287,7 +290,7 @@ public class HUDManager : MonoBehaviour
             currentHeldGernade = gernade;
             currentHeldGernadeType = type;
     }
-    public bool CollectGernade(Gernade gernade, Player player)
+    public bool CollectGernade(Gernade gernade)
     {
         Debug.Log("Added Gernade");
         string type = gernade.GetGernadeType();
@@ -313,45 +316,17 @@ public class HUDManager : MonoBehaviour
         }
         return false;
     }
-    public void HandleHealthBar()
-    {
-        // Debug.Log(this.healthBar.GetComponent<Image>().fillAmount + "FILL" );
-        float fillAmount = healthBarImage.fillAmount;
-        if (this.increaseHealthBar || this.deacreaseHealthBar)
-        {
-            if (fillAmount > 0.6)
-            {
-                healthBarImage.color = healthGreen;
-                this.health.color = textGreen;
-            }
-            if (fillAmount <= 0.6 && fillAmount >= 0.3)
-            {
-                healthBarImage.color = orange;
-                this.health.color = orange;
-            }
-            if (fillAmount < 0.3)
-            {
-                healthBarImage.color = red;
-                this.health.color = red;
-            }
-        }
-        float updateAmount = 1f / 2 * Time.deltaTime;
-        if (this.increaseHealthBar && fillAmount < healthPercentage / 100.0)
-        {
-            this.healthBar.GetComponent<Image>().fillAmount += updateAmount;
-        }
-        else
-        {
-            if (this.deacreaseHealthBar && fillAmount > healthPercentage / 100.0)
-            {
-                healthBarImage.fillAmount -= updateAmount;
-            }
-            else
-            {
-                this.increaseHealthBar = false;
-                this.deacreaseHealthBar = false;
-            }
-        }
+
+    public void ChangeRage(int amount) {
+        rageMeter.ChangeRage(amount);
+    }
+
+    public bool ActivateRage() {
+        return rageMeter.ActivateRage();
+    } 
+
+    public void ChangePowerBar(int amount) {
+        animatedPowerBar.Change(amount);
     }
 
     void Start()
@@ -360,7 +335,7 @@ public class HUDManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        HandleHealthBar();
+    {   
+      //HandleHealthBar();
     }
 }

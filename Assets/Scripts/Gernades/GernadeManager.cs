@@ -19,7 +19,6 @@ public class GernadeManager : MonoBehaviour
 
     void Awake() {
          player = GameObject.Find(EngineConstants.PLAYER);
-         Debug.Log(player.name + " NAMEEE");
     }
     void Start()
     {
@@ -37,7 +36,15 @@ public class GernadeManager : MonoBehaviour
         item.SetActive(false);
     }
    
-    
+    public GameObject GetMolotovPrefab(){
+        return molotov;
+    }
+    public GameObject GetStunPrefab(){
+        return stun;
+    }
+    public GameObject GetPipePrefab(){
+        return pipe;
+    }
 
     public void Spawn(){
         occupied_locations = new List<GameObject>();

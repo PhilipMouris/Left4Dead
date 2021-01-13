@@ -16,6 +16,10 @@ public class HUDConstants {
     public const string HEALTH = "Health";
     public const string HEALTH_BAR = "HealthBar";
 
+    public const string RAGE_BAR = "RageBar";
+
+    public const string POWER_BAR = "PowerBar";
+
 
 
 
