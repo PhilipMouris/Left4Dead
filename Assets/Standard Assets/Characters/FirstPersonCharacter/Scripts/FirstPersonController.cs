@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
+using UnityEngine.Audio;
 using Random = UnityEngine.Random;
 
 namespace UnityStandardAssets.Characters.FirstPerson
@@ -42,7 +43,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
         
-        public bool isCrafting;
+        private bool isCrafting;
+
+        public AudioMixerGroup SFXGroup;
         public MouseLook GetMouseLook(){
             return m_MouseLook;
         }
@@ -50,6 +53,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Use this for initialization
         private void Start()
         {
+            //SFXGroup = GameObject.Find("SFXManager").GetComponent<SFXManager>().SFXGroup;
             m_CharacterController = GetComponent<CharacterController>();
             m_Camera = Camera.main;
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
@@ -97,6 +101,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void PlayLandingSound()
         {
             m_AudioSource.clip = m_LandSound;
+            m_AudioSource.outputAudioMixerGroup = SFXGroup;
             m_AudioSource.Play();
             m_NextStep = m_StepCycle + .5f;
         }
@@ -149,6 +154,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void PlayJumpSound()
         {
             m_AudioSource.clip = m_JumpSound;
+            m_AudioSource.outputAudioMixerGroup = SFXGroup;
             m_AudioSource.Play();
         }
 
@@ -182,6 +188,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             // excluding sound at index 0
             int n = Random.Range(1, m_FootstepSounds.Length);
             m_AudioSource.clip = m_FootstepSounds[n];
+            m_AudioSource.outputAudioMixerGroup = SFXGroup;
             m_AudioSource.PlayOneShot(m_AudioSource.clip);
             // move picked sound to index 0 so it's not picked next time
             m_FootstepSounds[n] = m_FootstepSounds[0];

@@ -2,42 +2,72 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Level1Manager : ScriptableObject
+public class Level1Manager : LevelManager
 {
     // Start is called before the first frame update
 
-    private HealthPackManager healthPackManager;
-    private NormalInfectantsManager normalInfectantsManager;
-
-    private AmmoPackManager ammoPackManager;
-
-    private WeaponsManager weaponsManager;
-
-    private IngredientsManager ingredientsManager;
-
     void Awake(){
-        InitializeManagers();
+        normalInfectantsManager = FindObjectOfType<NormalInfectantsManager>();
+        specialInfectedManager = FindObjectOfType<SpecialInfectedManager>();
+        gameManager = FindObjectOfType<GameManager>();
+        hUDManager = FindObjectOfType<HUDManager>();
+         SetHordeLocations();
+         SetHordeArea();
     }
+     void SetHordeLocations(){
+        GameObject locations = GameObject.Find("HordeLocations");
+        normalInfectantsManager.SetHordeLocations(locations);
+        normalInfectantsManager.SpawnHorde();
+    }
+    private int remainingMembers = 0;
+    void UpdateTotalRemainingMembers(){
+        int remainingNormal = normalInfectantsManager.GetRemainingNormalInfected();
+        int remainingSpecial = specialInfectedManager.GetRemainingSpecialInfected();
+        remainingMembers = remainingNormal + remainingSpecial;
+    }
+    void UpdateObjective(){
+        if(!isLevelFinished){
+        currentObjective = "Kill "+remainingMembers.ToString() + " remaining infected members";
+        }else{
+            currentObjective = "LEVEL PASSED";
+        }
+        hUDManager.SetCurrentObjective(currentObjective);
+    }
+     void SetHordeArea()
+    {
+        GameObject area = Resources.Load(EngineConstants.AREAS_PATH+"Level1Horde") as GameObject;
+        BoxCollider box = normalInfectantsManager.gameObject.AddComponent<BoxCollider>();
+        if (area)
+        {
+            box.center = area.GetComponent<BoxCollider>().center;
+            box.size = area.GetComponent<BoxCollider>().size;
+            box.isTrigger = area.GetComponent<BoxCollider>().isTrigger;
+            // box.transform.position = area.GetComponent<BoxCollider>().transform.position;
+        }
+        else
+        {
+            Debug.Log("NO AREA");
+        }
 
-    private void InitializeManagers(){
-        //  healthPackManager = ScriptableObject.CreateInstance("HealthPackManager") as HealthPackManager;
-        //  normalInfectantsManager = ScriptableObject.CreateInstance("NormalInfectantsManager") as NormalInfectantsManager;
-         ammoPackManager = ScriptableObject.CreateInstance("AmmoPackManager") as AmmoPackManager;
-         //weaponsManager =  ScriptableObject.CreateInstance("WeaponsManager") as WeaponsManager;
-         //ingredientsManager =  ScriptableObject.CreateInstance("IngredientsManager") as IngredientsManager;
     }
+    void CheckFinishLevel(){
+        if(remainingMembers<=60){
+            isLevelFinished=true;
+        }
+    }
+    
     void Start()
     {
-        
+        hUDManager.SetCurrentLevel(1);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        UpdateTotalRemainingMembers();
+        UpdateObjective();
+        CheckFinishLevel();
     }
 
-    public void Initialize(){
-        Debug.Log("INITIALL");
-    }
+    
 }
