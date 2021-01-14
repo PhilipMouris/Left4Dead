@@ -302,6 +302,11 @@ public class Companion : MonoBehaviour
     }
 
 
+    public void SetExtraClip() {
+        weapon.SetExtraClip();
+    }
+
+
     private void HandleAnimation() {
        
         //HandleJump();

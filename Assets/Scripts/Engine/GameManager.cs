@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour
 
     private int specialRageIncrease= 50;
     private bool isDoubleIngredients;
+    private int enemyKillCount;
 
 
 
@@ -208,6 +209,10 @@ public class GameManager : MonoBehaviour
             hudManager.ChangeRage(normalRageIncrease);
         }
         else hudManager.ChangeRage(specialRageIncrease);
+        enemyKillCount +=1;
+        if(enemyKillCount >=10 && enemyKillCount % 10 ==0) {
+            companion.SetExtraClip();
+        }
     }
 
     private void HandleActivateRage() {

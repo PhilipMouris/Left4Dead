@@ -280,6 +280,16 @@ public class Weapon : MonoBehaviour
         this.currentAmmo = clipCapacity;
         this.totalAmmo = maxAmmo;
     }
+
+
+    public void SetExtraClip() {
+        int newAmmo = this.currentAmmo + this.clipCapacity;
+        if(newAmmo <= maxAmmo) {
+            this.currentAmmo = newAmmo;
+        }
+    }
+
+
     
 
     private void SetCrossHairGreen(){
