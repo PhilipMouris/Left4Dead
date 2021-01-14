@@ -16,18 +16,18 @@ public class NormalInfectantsManager : MonoBehaviour
     private List<GameObject> dead_members = new List<GameObject>();
     private GameManager gameManager;
     private GameObject hordeLocations;
+    private bool insideDanger = false;
 
     // Start is called before the first frame update
     void Start()
     {   
         gameManager = GameObject.FindObjectOfType<GameManager>();
         locations_list = locations.GetComponentsInChildren<Transform>();
-        hordeLocations = GameObject.Find("HordeLocations");
+        // hordeLocations = GameObject.Find("HordeLocations");
         infected_members = new GameObject[locations_list.Length-1];
-        horde_locations_list = hordeLocations.GetComponentsInChildren<Transform>();
-        horde_infected_members = new GameObject[horde_locations_list.Length-1];
+       
         Spawn();
-        SpawnHorde();
+        
     }
 
     public void Die() {
@@ -36,12 +36,20 @@ public class NormalInfectantsManager : MonoBehaviour
     void OnTriggerEnter(Collider other){
         if(other.gameObject.CompareTag("Player")){
             AttractHorde();
+            insideDanger=true;
         }
     }
     void OnTriggerExit(Collider other){
         if(other.gameObject.CompareTag("Player")){
             UnAttractHorde();
+            insideDanger=false;
         }
+    }
+    public void SetHordeLocations(GameObject locations){
+        hordeLocations = locations;
+    }
+    public bool isInsideDanger(){
+        return insideDanger;
     }
     // Update is called once per frame
     void Update()
@@ -187,6 +195,8 @@ public class NormalInfectantsManager : MonoBehaviour
     }
     public void SpawnHorde()
     {
+        horde_locations_list = hordeLocations.GetComponentsInChildren<Transform>();
+        horde_infected_members = new GameObject[horde_locations_list.Length-1];
         for (int i = 0; i < horde_infected_members.Length; i++)
         {
             GameObject instantiated = Instantiate(model, horde_locations_list[i].position, Quaternion.identity);

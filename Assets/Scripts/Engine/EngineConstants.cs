@@ -17,5 +17,7 @@ public class EngineConstants
      public const string LEVEL2_NAME = "Level2";
      public const string LEVEL3_NAME = "Level3";
 
+     public const string AREAS_PATH = "Prefabs/Areas/";
+
 
 }

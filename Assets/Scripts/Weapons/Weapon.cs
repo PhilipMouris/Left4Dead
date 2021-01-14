@@ -92,7 +92,7 @@ public class Weapon : MonoBehaviour
         }
 
     }
-
+    
     private void HandleRayCast() {
         if(!isDrawn) return;
         Ray ray; 
@@ -112,10 +112,13 @@ public class Weapon : MonoBehaviour
                    return;
              //Debugging
             }
-            // if(collided.CompareTag("SPECIAL TAG GOES HERE")){
-            //        specialInfectantInRange = collided;
-            //        SetCrossHairRed();
-            // }
+            Debug.Log(collided.tag);
+            if(SpecialInfectantConstants.TAGS.Contains(collided.tag)){
+                    Debug.Log("SHOOT SPECIAL");
+                   specialInfectantInRange = collided;
+                   SetCrossHairRed();
+                   return;
+            }
 
           }
              //Debug.DrawLine(ray.origin, hit.point);
@@ -172,8 +175,8 @@ public class Weapon : MonoBehaviour
              }
              else {
                 if(specialInfectantInRange){
-                 //isDead = GetShot(dmg)
-                 //if(isDead) gameManager.EnemyDead("special");
+                    specialInfectantInRange.GetComponent<SpecialInfectedGeneral>().GetShot(dmg);
+                //  if(isDead) gameManager.EnemyDead("special");
                 } 
              }  
 

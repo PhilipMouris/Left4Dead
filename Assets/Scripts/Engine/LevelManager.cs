@@ -14,14 +14,10 @@ public class LevelManager : MonoBehaviour
     protected GameManager gameManager;
 
     protected HUDManager hUDManager;
+    protected Player player;
 
 
-    void Awake(){
-        normalInfectantsManager = FindObjectOfType<NormalInfectantsManager>();
-        specialInfectedManager = FindObjectOfType<SpecialInfectedManager>();
-        gameManager = FindObjectOfType<GameManager>();
-        hUDManager = FindObjectOfType<HUDManager>();
-    }
+    
 
    
    

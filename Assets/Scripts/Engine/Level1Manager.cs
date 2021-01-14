@@ -6,7 +6,19 @@ public class Level1Manager : LevelManager
 {
     // Start is called before the first frame update
 
-    
+    void Awake(){
+        normalInfectantsManager = FindObjectOfType<NormalInfectantsManager>();
+        specialInfectedManager = FindObjectOfType<SpecialInfectedManager>();
+        gameManager = FindObjectOfType<GameManager>();
+        hUDManager = FindObjectOfType<HUDManager>();
+         SetHordeLocations();
+         SetHordeArea();
+    }
+     void SetHordeLocations(){
+        GameObject locations = GameObject.Find("HordeLocations");
+        normalInfectantsManager.SetHordeLocations(locations);
+        normalInfectantsManager.SpawnHorde();
+    }
     private int remainingMembers = 0;
     void UpdateTotalRemainingMembers(){
         int remainingNormal = normalInfectantsManager.GetRemainingNormalInfected();
@@ -21,8 +33,25 @@ public class Level1Manager : LevelManager
         }
         hUDManager.SetCurrentObjective(currentObjective);
     }
+     void SetHordeArea()
+    {
+        GameObject area = Resources.Load(EngineConstants.AREAS_PATH+"Level1Horde") as GameObject;
+        BoxCollider box = normalInfectantsManager.gameObject.AddComponent<BoxCollider>();
+        if (area)
+        {
+            box.center = area.GetComponent<BoxCollider>().center;
+            box.size = area.GetComponent<BoxCollider>().size;
+            box.isTrigger = area.GetComponent<BoxCollider>().isTrigger;
+            // box.transform.position = area.GetComponent<BoxCollider>().transform.position;
+        }
+        else
+        {
+            Debug.Log("NO AREA");
+        }
+
+    }
     void CheckFinishLevel(){
-        if(remainingMembers<=45){
+        if(remainingMembers<=60){
             isLevelFinished=true;
         }
     }

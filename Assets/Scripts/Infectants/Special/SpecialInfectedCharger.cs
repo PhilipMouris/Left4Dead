@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SpecialInfectedCharger : MonoBehaviour
+public class SpecialInfectedCharger : SpecialInfectedGeneral
 {
     private SpecialInfectedManager manager;
     private GameManager gameManager;
@@ -153,7 +153,7 @@ public class SpecialInfectedCharger : MonoBehaviour
             agent.destination = new Vector3(transform.position.x, transform.position.y, walkingLowerBound);
     }
 
-    public void GetShot(int damage)
+    public override void GetShot(int damage)
     {
         HP = HP - damage;
         if (HP <= 0)
