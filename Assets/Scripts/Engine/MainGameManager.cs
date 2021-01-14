@@ -9,59 +9,81 @@ public class MainGameManager : MonoBehaviour
 
     private string currentLevel;
     private GameObject currentLevelObject;
-    private bool gameFinished =false;
-    
+    private bool gameFinished = false;
+    private bool gameStarted = false;
 
-    void Awake(){
-      Scene scene = SceneManager.GetActiveScene();
-      currentLevel = scene.name;
+
+    void Awake()
+    {
+       
+        
     }
 
-   
+
     void Start()
     {
+        Scene scene = SceneManager.GetActiveScene();
+        currentLevel = scene.name;
         currentLevelObject = GameObject.Find("CurrentLevelManager");
-        if(currentLevelObject){
-            AddLevelManager();
+        gameStarted=true;
+        AddLevelManager();
+    }
+    LevelManager GetCorresspondingLevelObject()
+    {
+        return currentLevelObject.GetComponent<LevelManager>();
+    }
+    void AddLevelManager()
+    {
+        switch (currentLevel)
+        {
+            case EngineConstants.LEVEL1_NAME: currentLevelObject.AddComponent<Level1Manager>(); break;
+            case EngineConstants.LEVEL2_NAME: currentLevelObject.AddComponent<Level2Manager>(); break;
+            case EngineConstants.LEVEL3_NAME: currentLevelObject.AddComponent<Level3Manager>(); break;
+        }
+        Debug.Log("Added Level Manager");
+    }
+    void SwitchToNextLevel()
+    {
+        switch (currentLevel)
+        {
+            case EngineConstants.LEVEL1_NAME: LoadScene(EngineConstants.LEVEL2_NAME); break;
+            case EngineConstants.LEVEL2_NAME: LoadScene(EngineConstants.LEVEL3_NAME); break;
         }
     }
-    LevelManager GetCorresspondingLevelObject(){
-         return currentLevelObject.GetComponent<LevelManager>();
-    }
-    void AddLevelManager(){
-        switch(currentLevel){
-            case EngineConstants.LEVEL1_NAME: currentLevelObject.AddComponent<Level1Manager>();break;
-            case EngineConstants.LEVEL2_NAME: currentLevelObject.AddComponent<Level2Manager>();break;
-            case EngineConstants.LEVEL3_NAME: currentLevelObject.AddComponent<Level3Manager>();break;
-        }
-    }
-    void SwitchToNextLevel(){
-       switch(currentLevel){
-            case EngineConstants.LEVEL1_NAME: LoadScene(EngineConstants.LEVEL2_NAME);break;
-            case EngineConstants.LEVEL2_NAME: LoadScene(EngineConstants.LEVEL3_NAME);break;
-        }
-    }
-    void CheckSwitchLevel(){
-        if(currentLevelObject.GetComponent<LevelManager>().isLevelFinsihed()){
-            if(currentLevel.Equals(EngineConstants.LEVEL3_NAME)){
-                gameFinished=true;
-            }
-            else{
-                
-                Invoke("SwitchToNextLevel",5);
+    void CheckSwitchLevel()
+    {
+        if (gameStarted)
+        {
+            
+            if (currentLevelObject.GetComponent<LevelManager>().isLevelFinsihed())
+            {
+                if (currentLevel.Equals(EngineConstants.LEVEL3_NAME))
+                {
+                    gameFinished = true;
+                }
+                else
+                {
+
+                    Invoke("SwitchToNextLevel", 5);
+                }
             }
         }
     }
     // Update is called once per frame
     void Update()
     {
-        CheckSwitchLevel();
+        if(currentLevelObject)
+            CheckSwitchLevel();
     }
-    public void LoadScene(string sceneName){
+    public void LoadScene(string sceneName)
+    {
         SceneManager.LoadScene(sceneName);
     }
-    public void StartGame(){
-        if(!currentLevel.Equals(EngineConstants.LEVEL1_NAME)){
+    public void StartGame()
+    {
+        if (!currentLevel.Equals(EngineConstants.LEVEL1_NAME))
+        {
+            gameStarted=true;
             LoadScene(EngineConstants.LEVEL1_NAME);
         }
     }

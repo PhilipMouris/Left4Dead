@@ -12,11 +12,14 @@ public class GameManager : MonoBehaviour
 
     public GameObject CraftingScreen;
 
+    public GameObject PauseScreen;
+
     public GameObject HUD;
     
     private GameObject pauseScreen;
 
     private SoundManager soundManager;
+    
     private Craft craftingManager;
 
     private bool isPaused;
@@ -42,10 +45,18 @@ public class GameManager : MonoBehaviour
     private Camera craftingCamera;
 
     private Camera TPS;
+    
+    private Camera pauseCamera;
+
+    private static String companion;
+
+    private bool isChasing;
 
     private float throwingPower = 3;
 
     public static bool crafting_bool;
+    
+    public static bool isPauseScreen;
 
     private bool isRaged ;
 
@@ -56,11 +67,13 @@ public class GameManager : MonoBehaviour
         crafting_bool = false;
         FPS = GameObject.Find("FirstPersonCharacter").GetComponent<Camera>();
         craftingCamera = GameObject.Find("CraftingCamera").GetComponent<Camera>();
+        pauseCamera = GameObject.Find("PauseCamera").GetComponent<Camera>();
         TPS = GameObject.Find("ThirdPersonCamera").GetComponent<Camera>();
         craftingManager = GameObject.Find("CraftingManager").GetComponent<Craft>();
         FPS.enabled = true;
         TPS.enabled = true;
         craftingCamera.enabled = false;
+        pauseCamera.enabled = false;
         //   Debug.Log(FPS.enabled + " FPS");
         //   De
     }
@@ -139,9 +152,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    
+
+    public static void SetCompanion(String companionName) {
+        companion = companionName;
+        Debug.Log(companion);
+    }
+
+    //private void HandleSwitchWeapons() {
+      //  if(Input.GetButtonDown(PlayerConstants.DRAW_WEAPON_INPUT)){
 
     private void HandleSwitchWeapons()
-    {
+    {   
         if (Input.GetButtonDown(PlayerConstants.DRAW_WEAPON_INPUT))
         {
             // hudManager.SetHealth(50);
@@ -154,6 +176,8 @@ public class GameManager : MonoBehaviour
                 Weapon weapon = hudManager.SwitchWeapon();
                 player.SetWeapon(weapon);
             }
+
+            PlaySwitch();
         }
     }
 
@@ -174,6 +198,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void HandlePauseScreen() {
+        if(!isPauseScreen) {
+        
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            PauseScreen.SetActive(true);
+            CraftingScreen.SetActive(false);
+            FPS.enabled = false;
+            TPS.enabled = false;
+            craftingCamera.enabled = false;
+            pauseCamera.enabled = true;
+            isPauseScreen = true;
+            //GameObject.Find("FPSController").GetComponent<FirstPersonController>().GetMouseLook().SetCursorLock(false);
+            HandlePause();
+        }
+    }
+        
+    }
 
     private void HandlePickUpWeapon() {
         if(Input.GetKeyDown(KeyCode.E)){
@@ -201,7 +242,10 @@ public class GameManager : MonoBehaviour
 
     private void HandleActivateRage() {
         if(isRaged) return;
-        if(Input.GetKeyDown(KeyCode.F)) hudManager.ActivateRage();
+        if(Input.GetKeyDown(KeyCode.F)){
+            hudManager.ActivateRage();
+            PlayRage();
+        } 
     }
 
     public void SetRage(bool rage) {
@@ -221,6 +265,8 @@ public class GameManager : MonoBehaviour
         HandleSwitchGrenades();
         HandleThrowGrenade();
         HandlePickUpWeapon();
+        HandlePauseScreen();
+        HandleMusic();
         HandleActivateRage();
 
         if(Input.GetKeyDown(KeyCode.H)){
@@ -237,13 +283,32 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0;
             //pauseScreen.SetActive(true);
             HUD.SetActive(false);
+            AudioListener.pause = !AudioListener.pause;
             return;
         }
         Time.timeScale = 1;
         //pauseScreen.SetActive(false);
+        AudioListener.pause = !AudioListener.pause;
         HUD.SetActive(true);
     }
 
+    public void ResumeGame() {
+        PauseScreen.SetActive(false);
+        FPS.enabled = true;
+        TPS.enabled = true;
+        craftingCamera.enabled = false;
+        pauseCamera.enabled = false;
+        isPauseScreen = false;
+        HandlePause();
+    }
+
+    public void RestartGame() {
+         SceneManager.LoadScene("OutdoorsLevel");
+    }
+
+    public void QuitToMain() {
+        SceneManager.LoadScene("Menus");
+    }
 
     void Start()
     {
@@ -276,11 +341,12 @@ public class GameManager : MonoBehaviour
 
 
         InitializeWeapon(WeaponsConstants.WEAPON_TYPES["PISTOL"], true);
+        
         // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["ASSAULT_RIFLE"],false);
         // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["SMG"],false);
         // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["HUNTING_RIFLE"],false);
         // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["SHOTGUN"],false);
-        
+        //GameObject.Find("MusicManager").GetComponent<MusicManager>().PlayExplore();
 
     }
 
@@ -288,6 +354,65 @@ public class GameManager : MonoBehaviour
     {
         soundManager.PlayButtonClick();
         SceneManager.LoadScene(MenuConstants.MENU_SCENE);
+    }
+
+    private void PlayExplore() {
+        GameObject.Find("MusicManager").GetComponent<MusicManager>().PlayExplore();
+    }
+
+    private void PlayFight() {
+        GameObject.Find("MusicManager").GetComponent<MusicManager>().PlayFight();
+    }
+
+    private void PlayRage() {
+        GameObject.Find("SFXManager").GetComponent<SFXManager>().PlayRage();
+    }
+
+    private void PlayChasing() {
+        GameObject.Find("SFXManager").GetComponent<SFXManager>().PlayChasing();
+    }
+    
+    private void PlaySwitch() {
+        GameObject.Find("SFXManager").GetComponent<SFXManager>().PlaySwitch();
+    }
+
+    private void StopFight() {
+        GameObject.Find("MusicManager").GetComponent<MusicManager>().StopFight();
+    }
+
+    private void StopExplore() {
+        GameObject.Find("MusicManager").GetComponent<MusicManager>().StopExplore();
+    }
+
+    private void StopChasing() {
+        GameObject.Find("SFXManager").GetComponent<SFXManager>().StopChasing();
+    }
+    
+    private void HandleMusic() {
+        Debug.Log(isChasing + "chasing");
+        if(!isChasing) {
+            if(!GameObject.Find("MusicManager").GetComponent<MusicManager>().isExplorePlaying()) {
+                PlayExplore();
+                StopFight();
+            }
+            
+        }
+
+        else {
+            if(!GameObject.Find("SFXManager").GetComponent<SFXManager>().isChasingPlaying()) {
+                PlayChasing();
+            }
+            
+            if(!GameObject.Find("MusicManager").GetComponent<MusicManager>().isFightPlaying()) {
+                PlayFight();
+                StopExplore();
+            }
+        }
+    }
+
+    public void SetChasing(bool chasing) {
+        isChasing = chasing;
+
     }
 
     private void onResume()

@@ -24,48 +24,71 @@ public class NormalInfectant : MonoBehaviour
     private bool attacking = false;
     private bool isAttracted;
     private NormalInfectantsManager manager;
+    private Transform previousDestination;
+
+    private bool stoppedChasing;
     private HUDManager hudManager;
     private bool isHordeMember;
     private bool hordeMemberChase = false;
+    private bool unchased = false;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         manager = FindObjectOfType<NormalInfectantsManager>();
+        stoppedChasing = false;
         hudManager = FindObjectOfType<HUDManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!isAttracted)
+
+        if (!stoppedChasing)
         {
-           
-                if(hordeMemberChase && !chasing && !attacking && isHordeMember)
+
+            if (!isAttracted)
+            {
+
+                if (hordeMemberChase && !chasing && !attacking && isHordeMember)
                     StartChasing();
                 if (PlayerInRange() && !chasing && !attacking)
                     StartChasing();
-                if (chasing)
+                if (chasing && isDead())
+                {
+                    UnChase();
+                    GameObject.Find("GameManager").GetComponent<GameManager>().SetChasing(chasing);
+                    stoppedChasing = true;
+                }
+                if (chasing){
+                    GameObject.Find("GameManager").GetComponent<GameManager>().SetChasing(chasing);
+                //stoppedChasing = false;
+                
                     Chase();
+                }
                 if (PlayerAtStoppingDistance() && chasing && !attacking)
                     Attack();
                 if (PlayerOutsideStoppingDistance() && !chasing && attacking)
                     UnAttack();
-                if (PlayerOutOfRange() && !isHordeMember)
+                if (PlayerOutOfRange() && !isHordeMember && !unchased)
                 {
                     UnChase();
                     UnAttack();
-                } 
-                if(!hordeMemberChase && isHordeMember){
+                }
+                if (!hordeMemberChase && isHordeMember && !unchased)
+                {
                     UnChase();
                     UnAttack();
                 }
-                
+
+
+            }
         }
 
     }
-    public void SetHordeMemberChasing(bool state){
+    public void SetHordeMemberChasing(bool state)
+    {
         hordeMemberChase = state;
     }
     public bool isDead()
@@ -97,9 +120,9 @@ public class NormalInfectant : MonoBehaviour
     }
 
     public bool GetShot(int damage)
-    {  
-        
-        if(dead) return false;
+    {
+
+        if (dead) return false;
         HP = HP - damage;
         if (HP <= 0)
         {
@@ -109,7 +132,9 @@ public class NormalInfectant : MonoBehaviour
             agent.isStopped = true;
             manager.Die();
             return true;
-        } else {
+        }
+        else
+        {
             animator.SetTrigger("GetShot");
             return false;
         }
@@ -131,8 +156,8 @@ public class NormalInfectant : MonoBehaviour
         UnChase();
     }
     public void GetBurned(int damage)
-    {   
-        if(dead) return;
+    {
+        if (dead) return;
         HP = HP - damage;
         if (HP <= 0)
         {
@@ -167,17 +192,19 @@ public class NormalInfectant : MonoBehaviour
         // lookAt.y = 0;
         gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, Quaternion.LookRotation(lookAt), Time.deltaTime);
     }
-    private Transform GetRandomLocation()
+    private Vector3 GetRandomLocation()
     {
-        int index = Random.Range(0, locations.Length - 1);
-        return locations[index];
+        // int index = Random.Range(0, locations.Length - 1);
+        Vector3 temp = locations[1].position;
+        return temp;
     }
-    
-    private void DecreaseHealth(){
+
+    private void DecreaseHealth()
+    {
         // Debug.Log("CHANGE HEALTH");
         hudManager.ChangeHealth(-dps);
     }
-    public void initialize(int HP, int dps, Transform[] locations, GameObject player,bool hordeMember)
+    public void initialize(int HP, int dps, Transform[] locations, GameObject player, bool hordeMember)
     {
         this.HP = HP;
         this.dps = dps;
@@ -187,12 +214,16 @@ public class NormalInfectant : MonoBehaviour
     }
     public void UnChase()
     {
-        agent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
+        // agent = gameObject.GetComponent<NavMeshAgent>();
+        // animator = GetComponent<Animator>();
         animator.SetBool("Chase", false);
-        agent.destination = GetRandomLocation().position;
+        Vector3 temp = GetRandomLocation();
+        agent.isStopped=true;
+        agent.ResetPath();
+        agent.SetDestination(temp);
         agent.speed = 0.1f;
         chasing = false;
+        unchased=true;
     }
     public void Chase()
     {
@@ -205,6 +236,7 @@ public class NormalInfectant : MonoBehaviour
             agent.destination = mainPlayer.transform.position;
             agent.speed = 0.5f;
             chasing = true;
+            unchased=false;
         }
     }
     public void ChaseGrenade(Transform grenadeDestination)
@@ -251,7 +283,7 @@ public class NormalInfectant : MonoBehaviour
         return Vector3.Distance(transform.position, mainPlayer.transform.position) > 10;
     }
 
-    
+
     public bool PlayerOutsideStoppingDistance()
     {
         return Vector3.Distance(transform.position, mainPlayer.transform.position) > 5;
@@ -264,7 +296,7 @@ public class NormalInfectant : MonoBehaviour
     }
     public void StartChasingHorde()
     {
-       
+
         animator.SetBool("Chase", true);
         animator.SetBool("Attack", false);
     }
