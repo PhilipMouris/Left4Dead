@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
     private Companion companion;
 
 
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -260,9 +261,14 @@ public class GameManager : MonoBehaviour
         companionInstance.transform.localRotation = Quaternion.Euler(transformations.Item2);
         companion = companionInstance.AddComponent<Companion>();
         Weapon companionWeapon = GameObject.Find("WeaponEQCompanion").transform.GetChild(0).gameObject.AddComponent<Weapon>();
+        GameObject companionMuzzle = GameObject.Find("CompanionMuzzle");
+        if(companionMuzzle){
+            companionWeapon.SetMuzzle(companionMuzzle);
+            companionMuzzle.SetActive(false);
+        }
         companionWeapon.InitializeCompanionWeapon(CompanionConstants.COMPANION_WEAPONS[type]);
         //INITIALIZE
-        companion.Initialize(companionWeapon);
+        companion.Initialize(companionWeapon,type);
 
     }
 
@@ -284,7 +290,7 @@ public class GameManager : MonoBehaviour
         player = GameObject.Find(EngineConstants.PLAYER).GetComponent<Player>();
         hudManager = GameObject.Find(EngineConstants.HUD).GetComponent<HUDManager>();
         weaponsManager = GameObject.Find(EngineConstants.WEAPONS_MANAGER).GetComponent<WeaponsManager>();
-        InitializeCompanion("zoey");
+        InitializeCompanion("rochelle");
         //level = 1;
         //isPaused = false;
         //pauseScreen = GameObject.Find(EngineConstants.PAUSE);

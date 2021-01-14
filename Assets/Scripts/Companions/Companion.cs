@@ -36,6 +36,10 @@ public class Companion : MonoBehaviour
     private IDictionary<int,SpecialInfected> tanks = new Dictionary<int,SpecialInfected>();
     private IDictionary<int,SpecialInfectedCharger> chargers = new Dictionary<int, SpecialInfectedCharger>();
 
+    
+
+
+
 
     public int AddEnemy(NormalInfectant normal,int id) {
         if(normalInfectants.ContainsKey(id)) return id;
@@ -82,8 +86,9 @@ public class Companion : MonoBehaviour
 
 
 
-    public void Initialize(Weapon weapon) {
+    public void Initialize(Weapon weapon,string type) {
         this.weapon = weapon;
+        this.type = type;
 
     }
 
@@ -109,17 +114,7 @@ public class Companion : MonoBehaviour
         weapon.ShootCompanion(type,enemy);
     }
 
-    
-    private void HandleShoot() {
-        if(Input.GetKey(KeyCode.Q)){
-            weapon.SetIsShootingCompanion(true);
-            Shoot();
-        }
-           if (Input.GetKeyUp(KeyCode.Q))
-            {
-                weapon.SetIsShootingCompanion(false);
-            }
-    }
+   
 
 
     public void RotateToEnemy(GameObject enemy)
@@ -181,9 +176,22 @@ public class Companion : MonoBehaviour
 
 
 
-        void Update()
+     
+    private void HandleShoot() {
+        if(Input.GetKey(KeyCode.Q)){
+            if(type!="rochelle") isShooting = true;
+            weapon.SetIsShootingCompanion(true);
+            Shoot();
+        }
+           if (Input.GetKeyUp(KeyCode.Q))
+            {   isShooting = false;
+                weapon.SetIsShootingCompanion(false);
+            }
+    }
+
+    void Update()
     {   
-        if(!m_Jumping){
+        if(!m_Jumping && !m_Jump){
             agent.destination = player.gameObject.transform.position;
             HandleOffLink();
         }   
@@ -194,7 +202,6 @@ public class Companion : MonoBehaviour
                     m_MoveDir.y = 0f;
                     m_Jumping = false;
                     m_CharacterController.enabled = false;
-                    agent.updateRotation = true;
                     animator.SetBool("jump", false);
                     agent.Resume();
                 }
@@ -204,11 +211,12 @@ public class Companion : MonoBehaviour
                 }
 
                 m_PreviouslyGrounded = m_CharacterController.isGrounded;
-        if(!m_Jumping || !m_Jump) {
+      
+       
+          if(!m_Jumping && !m_Jump) {
+            HandleShoot();
             HandleAnimation();
         }
-        HandleShoot();
-    
 
         
     }
@@ -295,19 +303,18 @@ public class Companion : MonoBehaviour
         isWalking = wasWalking || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D); 
         isRunning = wasRunning || Input.GetKey(KeyCode.LeftShift) && isWalking;
 
-    
+        if(isShooting){
+            Fire();
+            return;
+        }
         if(isZeroVelocity()){
             Idle();
-             isRunning = false;
+            isRunning = false;
             isMoving = false;
             return;
         }
         agent.speed = isWalking ? 5f:10f;
      
-        if(isShooting){
-            Fire();
-            return;
-        }
         if(isRunning){
             Run();
             return;

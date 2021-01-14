@@ -153,7 +153,7 @@ public class Weapon : MonoBehaviour
 
 
     public void HandleFire() {
-         if( (Input.GetButton("Fire1") && isDrawn) || this.isShootingCompanion){
+         if( (Input.GetButton("Fire1") && isDrawn && !this.isCompanion) || this.isShootingCompanion){
              if(currentAmmo<=0) {
                  if(!outOfAmmo.isPlaying) {
                     outOfAmmo.clip = dryFire;
