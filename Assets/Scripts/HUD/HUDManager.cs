@@ -152,6 +152,9 @@ public class HUDManager : MonoBehaviour
     public void SetCurrentObjective(string objective){
         levelInfo.GetComponentsInChildren<TextMeshProUGUI>()[1].text = objective;
     }
+    public void SetExtraObjective(string extra){
+        levelInfo.GetComponentsInChildren<TextMeshProUGUI>()[2].text = extra;
+    }
     public bool CheckAllEmptyGrenades()
     {
         foreach (var g in all_gernades)

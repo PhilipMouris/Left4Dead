@@ -19,5 +19,8 @@ public class EngineConstants
 
      public const string AREAS_PATH = "Prefabs/Areas/";
 
+     public const int TIME_TO_RESCUE = 50;
+     public const int TIME_TO_DESTINATION = 100;
+
 
 }
