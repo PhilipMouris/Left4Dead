@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SpecialInfectedSpitter : MonoBehaviour
+public class SpecialInfectedSpitter : SpecialInfectedGeneral
 {
     private SpecialInfectedManager manager;
     private GameManager gameManager;
@@ -122,7 +122,7 @@ public class SpecialInfectedSpitter : MonoBehaviour
             agent.destination = new Vector3(transform.position.x, transform.position.y, walkingLowerBound);
     }
 
-    public void GetShot(int damage)
+    public override void GetShot(int damage)
     {
         HP = HP - damage;
         if (HP <= 0)
