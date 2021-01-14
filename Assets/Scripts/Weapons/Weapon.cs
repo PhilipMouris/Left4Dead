@@ -248,8 +248,10 @@ public class Weapon : MonoBehaviour
         this.range = CLIP_CAPACITY;
         this.maxAmmo = MAX_AMMO;
         this.currentAmmo = clipCapacity;
-        Destroy( this.gameObject.GetComponentInChildren<ParticleSystem>() );
+        if(type != "pistol")
+            Destroy( this.gameObject.GetComponentInChildren<ParticleSystem>() );
         isDrawn = true;
+        this.animator = this.gameObject.GetComponentsInChildren<Animator>().Length == 0 ? null : this.gameObject.GetComponentsInChildren<Animator>()[0] ;
         clip =  Resources.Load<AudioClip>($"Sounds/Weapons/{type}");
         reload = Resources.Load<AudioClip>("Sounds/Weapons/reload");
         dryFire = Resources.Load<AudioClip>("Sounds/Weapons/dryFire");
