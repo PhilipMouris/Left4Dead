@@ -18946,6 +18946,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1644584117862015060, guid: 7b79632da66a13c4a8333b88c6be3763, type: 3}
   m_PrefabInstance: {fileID: 2036421428}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &556588127 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5808617181015565659, guid: 53f9121861fe8564b8b4ed806041b75c, type: 3}
+  m_PrefabInstance: {fileID: 982794859}
+  m_PrefabAsset: {fileID: 0}
 --- !u!82 &564401374 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 6783538708539280880, guid: 1f8baecf97cc7e64f9eb9a3df64db549, type: 3}
@@ -25898,7 +25903,7 @@ PrefabInstance:
     - target: {fileID: 3679832656612345264, guid: 063f0dab00f5833499630f4367ef82c1, type: 3}
       propertyPath: HUD
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 556588127}
     - target: {fileID: 3679832656612345264, guid: 063f0dab00f5833499630f4367ef82c1, type: 3}
       propertyPath: CraftingScreen
       value: 

@@ -18,7 +18,7 @@ public class Craft : MonoBehaviour
     private GameObject PipeObject;
     private GameObject HealthPackObject;
     private GameObject CraftingCanvas;
-
+    private bool isDoubleIngredients=false;
     public GameObject button;
         
 
@@ -65,6 +65,11 @@ public class Craft : MonoBehaviour
         button.SetActive(false); // Disable the text so it is hidden
     }
 
+    public void SetIsDoubleIngredients(bool isDouble) {
+        this.isDoubleIngredients = isDouble;
+
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -74,32 +79,33 @@ public class Craft : MonoBehaviour
     public void AddIngredient(GameObject ingredient)
     {
         string tag = ingredient.tag;
-         
+        
+        int increaseAmount = isDoubleIngredients ? 2 :1;
 
         switch (tag)
         {
             case "alcohol":
-                alcohol++;
+                alcohol+=increaseAmount;
                 //GameObject.Find("AlcoholImage").GetComponentInChildren<Text>().text = alcohol.ToString();
                 break;
 
             case "canister":
-                canister++;
+                canister+=increaseAmount;
                 //GameObject.Find("CanisterImage").GetComponentInChildren<Text>().text = canister.ToString();
                 break;
 
             case "gunpowder":
-                gunpowder++;
+                gunpowder+=increaseAmount;
                 //GameObject.Find("GunpowderImage").GetComponentInChildren<Text>().text = gunpowder.ToString();
                 break;
 
             case "cloth":
-                cloth++;
+                cloth+=increaseAmount;
                 //GameObject.Find("ClothImage").GetComponentInChildren<Text>().text = cloth.ToString();
                 break;
 
             case "sugar":
-                sugar++;
+                sugar+=increaseAmount;
                 //GameObject.Find("SugarImage").GetComponentInChildren<Text>().text = sugar.ToString();
                 break;
 

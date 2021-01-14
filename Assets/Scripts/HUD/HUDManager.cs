@@ -108,7 +108,6 @@ public class HUDManager : MonoBehaviour
     public void InitializeCompanion(string type, Weapon weapon) {
         Texture2D img = Resources.Load($"HUD Icons/{type}") as Texture2D;
         if(img==null)Debug.Log("HEREEEEE");
-        Debug.Log(img + " IMMGGGG");
         TextMeshProUGUI name = GameObject.Find("/HUD/CompanionPanel/AmmoAndNamePanel/Name/Text (TMP)").GetComponent<TextMeshProUGUI>();
         this.companionWeapon = weapon;
         companionCurrentAmmo = GameObject.Find("/HUD/CompanionPanel/AmmoAndNamePanel/AmmoBar/Text (TMP)").GetComponent<TextMeshProUGUI>();

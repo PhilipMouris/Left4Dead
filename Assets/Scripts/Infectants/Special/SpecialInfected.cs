@@ -85,7 +85,7 @@ public class SpecialInfected : MonoBehaviour
         animator.SetBool("Attack", true);
         animator.SetBool("Run", false);
         agent.Stop();
-        InvokeRepeating("DecreaseHealth", attackInterval, attackInterval);
+      
     }
 
     public void DecreaseHealth()

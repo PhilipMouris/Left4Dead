@@ -183,7 +183,7 @@ public class Companion : MonoBehaviour
      
     private void HandleShoot() {
         if(Input.GetKey(KeyCode.Q)){
-            if(type!="rochelle") isShooting = true;
+            if(type!=CompanionConstants.rochelle) isShooting = true;
             weapon.SetIsShootingCompanion(true);
             weapon.ShootCompanion(enemyType,nextShotEnemy);
         }

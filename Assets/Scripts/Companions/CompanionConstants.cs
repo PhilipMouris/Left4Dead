@@ -6,11 +6,11 @@ public class CompanionConstants
 {
    
 
-   private static string zoey = "zoey";
+   public static string zoey = "zoey";
 
-   private static string louis = "louis";
+   public static string louis = "louis";
 
-   private static string rochelle = "rochelle";
+   public static string rochelle = "ellie";
    public static (Vector3,Vector3) ZOEY_TRANSFORMATION_DATA = (
        //new Vector3(60.7964401f,4.08500004f,21.1779518f),
        new Vector3(60.6318398f,4.08599997f,19.9802818f),

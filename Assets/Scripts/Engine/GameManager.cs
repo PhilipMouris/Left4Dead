@@ -50,6 +50,11 @@ public class GameManager : MonoBehaviour
 
     private Companion companion;
 
+    private int normalRageIncrease = 10;
+
+    private int specialRageIncrease= 50;
+    private bool isDoubleIngredients;
+
 
 
     // Start is called before the first frame update
@@ -167,13 +172,15 @@ public class GameManager : MonoBehaviour
     private void HandleCraftingScreen()
     {
         if (Input.GetKeyDown(KeyCode.I))
-        {
+        {   
+            this.gameObject.GetComponent<Craft>().SetIsDoubleIngredients(isDoubleIngredients);
             crafting_bool = !crafting_bool;
             FPS.enabled = false;
             TPS.enabled = false;
             craftingCamera.enabled = true;
             CraftingScreen.SetActive(crafting_bool);
             GameObject.Find("FPSController").GetComponent<FirstPersonController>().isCrafting = crafting_bool;
+
             HandlePause();
         }
     }
@@ -198,9 +205,9 @@ public class GameManager : MonoBehaviour
 
     public void EnemyDead(string type) {
         if(type=="normal"){
-            hudManager.ChangeRage(100);
+            hudManager.ChangeRage(normalRageIncrease);
         }
-        else hudManager.ChangeRage(50);
+        else hudManager.ChangeRage(specialRageIncrease);
     }
 
     private void HandleActivateRage() {
@@ -271,9 +278,20 @@ public class GameManager : MonoBehaviour
         companion.Initialize(companionWeapon,type);
         hudManager.InitializeCompanion(type,companionWeapon);
 
+        if(type == "louis") {
+                InvokeRepeating("IncreaseHealthBy1", 1, 1);
+        }
+        if(type== "ellie") {
+            normalRageIncrease = 2*normalRageIncrease;
+            specialRageIncrease = 2*normalRageIncrease;
+        }
+        if(type=="zoey") isDoubleIngredients = true;
     }
 
-
+    private void IncreaseHealthBy1(){
+        SetHealth(1);
+    }
+       
     public int AddEnemyToCompanion(NormalInfectant normal,int id) {
         return companion.AddEnemy(normal, id);
 
@@ -292,6 +310,7 @@ public class GameManager : MonoBehaviour
         hudManager = GameObject.Find(EngineConstants.HUD).GetComponent<HUDManager>();
         weaponsManager = GameObject.Find(EngineConstants.WEAPONS_MANAGER).GetComponent<WeaponsManager>();
         InitializeCompanion("louis");
+        SetHealth(-50);
         //level = 1;
         //isPaused = false;
         //pauseScreen = GameObject.Find(EngineConstants.PAUSE);
