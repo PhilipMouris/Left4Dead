@@ -13,6 +13,8 @@ public class MolotovCocktail : Gernade
     private bool isExploded = false;
     private GameObject createdFire;
     private bool inside = false;
+
+    private AudioSource explosionSource;
     // private string type = "molotov";
 
     
@@ -31,7 +33,6 @@ public class MolotovCocktail : Gernade
         // Debug.Log(inside);
         if (inside == true)
         {
-            Debug.Log("INSIDEEe2");
             if (Input.GetKeyDown(KeyCode.E))
             {
                GameObject copy = Instantiate(gameObject);
@@ -116,7 +117,9 @@ public class MolotovCocktail : Gernade
         isExploded = true;
 
         GameObject explosion = Instantiate(particleEffect, transform.position, transform.rotation);
-        GetAudioSource().PlayOneShot(explosionSound);
+        explosionSource = GetAudioSource();
+        explosionSource.outputAudioMixerGroup = GetAudioMixerGroup();
+        explosionSource.PlayOneShot(explosionSound);
         createdFire = Instantiate(fire, transform.position, transform.rotation);
         Collider[] touchedObjects = Physics.OverlapSphere(transform.position, GrenadeRadius);
 

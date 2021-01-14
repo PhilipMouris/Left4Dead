@@ -49,7 +49,15 @@ public class HUDManager : MonoBehaviour
 
     private  AnimatedBar animatedHealthBar;
     private AnimatedBar animatedPowerBar;
+
+    private GameObject levelInfo;
     private List<Gernade> gernades = new List<Gernade>();
+    
+    private Weapon companionWeapon;
+    private RawImage companionImage;
+    private TextMeshProUGUI companionCurrentAmmo;
+    private TextMeshProUGUI companionName;
+
     public static IDictionary<string, List<Gernade>> all_gernades = new Dictionary<string, List<Gernade>>(){
         {"molotov", new List<Gernade>()},
         {"pipe",new List<Gernade>()},
@@ -74,6 +82,7 @@ public class HUDManager : MonoBehaviour
         equipmentContainer = GameObject.Find(HUDConstants.EQUIPMENT_CONTAINER);
         TextMeshProUGUI health = GameObject.Find(HUDConstants.HEALTH).GetComponent<TextMeshProUGUI>();
         healthBar = GameObject.Find(HUDConstants.HEALTH_BAR);
+        levelInfo = GameObject.Find("LevelInfo");
         GameObject powerBar = GameObject.Find(HUDConstants.POWER_BAR);
         healthBar.AddComponent<AnimatedBar>();
         animatedPowerBar = powerBar.AddComponent<AnimatedBar>();
@@ -92,6 +101,24 @@ public class HUDManager : MonoBehaviour
         isLastAddedRight = false;
         rightAddedCount = 0;
         leftAddedCount = 0;
+
+    }
+    // private Weapon companionWeapon;
+    // private RawImage companionImage;
+    // private TextMeshProUGUI companionCurrentAmmo;
+    // private TextMeshProUGUI companionName;
+
+    public void InitializeCompanion(string type, Weapon weapon) {
+        Texture2D img = Resources.Load($"HUD Icons/{type}") as Texture2D;
+        TextMeshProUGUI name = GameObject.Find("/HUD/CompanionPanel/AmmoAndNamePanel/Name/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        this.companionWeapon = weapon;
+        companionCurrentAmmo = GameObject.Find("/HUD/CompanionPanel/AmmoAndNamePanel/AmmoBar/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        companionCurrentAmmo.text = $"{weapon.GetCurrentAmmo()}";
+        RawImage rawImage = GameObject.Find("/HUD/CompanionPanel/PlayerPortrait/").GetComponent<RawImage>();
+        rawImage.texture = img;
+        //Debug.Log(name + "OKK????");
+        name.text = type;
+
 
     }
 
@@ -142,6 +169,12 @@ public class HUDManager : MonoBehaviour
         this.currentlySelectedWeapon = rightWeapons[0];
         return currentlySelectedWeapon.GetWeapon();
 
+    }
+    public void SetCurrentLevel(int level){
+        levelInfo.GetComponentsInChildren<TextMeshProUGUI>()[0].text = "Level "+level.ToString();
+    }
+    public void SetCurrentObjective(string objective){
+        levelInfo.GetComponentsInChildren<TextMeshProUGUI>()[1].text = objective;
     }
     public bool CheckAllEmptyGrenades()
     {
@@ -336,6 +369,6 @@ public class HUDManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
-      //HandleHealthBar();
+     companionCurrentAmmo.text = $"{companionWeapon.GetCurrentAmmo()}";
     }
 }

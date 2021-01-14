@@ -8,9 +8,7 @@ TagManager:
   - NormalInfected
   - Ground
   - WeaponCamera
-<<<<<<< HEAD
   - AmmoPack
-=======
   - SpecialInfected
   - Tank
   - alcohol
@@ -24,7 +22,8 @@ TagManager:
   - Spit
   - fps
   - weapon
->>>>>>> 766545410e78e5b7cbfa506db775010484ee650a
+  - Fire
+
   layers:
   - Default
   - TransparentFX

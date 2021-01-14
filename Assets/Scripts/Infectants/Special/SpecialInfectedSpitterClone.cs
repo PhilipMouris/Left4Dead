@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SpecialInfectedSpitterClone : MonoBehaviour
+public class SpecialInfectedSpitterClone : SpecialInfectedGeneral
 {
     private SpecialInfectedManager manager;
     private GameManager gameManager;
@@ -123,14 +123,13 @@ public class SpecialInfectedSpitterClone : MonoBehaviour
         spitBall.GetComponent<Rigidbody>().AddForce(transform.forward * 300);
     }
 
-    public void GetShot(int damage)
+    public override void GetShot(int damage)
     {
         if (isDead)
             return;
         HP = HP - damage;
         if (HP <= 0)
         {
-            Debug.Log("ttttttt");
             CancelInvoke();
             animator.SetTrigger("Dead");
             agent.isStopped = true;

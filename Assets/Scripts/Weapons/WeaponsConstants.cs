@@ -178,6 +178,9 @@ public static (Vector3 position,
                                              165, 
                                             "Prefabs/Weapons/HuntingRifle/Prefab/Scar"
                                              );
+
+
+
  
    public static  (Vector3 position, 
                     Vector3 scale, 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SpecialInfectedCharger : MonoBehaviour
+public class SpecialInfectedCharger : SpecialInfectedGeneral
 {
     private SpecialInfectedManager manager;
     private GameManager gameManager;
@@ -19,6 +19,7 @@ public class SpecialInfectedCharger : MonoBehaviour
     private bool isAttacking = false;
     private bool isIdle = false;
     private bool isDead = false;
+    private bool isPaused = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +34,7 @@ public class SpecialInfectedCharger : MonoBehaviour
         HP = 600;
         dps = 75;
         attackInterval = 5;
+        //isPaused = GameObject.Find("GameManager").GetComponent<GameManager>().isGamePaused()
     }
 
     // Update is called once per frame
@@ -59,6 +61,8 @@ public class SpecialInfectedCharger : MonoBehaviour
     public void CheckCamera()
     {   
         if(GameManager.crafting_bool) return;
+        if(GameManager.isPauseScreen) return;
+        
         if (player.gameObject.transform.GetChild(1).GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Fall"))
         {
             SwitchToThirdPerson();
@@ -149,7 +153,7 @@ public class SpecialInfectedCharger : MonoBehaviour
             agent.destination = new Vector3(transform.position.x, transform.position.y, walkingLowerBound);
     }
 
-    public void GetShot(int damage)
+    public override void GetShot(int damage)
     {
         HP = HP - damage;
         if (HP <= 0)
