@@ -26,6 +26,7 @@ public class NormalInfectant : MonoBehaviour
     private NormalInfectantsManager manager;
     private Transform previousDestination;
 
+    public int companionID = 0;
     private bool stoppedChasing;
     private HUDManager hudManager;
     private bool isHordeMember;
@@ -53,8 +54,11 @@ public class NormalInfectant : MonoBehaviour
 
                 if (hordeMemberChase && !chasing && !attacking && isHordeMember)
                     StartChasing();
-                if (PlayerInRange() && !chasing && !attacking)
+                if (PlayerInRange() && !chasing && !attacking){
+                  if(companionID==0 && !dead)
+                         companionID = manager.AddNormalInfectantToCompanion(this);
                     StartChasing();
+                }
                 if (chasing && isDead())
                 {
                     UnChase();
@@ -72,7 +76,11 @@ public class NormalInfectant : MonoBehaviour
                 if (PlayerOutsideStoppingDistance() && !chasing && attacking)
                     UnAttack();
                 if (PlayerOutOfRange() && !isHordeMember && !unchased)
-                {
+                {   
+                if(companionID!= 0){
+                    manager.RemoveNormalInfectant(companionID);
+                    companionID = 0;
+                    }
                     UnChase();
                     UnAttack();
                 }
@@ -85,8 +93,9 @@ public class NormalInfectant : MonoBehaviour
 
             }
         }
-
     }
+
+    
     public void SetHordeMemberChasing(bool state)
     {
         hordeMemberChase = state;
@@ -131,6 +140,8 @@ public class NormalInfectant : MonoBehaviour
             manager.UpdateDeadMembers(gameObject);
             agent.isStopped = true;
             manager.Die();
+            manager.RemoveNormalInfectant(companionID);
+            companionID = 0;
             return true;
         }
         else
@@ -165,6 +176,8 @@ public class NormalInfectant : MonoBehaviour
             dead = true;
             manager.UpdateDeadMembers(gameObject);
             agent.isStopped = true;
+            manager.RemoveNormalInfectant(companionID);
+            companionID = 0;
             manager.Die();
         }
         else

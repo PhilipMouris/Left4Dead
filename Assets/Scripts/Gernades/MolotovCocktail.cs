@@ -33,7 +33,6 @@ public class MolotovCocktail : Gernade
         // Debug.Log(inside);
         if (inside == true)
         {
-            Debug.Log("INSIDEEe2");
             if (Input.GetKeyDown(KeyCode.E))
             {
                GameObject copy = Instantiate(gameObject);

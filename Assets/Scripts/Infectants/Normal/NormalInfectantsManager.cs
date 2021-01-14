@@ -33,6 +33,15 @@ public class NormalInfectantsManager : MonoBehaviour
     public void Die() {
         gameManager.EnemyDead("normal");
     }
+
+    public int AddNormalInfectantToCompanion(NormalInfectant normal){
+        return gameManager.AddEnemyToCompanion(normal, normal.companionID);
+    }
+
+    public void RemoveNormalInfectant(int id) {
+        gameManager.RemoveNormalFromCompanion(id);
+    }
+
     void OnTriggerEnter(Collider other){
         if(other.gameObject.CompareTag("Player")){
             AttractHorde();
