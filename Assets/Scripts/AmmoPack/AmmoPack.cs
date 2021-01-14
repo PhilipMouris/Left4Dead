@@ -27,6 +27,8 @@ public class AmmoPack : MonoBehaviour
         if (player.gameObject.CompareTag("Player"))
         {
             manager.UpdateLocations(gameObject);
+            GameObject.Find("Player").GetComponent<Player>().ResetAmmo();
+            Debug.Log("Ammo Collected");
             // player.GetComponent<Player>().ResetAmmo();
         }
 
