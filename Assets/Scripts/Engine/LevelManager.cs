@@ -16,6 +16,7 @@ public class LevelManager : MonoBehaviour
 
     protected HUDManager hUDManager;
     protected Player player;
+    protected bool lost = false;
 
 
     

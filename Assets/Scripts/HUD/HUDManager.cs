@@ -57,6 +57,7 @@ public class HUDManager : MonoBehaviour
     private RawImage companionImage;
     private TextMeshProUGUI companionCurrentAmmo;
     private TextMeshProUGUI companionName;
+    private bool isDead = false;
 
     public static IDictionary<string, List<Gernade>> all_gernades = new Dictionary<string, List<Gernade>>(){
         {"molotov", new List<Gernade>()},
@@ -67,7 +68,9 @@ public class HUDManager : MonoBehaviour
 
 
 
-
+    private void CheckDead(){
+        isDead =  animatedHealthBar.GetPercentage()==0;
+    }
 
 
     // Start is called before the first frame update
@@ -128,6 +131,9 @@ public class HUDManager : MonoBehaviour
     public void SetPlayer(Player mainPlayer)
     {
         this.player = mainPlayer;
+    }
+    public bool isPlayerDead(){
+        return isDead;
     }
 
     public Weapon SwitchWeapon()
@@ -392,5 +398,6 @@ public class HUDManager : MonoBehaviour
         {
             companionCurrentAmmo.text = $"{companionWeapon.GetCurrentAmmo()}";
         }
+        CheckDead();
     }
 }

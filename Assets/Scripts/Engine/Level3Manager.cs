@@ -12,7 +12,7 @@ public class Level3Manager : LevelManager
     private bool killedAll = false;
     private int timeLeft = EngineConstants.TIME_TO_RESCUE;
     private int remainingMembers;
-    private bool lost = false;
+    
     void UpdateTotalRemainingMembers()
     {
         int remainingNormal = normalInfectantsManager.GetRemainingNormalInfected();

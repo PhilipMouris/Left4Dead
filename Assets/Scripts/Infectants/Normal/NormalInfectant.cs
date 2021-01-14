@@ -217,7 +217,7 @@ public class NormalInfectant : MonoBehaviour
 
     private void DecreaseHealth()
     {
-        // Debug.Log("CHANGE HEALTH");
+        Debug.Log("CHANGE HEALTH");
         hudManager.ChangeHealth(-dps);
     }
     public void initialize(int HP, int dps, Transform[] locations, GameObject player, bool hordeMember)
@@ -284,6 +284,7 @@ public class NormalInfectant : MonoBehaviour
     {
         attacking = false;
         animator.SetBool("Attack", false);
+        CancelInvoke();
     }
     public bool PlayerAtStoppingDistance()
     {

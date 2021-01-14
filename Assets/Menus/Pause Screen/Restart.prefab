@@ -199,7 +199,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 7707395273684453947, guid: b855b91cdd4bfc242bf4058402561882, type: 3}
         m_TargetAssemblyTypeName: MainGameManager, Assembly-CSharp
         m_MethodName: RestartCurrentLevel
         m_Mode: 1
