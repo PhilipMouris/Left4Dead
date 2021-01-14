@@ -42,6 +42,10 @@ public class Weapon : MonoBehaviour
 
     private Vector3 cameraPosition;
 
+    private bool isCompanion;
+
+    private bool isShootingCompanion;
+
 
     void Awake() {
         bulletHoles = GameObject.Find(PlayerConstants.BULLET_HOLES);
@@ -123,7 +127,8 @@ public class Weapon : MonoBehaviour
     
 
     void FixedUpdate(){
-        HandleRayCast();
+        if(!isCompanion)
+             HandleRayCast();
     }
 
 
@@ -148,7 +153,7 @@ public class Weapon : MonoBehaviour
 
 
     public void HandleFire() {
-         if(Input.GetButton("Fire1") && isDrawn){
+         if( (Input.GetButton("Fire1") && isDrawn) || this.isShootingCompanion){
              if(currentAmmo<=0) {
                  if(!outOfAmmo.isPlaying) {
                     outOfAmmo.clip = dryFire;
@@ -157,7 +162,7 @@ public class Weapon : MonoBehaviour
                  return;
              }
              PlayAudio(clip);
-             if(type!= WeaponsConstants.WEAPON_TYPES["PISTOL"] && !muzzle.active) muzzle.SetActive(true);
+             if(type!= WeaponsConstants.WEAPON_TYPES["PISTOL"] && muzzle && !muzzle.active ) muzzle.SetActive(true);
              if(animator) animator.SetTrigger(WeaponsConstants.FIRE);
              if(collided && ! collided.CompareTag(NormalInfectantConstants.TAG) ) DrawBulletHole();
              if(normalInfectantInRange) {
@@ -178,7 +183,20 @@ public class Weapon : MonoBehaviour
           
         }
     
-}
+    }
+
+    public void ShootCompanion(string type, GameObject enemy) {
+        switch(type) {
+            case "normal":normalInfectantInRange = enemy;break;
+        }
+
+    }
+
+    public void SetIsShootingCompanion(bool isShooting){
+        this.isShootingCompanion = isShooting;
+    }
+
+
 
 
     public void Initialize(string type, int dmg, int clipCapacity,int rateOfFire, int maxAmmo, GameObject weapon, int range,(Vector3,Vector3) cameraData, Vector3 aim) {
@@ -229,7 +247,16 @@ public class Weapon : MonoBehaviour
         this.rateOfFire = RATE_OF_FIRE;
         this.range = CLIP_CAPACITY;
         this.maxAmmo = MAX_AMMO;
+        this.currentAmmo = clipCapacity;
         Destroy( this.gameObject.GetComponentInChildren<ParticleSystem>() );
+        isDrawn = true;
+        clip =  Resources.Load<AudioClip>($"Sounds/Weapons/{type}");
+        reload = Resources.Load<AudioClip>("Sounds/Weapons/reload");
+        dryFire = Resources.Load<AudioClip>("Sounds/Weapons/dryFire");
+        isCompanion = true;
+        outOfAmmo =  gameObject.AddComponent<AudioSource>();
+        gameManager = GameObject.FindObjectOfType<GameManager>();
+        outOfAmmo.playOnAwake = false;
     }
 
     public bool Reload() {

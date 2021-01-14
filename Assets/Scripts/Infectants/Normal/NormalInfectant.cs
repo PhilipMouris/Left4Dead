@@ -26,6 +26,8 @@ public class NormalInfectant : MonoBehaviour
     private NormalInfectantsManager manager;
     private Transform previousDestination;
 
+    public int companionID = 0;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -38,8 +40,11 @@ public class NormalInfectant : MonoBehaviour
     {
         if (!isAttracted)
         {
-            if (PlayerInRange() && !chasing && !attacking)
+            if (PlayerInRange() && !chasing && !attacking){
+                if(companionID==0)
+                    companionID = manager.AddNormalInfectantToCompanion(this);
                 StartChasing();
+            }
             if (chasing)
                 Chase();
             if (PlayerAtStoppingDistance() && chasing && !attacking)
@@ -47,7 +52,9 @@ public class NormalInfectant : MonoBehaviour
             if (PlayerOutsideStoppingDistance() && !chasing && attacking)
                 UnAttack();
             if (PlayerOutOfRange())
-            {
+            {   
+                manager.RemoveNormalInfectant(companionID);
+                companionID = 0;
                 UnChase();
                 UnAttack();
                 UpdateDestination();
@@ -108,6 +115,7 @@ public class NormalInfectant : MonoBehaviour
             manager.UpdateDeadMembers(gameObject);
             agent.isStopped = true;
             manager.Die();
+            manager.RemoveNormalInfectant(companionID);
             return true;
         } else {
             animator.SetTrigger("GetShot");
@@ -140,6 +148,7 @@ public class NormalInfectant : MonoBehaviour
             dead = true;
             manager.UpdateDeadMembers(gameObject);
             agent.isStopped = true;
+            manager.RemoveNormalInfectant(companionID);
             manager.Die();
         }
         else

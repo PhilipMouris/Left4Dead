@@ -28,6 +28,14 @@ public class NormalInfectantsManager : MonoBehaviour
         gameManager.EnemyDead("normal");
     }
 
+    public int AddNormalInfectantToCompanion(NormalInfectant normal){
+        return gameManager.AddEnemyToCompanion(normal, normal.companionID);
+    }
+
+    public void RemoveNormalInfectant(int id) {
+        gameManager.RemoveNormalFromCompanion(id);
+    }
+
     // Update is called once per frame
     void Update()
     {

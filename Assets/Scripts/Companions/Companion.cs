@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using System;
 using UnityStandardAssets.Characters.FirstPerson;
+using System.Linq;
 
 public class Companion : MonoBehaviour
 {   
@@ -29,19 +30,141 @@ public class Companion : MonoBehaviour
     private bool m_PreviouslyGrounded;
     float speed = 10f;
     private Vector3 endPoint;
+    private Weapon weapon;
+    private int enemyID = 1;
+    private IDictionary<int,NormalInfectant> normalInfectants = new Dictionary<int,NormalInfectant>();
+    private IDictionary<int,SpecialInfected> tanks = new Dictionary<int,SpecialInfected>();
+    private IDictionary<int,SpecialInfectedCharger> chargers = new Dictionary<int, SpecialInfectedCharger>();
 
+
+    public int AddEnemy(NormalInfectant normal,int id) {
+        if(normalInfectants.ContainsKey(id)) return id;
+        if(id == null || id ==0 ){
+            this.enemyID +=1;
+        }
+        int usedId = id==null || id==0? enemyID :id;
+        normalInfectants.Add(usedId,normal);
+        return usedId;
+    }
+
+    
+    public int AddEnemy(SpecialInfected tank,int id) {
+         if(tanks.ContainsKey(id)) return id;
+         if(id == null || id ==0 ){
+            this.enemyID +=1;
+        }
+        int usedId = id==null || id==0? enemyID :id;
+         tanks.Add(usedId,tank);
+        return usedId;
+    }
+
+     public int AddEnemy(SpecialInfectedCharger charged,int id) {
+          if(chargers.ContainsKey(id)) return id;
+        if(id == null || id ==0 ){
+            this.enemyID +=1;
+        }
+        int usedId = id==null || id==0?  enemyID :id;
+        chargers.Add(usedId, charged);
+        return usedId;
+    }
+
+
+
+
+    public void RemoveEnemy(string type,int id) {
+        switch(type){
+            case "normal": normalInfectants.Remove(id);break;
+            case "tank": tanks.Remove(id);break;
+            case "charger": chargers.Remove(id);break;
+        }
+    }
+
+
+
+
+    public void Initialize(Weapon weapon) {
+        this.weapon = weapon;
+
+    }
+
+
+    public void Shoot() {
+        GameObject enemy =null;
+        string type ="";
+        if(chargers.Count > 0){
+            enemy =  chargers.First().Value.gameObject;
+        }
+        else {
+            if(tanks.Count>0) {
+            enemy =  chargers.First().Value.gameObject;
+        }
+        else {
+            if(normalInfectants.Count>0){
+            type="normal";
+            enemy = normalInfectants.First().Value.gameObject;
+            }
+        }
+        }
+        RotateToEnemy(enemy);
+        weapon.ShootCompanion(type,enemy);
+    }
+
+    
+    private void HandleShoot() {
+        if(Input.GetKey(KeyCode.Q)){
+            weapon.SetIsShootingCompanion(true);
+            Shoot();
+        }
+           if (Input.GetKeyUp(KeyCode.Q))
+            {
+                weapon.SetIsShootingCompanion(false);
+            }
+    }
+
+
+    public void RotateToEnemy(GameObject enemy)
+    {
+        if(!enemy) return;
+        Vector3 lookAt = enemy.transform.position - gameObject.transform.position;
+        Debug.Log(lookAt.sqrMagnitude);
+        //gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, Quaternion.LookRotation(lookAt), 5*Time.deltaTime);
+    }
+
+
+    
+
+    
+    public Vector3 GetDirection(Vector3 from, Vector3 to) {
+         return (to - from);
+    }
     private void FixedUpdate() {
             if (m_CharacterController.isGrounded)
-            {
-                m_MoveDir.z = transform.forward.z >= 0 ? 3f : -3f;
+            {       
+                
+                Vector3 desiredMove = transform.forward;
+                RaycastHit hitInfo;
+                Physics.SphereCast(transform.position, m_CharacterController.radius, Vector3.down, out hitInfo,
+                               m_CharacterController.height/2f, Physics.AllLayers, QueryTriggerInteraction.Ignore);
+                desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
+
+                //Vector3 dir = GetDirection(transform.position,endPoint);
+                //m_MoveDir.z = transform.forward.z >= 0 ? 3f : -3f;
+                
+                 m_MoveDir.x = desiredMove.z * 10;
+                 //m_MoveDir.x = transform.forward.z * 3;
                 if (m_Jump)
                 {   
                     
                     m_CharacterController.enabled = true;
                     agent.Stop();
-                    m_MoveDir.y = m_JumpSpeed;
+                    m_MoveDir.y = m_JumpSpeed*1.4f;
                     m_Jump = false;
                     m_Jumping = true;
+                }
+                if(m_Jumping) {
+                    //transform.LookAt(endPoint);
+                    m_MoveDir.z = transform.forward.z * 10;
+
                 }
             }
              else
@@ -54,6 +177,9 @@ public class Companion : MonoBehaviour
             }
         
     }
+
+
+
 
         void Update()
     {   
@@ -68,6 +194,7 @@ public class Companion : MonoBehaviour
                     m_MoveDir.y = 0f;
                     m_Jumping = false;
                     m_CharacterController.enabled = false;
+                    agent.updateRotation = true;
                     animator.SetBool("jump", false);
                     agent.Resume();
                 }
@@ -80,6 +207,9 @@ public class Companion : MonoBehaviour
         if(!m_Jumping || !m_Jump) {
             HandleAnimation();
         }
+        HandleShoot();
+    
+
         
     }
 
@@ -122,9 +252,10 @@ public class Companion : MonoBehaviour
 
     private void SetAction(string action) {
         foreach (string actionType in actions)
-        {
+        {   if(actionType != "jump"){
             if(action == actionType) animator.SetBool(action, true);
             else animator.SetBool(actionType, false);
+        }
         }
     }
     public void Run() {
@@ -171,6 +302,7 @@ public class Companion : MonoBehaviour
             isMoving = false;
             return;
         }
+        agent.speed = isWalking ? 5f:10f;
      
         if(isShooting){
             Fire();
