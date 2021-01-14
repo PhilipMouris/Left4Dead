@@ -4,14 +4,17 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class GameOver : MonoBehaviour
 {
+    private MainGameManager levelsManager;
+    void Awake(){
+        levelsManager = GameObject.FindObjectOfType<MainGameManager>();
+    }
     public void RestartLevel() {
-        Debug.Log("Restart Level");
+        levelsManager.RestartCurrentLevel();
         //SceneManager.LoadScene("OutdoorsLevel");
     }
 
     public void QuitToMain() {
-        Debug.Log("Main Menu");
-        //SceneManager.LoadScene("MainMenu");
+        levelsManager.RestartGame();
     }
     
 }

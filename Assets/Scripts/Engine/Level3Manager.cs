@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TurnTheGameOn.ArrowWaypointer;
 public class Level3Manager : LevelManager
 {
     // Start is called before the first frame update
@@ -18,7 +18,7 @@ public class Level3Manager : LevelManager
         int remainingNormal = normalInfectantsManager.GetRemainingNormalInfected();
         int remainingSpecial = specialInfectedManager.GetRemainingSpecialInfected();
         remainingMembers = remainingNormal + remainingSpecial;
-        if (remainingMembers == 0)
+        if (remainingMembers <=60)
         {
             killedAll = true;
         }
@@ -56,7 +56,8 @@ public class Level3Manager : LevelManager
         currentObjective = objective;
     }
     public void UpdateObjective(){
-        currentObjective = "Kill "+remainingMembers.ToString() + " remaining infected members";
+        if(!killedAll)
+            currentObjective = "Kill "+remainingMembers.ToString() + " remaining infected members";
     }
     public void SetExtraObjective()
     {
@@ -72,6 +73,7 @@ public class Level3Manager : LevelManager
             {
                 Rescue();
                 reachedDestination = true;
+                // GameObject.FindObjectOfType<WaypointController>().gameObject.SetActive(false);
             }
         }
 
@@ -121,7 +123,7 @@ public class Level3Manager : LevelManager
     }
     void CheckFinishLevel()
     {
-        if (reachedDestination && killedAll)
+        if (reachedDestination & killedAll)
         {
             isLevelFinished = true;
             currentObjective = "LEVEL PASSED";
@@ -133,11 +135,14 @@ public class Level3Manager : LevelManager
             lost=true;
             currentObjective = "Companion Killed";
             UpdateHUD();
+            // Time.timeScale = 0f;
+            // Invoke("HandleLost",2);
             HandleLost();
         }
     }
     void HandleLost(){
-        Time.timeScale = 0f;
+        gameManager.HandleGameOverScreen();
+        
     }
     // Update is called once per frame
     void Update()
@@ -151,10 +156,10 @@ public class Level3Manager : LevelManager
             UpdateTotalRemainingMembers();
             UpdateObjective();
         }
-        UpdateHUD();
         CheckDistanceToDest();
         CheckFinishLevel();
         CheckLost();
+        UpdateHUD();
         
     }
 

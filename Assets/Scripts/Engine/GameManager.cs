@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public GameObject CraftingScreen;
 
     public GameObject PauseScreen;
+    public GameObject GameOverScreen;
 
     public GameObject HUD;
 
@@ -85,6 +86,9 @@ private GameObject companionInstance;
         craftingManager = GameObject.Find("CraftingManager").GetComponent<Craft>();
         FPS.enabled = true;
         TPS.enabled = true;
+        isPaused=false;
+        isPauseScreen=false;
+        AudioListener.pause = false;
         setRescued.AddListener(SetRescued);
         craftingCamera.enabled = false;
         pauseCamera.enabled = false;
@@ -240,6 +244,20 @@ private GameObject companionInstance;
         }
 
     }
+    public void HandleGameOverScreen()
+    {
+        GameObject.Find("FPSController").GetComponent<FirstPersonController>().GetMouseLook().SetCursorLock(false);
+        GameOverScreen.SetActive(true);
+        CraftingScreen.SetActive(false);
+        FPS.enabled = false;
+        TPS.enabled = false;
+        craftingCamera.enabled = false;
+        pauseCamera.enabled = true;
+        isPauseScreen=true;
+        //GameObject.Find("FPSController").GetComponent<FirstPersonController>().GetMouseLook().SetCursorLock(false);
+        HandlePause();
+         
+    }
 
     private void HandlePickUpWeapon()
     {
@@ -327,12 +345,12 @@ private GameObject companionInstance;
             Time.timeScale = 0;
             //pauseScreen.SetActive(true);
             HUD.SetActive(false);
-            AudioListener.pause = !AudioListener.pause;
+            AudioListener.pause = true;
             return;
         }
         Time.timeScale = 1;
         //pauseScreen.SetActive(false);
-        AudioListener.pause = !AudioListener.pause;
+        AudioListener.pause = false;
         HUD.SetActive(true);
     }
 
@@ -347,15 +365,15 @@ private GameObject companionInstance;
         HandlePause();
     }
 
-    public void RestartGame()
-    {
-        SceneManager.LoadScene("OutdoorsLevel");
-    }
+    // public void RestartGame()
+    // {
+    //     SceneManager.LoadScene("OutdoorsLevel");
+    // }
 
-    public void QuitToMain()
-    {
-        SceneManager.LoadScene("Menus");
-    }
+    // public void QuitToMain()
+    // {
+    //     SceneManager.LoadScene("Menus");
+    // }
 
     private void InitializeCompanionKidnapped(string type)
     {
