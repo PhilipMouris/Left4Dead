@@ -139,13 +139,17 @@ public class SpecialInfected : SpecialInfectedGeneral
         isChasing = false;
         isAttacking = false;
         agent.isStopped = true;
-        animator.speed = 0;
+        animator.speed = 0.01f;
     }
 
     public override void Unstun()
     {
         agent.isStopped = false;
+        agent.ResetPath();
+        agent.destination = player.transform.position;
+        agent.stoppingDistance = 5;
         animator.speed = 1;
+        StartChasing();
         isStunned = false;
     }
 

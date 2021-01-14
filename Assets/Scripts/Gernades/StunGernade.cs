@@ -48,8 +48,8 @@ public class StunGernade : Gernade
         }
         else if (isExploded == true & SecondDelay <= 0f)
         {
-            infectantManager.StunAll();
             specialInfectedManager.StunAll();
+            infectantManager.StunAll();
             SecondDelay = 1f;
             Delay--;
         }
@@ -93,8 +93,8 @@ public class StunGernade : Gernade
         infectantManager.UnBurnAll();
     }
      public void UnStunAll(){
-        infectantManager.UnStunAll();
         specialInfectedManager.UnstunAll();
+        infectantManager.UnStunAll();
     }
     
     public void Explode(GameObject other)
@@ -107,8 +107,8 @@ public class StunGernade : Gernade
         explosionSource.outputAudioMixerGroup = GetAudioMixerGroup();
         explosionSource.PlayOneShot(explosionSound);
         createdFire = Instantiate(fire, transform.position, transform.rotation);
-        infectantManager.StunAll();
         specialInfectedManager.StunAll();
+        infectantManager.StunAll();
 
         float totalExplosionDelay = explosion.GetComponent<ParticleSystem>().main.duration + explosion.GetComponent<ParticleSystem>().startLifetime;
         Destroy(explosion, totalExplosionDelay);

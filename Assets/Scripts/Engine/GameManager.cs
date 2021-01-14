@@ -86,6 +86,7 @@ public class GameManager : MonoBehaviour
         pauseCamera.enabled = false;
         //   Debug.Log(FPS.enabled + " FPS");
         //   De
+        companionName = "Louis";
     }
 
     void InitializeWeapon(string type, bool isSelected)

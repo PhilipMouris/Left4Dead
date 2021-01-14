@@ -19,7 +19,8 @@ public class SpecialInfectedManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown("p"))
+            UnstunAll();
     }
 
     public void UpdateDeadMembers(GameObject deadInfected)
