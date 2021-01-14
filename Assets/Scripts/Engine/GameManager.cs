@@ -198,7 +198,7 @@ public class GameManager : MonoBehaviour
 
     public void EnemyDead(string type) {
         if(type=="normal"){
-            hudManager.ChangeRage(10);
+            hudManager.ChangeRage(100);
         }
         else hudManager.ChangeRage(50);
     }

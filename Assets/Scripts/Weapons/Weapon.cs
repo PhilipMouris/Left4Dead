@@ -242,7 +242,7 @@ public class Weapon : MonoBehaviour
                 string PATH) data) {
         var (TYPE,RANGE,DAMAGE,RATE_OF_FIRE,CLIP_CAPACITY,MAX_AMMO,PATH) = data;
         this.type = TYPE;
-        this.dmg = RANGE;
+        this.dmg = DAMAGE;
         this.clipCapacity = DAMAGE;
         this.rateOfFire = RATE_OF_FIRE;
         this.range = CLIP_CAPACITY;

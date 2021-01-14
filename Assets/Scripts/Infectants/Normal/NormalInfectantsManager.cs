@@ -21,7 +21,7 @@ public class NormalInfectantsManager : MonoBehaviour
         infected_members = new GameObject[20];
         locations_list = locations.GetComponentsInChildren<Transform>();
 
-        //Spawn();
+        Spawn();
     }
 
     public void Die() {

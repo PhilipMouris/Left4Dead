@@ -41,7 +41,7 @@ public class NormalInfectant : MonoBehaviour
         if (!isAttracted)
         {
             if (PlayerInRange() && !chasing && !attacking){
-                if(companionID==0)
+                if(companionID==0 && !dead)
                     companionID = manager.AddNormalInfectantToCompanion(this);
                 StartChasing();
             }
@@ -53,13 +53,16 @@ public class NormalInfectant : MonoBehaviour
                 UnAttack();
             if (PlayerOutOfRange())
             {   
-                manager.RemoveNormalInfectant(companionID);
-                companionID = 0;
+                if(companionID!= 0){
+                    manager.RemoveNormalInfectant(companionID);
+                    companionID = 0;
+                }
                 UnChase();
                 UnAttack();
                 UpdateDestination();
             }
         }
+    }
 
         // if (!chasing &!attacking & !isAttracted)
         // {
@@ -69,7 +72,7 @@ public class NormalInfectant : MonoBehaviour
         // {
         //     CheckAttack();
         // }
-    }
+    
     public Transform GetPreviousDestination()
     {
         return previousDestination;
@@ -116,6 +119,7 @@ public class NormalInfectant : MonoBehaviour
             agent.isStopped = true;
             manager.Die();
             manager.RemoveNormalInfectant(companionID);
+            companionID = 0;
             return true;
         } else {
             animator.SetTrigger("GetShot");
@@ -149,6 +153,7 @@ public class NormalInfectant : MonoBehaviour
             manager.UpdateDeadMembers(gameObject);
             agent.isStopped = true;
             manager.RemoveNormalInfectant(companionID);
+            companionID = 0;
             manager.Die();
         }
         else

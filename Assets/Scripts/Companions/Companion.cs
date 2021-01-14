@@ -35,6 +35,8 @@ public class Companion : MonoBehaviour
     private IDictionary<int,NormalInfectant> normalInfectants = new Dictionary<int,NormalInfectant>();
     private IDictionary<int,SpecialInfected> tanks = new Dictionary<int,SpecialInfected>();
     private IDictionary<int,SpecialInfectedCharger> chargers = new Dictionary<int, SpecialInfectedCharger>();
+    private string enemyType;
+    private GameObject nextShotEnemy;
 
     
 
@@ -76,6 +78,7 @@ public class Companion : MonoBehaviour
 
 
     public void RemoveEnemy(string type,int id) {
+        //Debug.Log(id + "REMOVEDDDD");
         switch(type){
             case "normal": normalInfectants.Remove(id);break;
             case "tank": tanks.Remove(id);break;
@@ -93,25 +96,26 @@ public class Companion : MonoBehaviour
     }
 
 
-    public void Shoot() {
-        GameObject enemy =null;
-        string type ="";
+    public void PrepareShoot() {
+        nextShotEnemy = null;
+        enemyType ="";
+        //Debug.Log(normalInfectants.Count + " COUNT");
         if(chargers.Count > 0){
-            enemy =  chargers.First().Value.gameObject;
+            nextShotEnemy =  chargers.First().Value.gameObject;
         }
         else {
             if(tanks.Count>0) {
-            enemy =  chargers.First().Value.gameObject;
+            nextShotEnemy =  chargers.First().Value.gameObject;
         }
         else {
             if(normalInfectants.Count>0){
-            type="normal";
-            enemy = normalInfectants.First().Value.gameObject;
+            enemyType ="normal";
+            nextShotEnemy = normalInfectants.First().Value.gameObject;
             }
         }
         }
-        RotateToEnemy(enemy);
-        weapon.ShootCompanion(type,enemy);
+        RotateToEnemy(nextShotEnemy);
+        
     }
 
    
@@ -121,8 +125,8 @@ public class Companion : MonoBehaviour
     {
         if(!enemy) return;
         Vector3 lookAt = enemy.transform.position - gameObject.transform.position;
-        Debug.Log(lookAt.sqrMagnitude);
-        //gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, Quaternion.LookRotation(lookAt), 5*Time.deltaTime);
+        //Debug.Log(lookAt.sqrMagnitude);
+        gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, Quaternion.LookRotation(lookAt), 5*Time.deltaTime);
     }
 
 
@@ -181,7 +185,7 @@ public class Companion : MonoBehaviour
         if(Input.GetKey(KeyCode.Q)){
             if(type!="rochelle") isShooting = true;
             weapon.SetIsShootingCompanion(true);
-            Shoot();
+            weapon.ShootCompanion(enemyType,nextShotEnemy);
         }
            if (Input.GetKeyUp(KeyCode.Q))
             {   isShooting = false;
@@ -191,6 +195,9 @@ public class Companion : MonoBehaviour
 
     void Update()
     {   
+
+
+        agent.updateRotation = nextShotEnemy== null;
         if(!m_Jumping && !m_Jump){
             agent.destination = player.gameObject.transform.position;
             HandleOffLink();
@@ -214,6 +221,7 @@ public class Companion : MonoBehaviour
       
        
           if(!m_Jumping && !m_Jump) {
+            PrepareShoot();
             HandleShoot();
             HandleAnimation();
         }

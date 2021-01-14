@@ -31,7 +31,6 @@ public class MolotovCocktail : Gernade
         // Debug.Log(inside);
         if (inside == true)
         {
-            Debug.Log("INSIDEEe2");
             if (Input.GetKeyDown(KeyCode.E))
             {
                 bool collected= this.hudManager.CollectGernade(gameObject.GetComponent<Gernade>(),player);
