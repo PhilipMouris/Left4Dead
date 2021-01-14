@@ -37,4 +37,25 @@ public class SpecialInfectedManager : MonoBehaviour
         return count-GetDeadInfected();
 
     }
+
+    public void StunAll()
+    {
+        SpecialInfectedGeneral[] specials = GameObject.FindObjectsOfType<SpecialInfectedGeneral>();
+        for(int i = 0; i < specials.Length; i++)
+        {
+            Animator animator = specials[i].GetComponent<Animator>();
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attacking") || animator.GetCurrentAnimatorStateInfo(0).IsName("Running"))
+                specials[i].Stun();
+        }
+    }
+
+    public void UnstunAll()
+    {
+        SpecialInfectedGeneral[] specials = GameObject.FindObjectsOfType<SpecialInfectedGeneral>();
+        for (int i = 0; i < specials.Length; i++)
+        {
+            if (specials[i].GetIsStunned())
+                specials[i].Unstun();
+        }
+    }
 }

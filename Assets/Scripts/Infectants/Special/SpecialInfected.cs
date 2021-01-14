@@ -17,6 +17,7 @@ public class SpecialInfected : SpecialInfectedGeneral
     private GameObject player;
     private bool isChasing = false;
     private bool isAttacking = false;
+    private bool isStunned = false;
 
     // Start is called before the first frame update
     void Start()
@@ -130,5 +131,26 @@ public class SpecialInfected : SpecialInfectedGeneral
         {
             animator.SetTrigger("GetShot");
         }
+    }
+
+    public override void Stun()
+    {
+        isStunned = true;
+        isChasing = false;
+        isAttacking = false;
+        agent.isStopped = true;
+        animator.speed = 0;
+    }
+
+    public override void Unstun()
+    {
+        agent.isStopped = false;
+        animator.speed = 1;
+        isStunned = false;
+    }
+
+    public override bool GetIsStunned()
+    {
+        return isStunned;
     }
 }
