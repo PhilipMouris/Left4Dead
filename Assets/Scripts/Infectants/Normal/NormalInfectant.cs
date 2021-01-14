@@ -29,6 +29,7 @@ public class NormalInfectant : MonoBehaviour
     public int companionID = 0;
     private bool stoppedChasing;
     private HUDManager hudManager;
+    private GameManager gameManager;
     private bool isHordeMember;
     private bool hordeMemberChase = false;
     private bool unchased = false;
@@ -40,6 +41,7 @@ public class NormalInfectant : MonoBehaviour
         manager = FindObjectOfType<NormalInfectantsManager>();
         stoppedChasing = false;
         hudManager = FindObjectOfType<HUDManager>();
+        gameManager  = FindObjectOfType<GameManager>();
     }
 
     // Update is called once per frame
@@ -56,7 +58,8 @@ public class NormalInfectant : MonoBehaviour
                     StartChasing();
                 if (PlayerInRange() && !chasing && !attacking){
                   if(companionID==0 && !dead)
-                         companionID = manager.AddNormalInfectantToCompanion(this);
+                        if(gameManager.GetIsRescued())
+                            companionID = manager.AddNormalInfectantToCompanion(this);
                     StartChasing();
                 }
                 if (chasing && isDead())

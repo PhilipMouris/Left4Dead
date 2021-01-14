@@ -9,21 +9,45 @@ public class Level3Manager : LevelManager
     GameObject destination;
     private bool reachedDestination = false;
     private bool isRescued = false;
+    private bool killedAll = false;
     private int timeLeft = EngineConstants.TIME_TO_RESCUE;
-    
+    private int remainingMembers;
+    private bool lost = false;
+    void UpdateTotalRemainingMembers()
+    {
+        int remainingNormal = normalInfectantsManager.GetRemainingNormalInfected();
+        int remainingSpecial = specialInfectedManager.GetRemainingSpecialInfected();
+        remainingMembers = remainingNormal + remainingSpecial;
+        if (remainingMembers == 0)
+        {
+            killedAll = true;
+        }
+    }
+
     void Awake()
     {
         normalInfectantsManager = FindObjectOfType<NormalInfectantsManager>();
         specialInfectedManager = FindObjectOfType<SpecialInfectedManager>();
         player = FindObjectOfType<Player>();
         gameManager = FindObjectOfType<GameManager>();
+        gameManager.SetRescueLevel();
         hUDManager = FindObjectOfType<HUDManager>();
         destination = GameObject.Find("Destination");
         SetHordeLocations();
         SetHordeArea();
     }
-    void UpdateObjective()
+    void Rescue()
     {
+        isRescued = true;
+        gameManager.SetRescued();
+        timeLeft = 0;
+        extraObjective = "";
+
+    }
+
+    void UpdateHUD()
+    {
+
         hUDManager.SetCurrentObjective(currentObjective);
         hUDManager.SetExtraObjective(extraObjective);
     }
@@ -31,30 +55,56 @@ public class Level3Manager : LevelManager
     {
         currentObjective = objective;
     }
-    public void UpdateExtraObjective(){
-        extraObjective = "Time Left: "+timeLeft.ToString();
+    public void UpdateObjective(){
+        currentObjective = "Kill "+remainingMembers.ToString() + " remaining infected members";
+    }
+    public void SetExtraObjective()
+    {
+        extraObjective = "Time Left: " + timeLeft.ToString();
+    }
+    void CheckDistanceToDest()
+    {
+
+        float distance = Vector3.Distance(CompanionConstants.KIDNAPPED_TRANSFORMATION.Item1, player.transform.position);
+        if (distance <= 5.0f)
+        {
+            if (!reachedDestination)
+            {
+                Rescue();
+                reachedDestination = true;
+            }
+        }
+
+
+
     }
 
     void Start()
     {
         hUDManager.SetCurrentLevel(3);
         SetCurrentObjective("Follow The Arrow To Save the Kidnapped.");
-        UpdateExtraObjective();
-        InvokeRepeating("UpdateTimeLeft",0,1);
+        SetExtraObjective();
+
+        InvokeRepeating("UpdateTimeLeft", 1, 1);
         // SetHordeLocations();
     }
-    void UpdateTimeLeft(){
+    void InitializeCompanion()
+    {
+        gameManager.InitializeCompanion(gameManager.GetCompanionName());
+    }
+    void UpdateTimeLeft()
+    {
         timeLeft--;
     }
     void SetHordeLocations()
     {
-        GameObject locations = GameObject.Find("HordeLocations2");
+        GameObject locations = GameObject.Find("HordeLocations3");
         normalInfectantsManager.SetHordeLocations(locations);
         normalInfectantsManager.SpawnHorde();
     }
     void SetHordeArea()
     {
-        GameObject area = Resources.Load(EngineConstants.AREAS_PATH+"Level2Horde") as GameObject;
+        GameObject area = Resources.Load(EngineConstants.AREAS_PATH + "Level3Horde") as GameObject;
         BoxCollider box = normalInfectantsManager.gameObject.AddComponent<BoxCollider>();
         if (area)
         {
@@ -71,56 +121,41 @@ public class Level3Manager : LevelManager
     }
     void CheckFinishLevel()
     {
-        if (reachedDestination)
+        if (reachedDestination && killedAll)
         {
             isLevelFinished = true;
             currentObjective = "LEVEL PASSED";
         }
     }
-    void CheckDangerZone()
-    {
-        if (normalInfectantsManager.isInsideDanger())
-        {
-            currentObjective = "DANGER ZONE !!!!";
-        }
-        else
-        {
-            currentObjective = "Follow the smoke in sky without entering Danger Zone";
+
+    void CheckLost(){
+        if(timeLeft==0 && !reachedDestination && !lost){
+            lost=true;
+            currentObjective = "Companion Killed";
+            UpdateHUD();
+            HandleLost();
         }
     }
-    void CheckDistanceToDest()
-    {
-
-        float distance = Vector3.Distance(destination.transform.position, player.transform.position);
-        if (distance <= 3.0f)
-        {
-            reachedDestination = true;
-        }
-        else
-        if (distance < 40.0f)
-        {
-            currentObjective = "ONLY " + Mathf.Floor(distance).ToString() + " Meters Left";
-            close = true;
-        }
-        else
-        {
-            close = false;
-        }
-
+    void HandleLost(){
+        Time.timeScale = 0f;
     }
     // Update is called once per frame
     void Update()
     {
 
-        if (!isLevelFinished)
+       
+        if (!reachedDestination)
         {
-            CheckDistanceToDest();
-        
-            CheckDangerZone();
+            SetExtraObjective();
+        }else{
+            UpdateTotalRemainingMembers();
+            UpdateObjective();
         }
-        UpdateObjective();
+        UpdateHUD();
+        CheckDistanceToDest();
         CheckFinishLevel();
-
+        CheckLost();
+        
     }
 
 

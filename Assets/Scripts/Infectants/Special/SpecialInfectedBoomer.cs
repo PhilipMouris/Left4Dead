@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SpecialInfectedBoomer : MonoBehaviour
+public class SpecialInfectedBoomer : SpecialInfectedGeneral
 {
     private SpecialInfectedManager manager;
     private GameManager gameManager;
