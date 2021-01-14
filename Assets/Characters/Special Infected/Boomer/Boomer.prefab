@@ -1635,7 +1635,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f5ec32d77e250149834b0e899b962ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bluryVision: {fileID: 0}
+  bluryVision: {fileID: 6106977613445330985, guid: 3c6fd92c2cc124d4ebf8e65d8279f2e4, type: 3}
   spit: {fileID: 0}
 --- !u!195 &8038351859977163419
 NavMeshAgent:

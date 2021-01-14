@@ -19,6 +19,7 @@ public class SpecialInfectedBoomer : MonoBehaviour
     private bool isDead = false;
     private bool isSpitting = false;
     public GameObject bluryVision;
+    public GameObject thirdPesronBluryVision;
     public GameObject spit;
 
     // Start is called before the first frame update
@@ -142,6 +143,7 @@ public class SpecialInfectedBoomer : MonoBehaviour
     public void SpitHit()
     {
         bluryVision.SetActive(true);
+        thirdPesronBluryVision.SetActive(true);
         InvokeRepeating("Spawn", 0, 1);
         Invoke("RemoveSpit", 4);
     }
@@ -155,6 +157,7 @@ public class SpecialInfectedBoomer : MonoBehaviour
     {
         CancelInvoke("Spawn");
         bluryVision.SetActive(false);
+        thirdPesronBluryVision.SetActive(false);
         isSpitting = false;
     }
 
@@ -165,6 +168,8 @@ public class SpecialInfectedBoomer : MonoBehaviour
         HP = HP - damage;
         if (HP <= 0)
         {
+            Unspit();
+            RemoveSpit();
             CancelInvoke();
             animator.SetTrigger("Dead");
             agent.isStopped = true;
