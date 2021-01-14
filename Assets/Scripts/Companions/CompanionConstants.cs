@@ -70,8 +70,8 @@ public class CompanionConstants
                                              20, 
                                              33, 
                                              600, 
-                                             50*100, 
-                                             50*4*1000, 
+                                             50, 
+                                             50*4, 
                                              "Prefabs/Weapons/Rifle/Prefabs/RifleShooting"
                                              );
 

@@ -269,6 +269,7 @@ public class GameManager : MonoBehaviour
         companionWeapon.InitializeCompanionWeapon(CompanionConstants.COMPANION_WEAPONS[type]);
         //INITIALIZE
         companion.Initialize(companionWeapon,type);
+        hudManager.InitializeCompanion(type,companionWeapon);
 
     }
 
@@ -290,7 +291,7 @@ public class GameManager : MonoBehaviour
         player = GameObject.Find(EngineConstants.PLAYER).GetComponent<Player>();
         hudManager = GameObject.Find(EngineConstants.HUD).GetComponent<HUDManager>();
         weaponsManager = GameObject.Find(EngineConstants.WEAPONS_MANAGER).GetComponent<WeaponsManager>();
-        InitializeCompanion("rochelle");
+        InitializeCompanion("louis");
         //level = 1;
         //isPaused = false;
         //pauseScreen = GameObject.Find(EngineConstants.PAUSE);
