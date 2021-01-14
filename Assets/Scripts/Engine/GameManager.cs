@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
     
     private Camera pauseCamera;
 
-    private static String companion;
+    private static String companionName;
 
     private bool isChasing;
 
@@ -59,6 +59,16 @@ public class GameManager : MonoBehaviour
     public static bool isPauseScreen;
 
     private bool isRaged ;
+
+    private Companion companion;
+
+    private int normalRageIncrease = 10;
+
+    private int specialRageIncrease= 50;
+    private bool isDoubleIngredients;
+    private int enemyKillCount;
+   
+
 
 
     // Start is called before the first frame update
@@ -155,8 +165,8 @@ public class GameManager : MonoBehaviour
     
 
     public static void SetCompanion(String companionName) {
-        companion = companionName;
-        Debug.Log(companion);
+        GameManager.companionName = companionName;
+        //Debug.Log(companion);
     }
 
     //private void HandleSwitchWeapons() {
@@ -185,7 +195,8 @@ public class GameManager : MonoBehaviour
     private void HandleCraftingScreen()
     {
         if (Input.GetKeyDown(KeyCode.I))
-        {
+        {   
+            //this.gameObject.GetComponent<Craft>().SetIsDoubleIngredients(isDoubleIngredients);
             crafting_bool = !crafting_bool;
             FPS.enabled = false;
             TPS.enabled = false;
@@ -235,9 +246,13 @@ public class GameManager : MonoBehaviour
 
     public void EnemyDead(string type) {
         if(type=="normal"){
-            hudManager.ChangeRage(10);
+            hudManager.ChangeRage(normalRageIncrease);
         }
-        else hudManager.ChangeRage(50);
+        else hudManager.ChangeRage(specialRageIncrease);
+        enemyKillCount +=1;
+        if(enemyKillCount >=10 && enemyKillCount % 10 ==0) {
+            companion.SetExtraClip();
+        }
     }
 
     private void HandleActivateRage() {
@@ -257,6 +272,9 @@ public class GameManager : MonoBehaviour
     }
 
 
+    
+
+
 
     void Update()
     {
@@ -268,10 +286,11 @@ public class GameManager : MonoBehaviour
         HandlePauseScreen();
         HandleMusic();
         HandleActivateRage();
+        //HandleCompanionShoot();
 
-        if(Input.GetKeyDown(KeyCode.H)){
-            hudManager.ChangeRage(+30);
-        }
+        // if(Input.GetKeyDown(KeyCode.H)){
+        //     hudManager.ChangeRage(+30);
+        // }
     }
 
     private void HandlePause()
@@ -310,12 +329,58 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("Menus");
     }
 
+
+    private void InitializeCompanion(string type) {
+        GameObject companionLoad = Resources.Load(CompanionConstants.COMPANION_PATHS[type]) as GameObject;
+        (Vector3,Vector3) transformations = CompanionConstants.COMPANION_TRANSFORMATION[type];
+        GameObject companionInstance =  Instantiate(companionLoad,transformations.Item1, Quaternion.identity);
+        companionInstance.transform.localRotation = Quaternion.Euler(transformations.Item2);
+        companion = companionInstance.AddComponent<Companion>();
+        Weapon companionWeapon = GameObject.Find("WeaponEQCompanion").transform.GetChild(0).gameObject.AddComponent<Weapon>();
+        GameObject companionMuzzle = GameObject.Find("CompanionMuzzle");
+        if(companionMuzzle){
+            companionWeapon.SetMuzzle(companionMuzzle);
+            companionMuzzle.SetActive(false);
+        }
+        companionWeapon.InitializeCompanionWeapon(CompanionConstants.COMPANION_WEAPONS[type]);
+        //INITIALIZE
+        companion.Initialize(companionWeapon,type);
+        hudManager.InitializeCompanion(type,companionWeapon);
+
+        if(type == "louis") {
+                InvokeRepeating("IncreaseHealthBy1", 1, 1);
+        }
+        if(type== "ellie") {
+            normalRageIncrease = 2*normalRageIncrease;
+            specialRageIncrease = 2*normalRageIncrease;
+        }
+        if(type=="zoey") isDoubleIngredients = true;
+    }
+
+    private void IncreaseHealthBy1(){
+        SetHealth(1);
+    }
+       
+    public int AddEnemyToCompanion(NormalInfectant normal,int id) {
+        return companion.AddEnemy(normal, id);
+
+    }
+
+    public void RemoveNormalFromCompanion(int id) {
+        companion.RemoveEnemy("normal",id);
+    }
+
+
+
     void Start()
     {
 
         player = GameObject.Find(EngineConstants.PLAYER).GetComponent<Player>();
         hudManager = GameObject.Find(EngineConstants.HUD).GetComponent<HUDManager>();
         weaponsManager = GameObject.Find(EngineConstants.WEAPONS_MANAGER).GetComponent<WeaponsManager>();
+        Debug.Log(companionName + " NAMEEE");
+        InitializeCompanion(companionName);
+        //SetHealth(-50);
         //level = 1;
         //isPaused = false;
         //pauseScreen = GameObject.Find(EngineConstants.PAUSE);
