@@ -165,7 +165,7 @@ public class GameManager : MonoBehaviour
     
 
     public static void SetCompanion(String companionName) {
-        companionName = companionName;
+        GameManager.companionName = companionName;
         //Debug.Log(companion);
     }
 
@@ -378,7 +378,8 @@ public class GameManager : MonoBehaviour
         player = GameObject.Find(EngineConstants.PLAYER).GetComponent<Player>();
         hudManager = GameObject.Find(EngineConstants.HUD).GetComponent<HUDManager>();
         weaponsManager = GameObject.Find(EngineConstants.WEAPONS_MANAGER).GetComponent<WeaponsManager>();
-        InitializeCompanion("louis");
+        Debug.Log(companionName + " NAMEEE");
+        InitializeCompanion(companionName);
         //SetHealth(-50);
         //level = 1;
         //isPaused = false;
