@@ -24,11 +24,11 @@ public class GameManager : MonoBehaviour
 
     private bool isPaused;
 
-    private Level1Manager level1Manager;
+    // private Level1Manager level1Manager;
 
-    private Level2Manager level2Manager;
+    // private Level2Manager level2Manager;
 
-    private Level3Manager level3Manager;
+    // private Level3Manager level3Manager;
 
     private WeaponsManager weaponsManager;
 
@@ -91,29 +91,24 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void InitializeLevelManagers()
-    {
-        level1Manager = ScriptableObject.CreateInstance("Level1Manager") as Level1Manager;
-        level2Manager = ScriptableObject.CreateInstance("Level2Manager") as Level2Manager;
-        level3Manager = ScriptableObject.CreateInstance("Level3Manager") as Level3Manager;
-    }
+    
 
 
-    private void InitializeScene()
-    {
-        switch (level)
-        {
-            case 1:
-                level1Manager.Initialize();
-                break;
-            case 2:
-            //level2Manager.Initialize();
-            default:
-                break;
-                //level3Manager.Initialize();
+    // private void InitializeScene()
+    // {
+    //     switch (level)
+    //     {
+    //         case 1:
+    //             level1Manager.Initialize();
+    //             break;
+    //         case 2:
+    //         //level2Manager.Initialize();
+    //         default:
+    //             break;
+    //             //level3Manager.Initialize();
 
-        }
-    }
+    //     }
+    // }
 
     private void HandleSwitchGrenades()
     {

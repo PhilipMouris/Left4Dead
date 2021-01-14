@@ -2,42 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Level1Manager : ScriptableObject
+public class Level1Manager : LevelManager
 {
     // Start is called before the first frame update
 
-    private HealthPackManager healthPackManager;
-    private NormalInfectantsManager normalInfectantsManager;
-
-    private AmmoPackManager ammoPackManager;
-
-    private WeaponsManager weaponsManager;
-
-    private IngredientsManager ingredientsManager;
-
-    void Awake(){
-        InitializeManagers();
+    
+    private int remainingMembers = 0;
+    void UpdateTotalRemainingMembers(){
+        int remainingNormal = normalInfectantsManager.GetRemainingNormalInfected();
+        int remainingSpecial = specialInfectedManager.GetRemainingSpecialInfected();
+        remainingMembers = remainingNormal + remainingSpecial;
     }
-
-    private void InitializeManagers(){
-        //  healthPackManager = ScriptableObject.CreateInstance("HealthPackManager") as HealthPackManager;
-        //  normalInfectantsManager = ScriptableObject.CreateInstance("NormalInfectantsManager") as NormalInfectantsManager;
-         ammoPackManager = ScriptableObject.CreateInstance("AmmoPackManager") as AmmoPackManager;
-         //weaponsManager =  ScriptableObject.CreateInstance("WeaponsManager") as WeaponsManager;
-         //ingredientsManager =  ScriptableObject.CreateInstance("IngredientsManager") as IngredientsManager;
+    void UpdateObjective(){
+        if(!isLevelFinished){
+        currentObjective = "Kill "+remainingMembers.ToString() + " remaining infected members";
+        }else{
+            currentObjective = "LEVEL PASSED";
+        }
+        hUDManager.SetCurrentObjective(currentObjective);
     }
+    void CheckFinishLevel(){
+        if(remainingMembers<=45){
+            isLevelFinished=true;
+        }
+    }
+    
     void Start()
     {
-        
+        hUDManager.SetCurrentLevel(1);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        UpdateTotalRemainingMembers();
+        UpdateObjective();
+        CheckFinishLevel();
     }
 
-    public void Initialize(){
-        Debug.Log("INITIALL");
-    }
+    
 }

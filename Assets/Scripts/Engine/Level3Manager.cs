@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Level3Manager : ScriptableObject
+public class Level3Manager : LevelManager
 {
     // Start is called before the first frame update
     void Start()
