@@ -16,6 +16,7 @@ public class PipeBomb : Gernade
     private Animator beepingAnimator;
     private bool inside = false;
     private Player player;
+    private AudioSource explosionSource;
     // private string type = "pipe";
 
     void Awake(){
@@ -34,7 +35,9 @@ public class PipeBomb : Gernade
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                bool collected= this.hudManager.CollectGernade(gameObject.GetComponent<Gernade>(),player);
+                 GameObject copy = Instantiate(gameObject);
+                copy.SetActive(false);
+                bool collected= this.hudManager.CollectGernade(copy.GetComponent<Gernade>());
                 if(collected)
                     manager.UpdateLocations(gameObject);
             }
@@ -107,7 +110,9 @@ public class PipeBomb : Gernade
         Debug.Log("INSIDEExplode");
         isExploded = true;
         
-        GetAudioSource().PlayOneShot(explosionSound);
+        explosionSource = GetAudioSource();
+        explosionSource.outputAudioMixerGroup = GetAudioMixerGroup();
+        explosionSource.PlayOneShot(explosionSound);
         GameObject explosion = Instantiate(particleEffect, transform.position, transform.rotation);
 
         

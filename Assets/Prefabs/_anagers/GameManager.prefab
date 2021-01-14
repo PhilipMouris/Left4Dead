@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3652480453043183761}
   - component: {fileID: 7009654460976795738}
-  - component: {fileID: -1149774474911141090}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -46,16 +45,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CraftingScreen: {fileID: 1644584117862015060, guid: 7b79632da66a13c4a8333b88c6be3763, type: 3}
   HUD: {fileID: 0}
---- !u!114 &-1149774474911141090
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3312717787257538952}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31d2ebfaa557fef44bd8a00f88159724, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  button: {fileID: 524556111067214619, guid: 28d20e9eda9d1a54d9b94611662f7946, type: 3}

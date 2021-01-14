@@ -49,6 +49,8 @@ public class HUDManager : MonoBehaviour
 
     private  AnimatedBar animatedHealthBar;
     private AnimatedBar animatedPowerBar;
+
+    private GameObject levelInfo;
     private List<Gernade> gernades = new List<Gernade>();
     
     private Weapon companionWeapon;
@@ -80,6 +82,7 @@ public class HUDManager : MonoBehaviour
         equipmentContainer = GameObject.Find(HUDConstants.EQUIPMENT_CONTAINER);
         TextMeshProUGUI health = GameObject.Find(HUDConstants.HEALTH).GetComponent<TextMeshProUGUI>();
         healthBar = GameObject.Find(HUDConstants.HEALTH_BAR);
+        levelInfo = GameObject.Find("LevelInfo");
         GameObject powerBar = GameObject.Find(HUDConstants.POWER_BAR);
         healthBar.AddComponent<AnimatedBar>();
         animatedPowerBar = powerBar.AddComponent<AnimatedBar>();
@@ -166,6 +169,12 @@ public class HUDManager : MonoBehaviour
         this.currentlySelectedWeapon = rightWeapons[0];
         return currentlySelectedWeapon.GetWeapon();
 
+    }
+    public void SetCurrentLevel(int level){
+        levelInfo.GetComponentsInChildren<TextMeshProUGUI>()[0].text = "Level "+level.ToString();
+    }
+    public void SetCurrentObjective(string objective){
+        levelInfo.GetComponentsInChildren<TextMeshProUGUI>()[1].text = objective;
     }
     public bool CheckAllEmptyGrenades()
     {
@@ -314,7 +323,7 @@ public class HUDManager : MonoBehaviour
             currentHeldGernade = gernade;
             currentHeldGernadeType = type;
     }
-    public bool CollectGernade(Gernade gernade, Player player)
+    public bool CollectGernade(Gernade gernade)
     {
         Debug.Log("Added Gernade");
         string type = gernade.GetGernadeType();

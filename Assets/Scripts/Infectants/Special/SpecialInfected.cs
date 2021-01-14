@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SpecialInfected : MonoBehaviour
+public class SpecialInfected : SpecialInfectedGeneral
 {
     private SpecialInfectedManager manager;
     private GameManager gameManager;
@@ -116,15 +116,15 @@ public class SpecialInfected : MonoBehaviour
         if (transform.position.z >= walkingUpperBound)
             agent.destination = new Vector3(transform.position.x, transform.position.y, walkingLowerBound);
     }
-
-    public void GetShot(int damage)
+    
+    public override void GetShot(int damage)
     {
         HP = HP - damage;
         if (HP <= 0)
         {
             animator.SetBool("Dead", true);
-            manager.UpdateDeadMembers(gameObject);
             agent.isStopped = true;
+            manager.UpdateDeadMembers(gameObject);
         }
         else
         {

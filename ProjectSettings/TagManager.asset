@@ -17,8 +17,11 @@ TagManager:
   - sugar
   - cloth
   - Charger
+  - Spitter
+  - Spit
   - fps
   - weapon
+  - Fire
   layers:
   - Default
   - TransparentFX

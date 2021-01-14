@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Weapon : MonoBehaviour
 {
@@ -40,6 +41,7 @@ public class Weapon : MonoBehaviour
     private GameObject specialInfectantInRange;
     private GameManager gameManager;
 
+    private AudioMixerGroup SFXGroup;
     private Vector3 cameraPosition;
 
     private bool isCompanion;
@@ -94,7 +96,7 @@ public class Weapon : MonoBehaviour
         }
 
     }
-
+    
     private void HandleRayCast() {
         if(!isDrawn) return;
         Ray ray; 
@@ -114,10 +116,13 @@ public class Weapon : MonoBehaviour
                    return;
              //Debugging
             }
-            // if(collided.CompareTag("SPECIAL TAG GOES HERE")){
-            //        specialInfectantInRange = collided;
-            //        SetCrossHairRed();
-            // }
+            Debug.Log(collided.tag);
+            if(SpecialInfectantConstants.TAGS.Contains(collided.tag)){
+                    Debug.Log("SHOOT SPECIAL");
+                   specialInfectantInRange = collided;
+                   SetCrossHairRed();
+                   return;
+            }
 
           }
              //Debug.DrawLine(ray.origin, hit.point);
@@ -140,12 +145,14 @@ public class Weapon : MonoBehaviour
 
     public void PlayReloadAndDestroy() {
         AudioSource audioSource =  gameObject.AddComponent<AudioSource>();
+        audioSource.outputAudioMixerGroup = SFXGroup;
         audioSource.clip = reload;
         audioSource.Play();
         Destroy(gameObject, audioSource.clip.length);
     }
     private void PlayAudio(AudioClip clip) {
         AudioSource audioSource =  gameObject.AddComponent<AudioSource>();
+        audioSource.outputAudioMixerGroup = SFXGroup;
         audioSource.clip = clip;
         audioSource.Play();
         Destroy(audioSource, audioSource.clip.length);
@@ -156,6 +163,7 @@ public class Weapon : MonoBehaviour
          if( (Input.GetButton("Fire1") && isDrawn && !this.isCompanion) || this.isShootingCompanion){
              if(currentAmmo<=0) {
                  if(!outOfAmmo.isPlaying) {
+                    outOfAmmo.outputAudioMixerGroup = SFXGroup; 
                     outOfAmmo.clip = dryFire;
                     outOfAmmo.Play();
                  }
@@ -172,8 +180,8 @@ public class Weapon : MonoBehaviour
              }
              else {
                 if(specialInfectantInRange){
-                 //isDead = GetShot(dmg)
-                 //if(isDead) gameManager.EnemyDead("special");
+                    specialInfectantInRange.GetComponent<SpecialInfectedGeneral>().GetShot(dmg);
+                //  if(isDead) gameManager.EnemyDead("special");
                 } 
              }  
 
@@ -214,9 +222,13 @@ public class Weapon : MonoBehaviour
         this.aim = aim;
         outOfAmmo =  gameObject.AddComponent<AudioSource>();
         outOfAmmo.playOnAwake = false;
-        clip =  Resources.Load<AudioClip>($"Sounds/Weapons/{type}");
-        reload = Resources.Load<AudioClip>("Sounds/Weapons/reload");
-        dryFire = Resources.Load<AudioClip>("Sounds/Weapons/dryFire");
+        clip =  Resources.Load<AudioClip>($"Audio/SFX/{type}");
+        reload = Resources.Load<AudioClip>("Audio/SFX/reload");
+        dryFire = Resources.Load<AudioClip>("Audio/SFX/dryFire");
+        SFXGroup = GameObject.Find("SFXManager").GetComponent<SFXManager>().SFXGroup;
+        //clip =  Resources.Load<AudioClip>($"Sounds/Weapons/{type}");
+        //reload = Resources.Load<AudioClip>("Sounds/Weapons/reload");
+        //dryFire = Resources.Load<AudioClip>("Sounds/Weapons/dryFire");
         gameManager = GameObject.FindObjectOfType<GameManager>();
     }
 
@@ -252,13 +264,14 @@ public class Weapon : MonoBehaviour
             Destroy( this.gameObject.GetComponentInChildren<ParticleSystem>() );
         isDrawn = true;
         this.animator = this.gameObject.GetComponentsInChildren<Animator>().Length == 0 ? null : this.gameObject.GetComponentsInChildren<Animator>()[0] ;
-        clip =  Resources.Load<AudioClip>($"Sounds/Weapons/{type}");
-        reload = Resources.Load<AudioClip>("Sounds/Weapons/reload");
-        dryFire = Resources.Load<AudioClip>("Sounds/Weapons/dryFire");
+        clip =  Resources.Load<AudioClip>($"Audio/SFX/{type}");
+        reload = Resources.Load<AudioClip>("Audio/SFX/reload");
+        dryFire = Resources.Load<AudioClip>("Audio/SFX/dryFire");
         isCompanion = true;
         outOfAmmo =  gameObject.AddComponent<AudioSource>();
         gameManager = GameObject.FindObjectOfType<GameManager>();
         outOfAmmo.playOnAwake = false;
+        SFXGroup = GameObject.Find("SFXManager").GetComponent<SFXManager>().SFXGroup;
     }
 
     public bool Reload() {

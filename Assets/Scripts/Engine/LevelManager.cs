@@ -1,0 +1,31 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class LevelManager : MonoBehaviour
+{
+    // Start is called before the first frame update
+    protected bool isLevelFinished = false;
+    protected string currentObjective;
+    protected NormalInfectantsManager normalInfectantsManager;
+
+    protected SpecialInfectedManager specialInfectedManager;
+
+    protected GameManager gameManager;
+
+    protected HUDManager hUDManager;
+    protected Player player;
+
+
+    
+
+   
+   
+    public bool isLevelFinsihed(){
+        return isLevelFinished;
+    }
+    // Update is called once per frame
+    
+
+    
+}

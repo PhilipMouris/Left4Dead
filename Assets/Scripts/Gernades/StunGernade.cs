@@ -14,6 +14,8 @@ public class StunGernade : Gernade
     private bool inside = false;
 
     private Player player;
+
+    private AudioSource explosionSource;
     // private string type = "stun";
 
 
@@ -32,7 +34,9 @@ public class StunGernade : Gernade
             // Debug.Log("INSIDEEe2");
             if (Input.GetKeyDown(KeyCode.E))
             {
-                bool collected= this.hudManager.CollectGernade(gameObject.GetComponent<Gernade>(),player);
+                GameObject copy = Instantiate(gameObject);
+                copy.SetActive(false);
+                bool collected= this.hudManager.CollectGernade(copy.GetComponent<Gernade>());
                 if(collected)
                     manager.UpdateLocations(gameObject);
             }
@@ -97,7 +101,9 @@ public class StunGernade : Gernade
         isExploded = true;
 
         GameObject explosion = Instantiate(particleEffect, transform.position, transform.rotation);
-        GetAudioSource().PlayOneShot(explosionSound);
+        explosionSource = GetAudioSource();
+        explosionSource.outputAudioMixerGroup = GetAudioMixerGroup();
+        explosionSource.PlayOneShot(explosionSound);
         createdFire = Instantiate(fire, transform.position, transform.rotation);
         infectantManager.StunAll();
 
