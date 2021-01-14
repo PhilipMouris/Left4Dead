@@ -148,7 +148,7 @@ public class Weapon : MonoBehaviour
         audioSource.outputAudioMixerGroup = SFXGroup;
         audioSource.clip = reload;
         audioSource.Play();
-        Destroy(gameObject, audioSource.clip.length);
+        Destroy(gameObject);
     }
     private void PlayAudio(AudioClip clip) {
         AudioSource audioSource =  gameObject.AddComponent<AudioSource>();
@@ -197,6 +197,7 @@ public class Weapon : MonoBehaviour
     public void ShootCompanion(string type, GameObject enemy) {
         switch(type) {
             case "normal":normalInfectantInRange = enemy;break;
+            default: specialInfectantInRange = enemy;break;
         }
 
     }
@@ -237,6 +238,7 @@ public class Weapon : MonoBehaviour
         this.type = type;
         this.weapon = weapon;
         reload = Resources.Load<AudioClip>("Sounds/Weapons/reload");
+        SFXGroup = GameObject.Find("SFXManager").GetComponent<SFXManager>().SFXGroup;
         this.spawnIndex = spawnIndex;
     }
     // string TYPE,  

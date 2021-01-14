@@ -368,8 +368,25 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public int AddSpecialToCompanion(SpecialInfectedGeneral special, int id, string type) {
+            switch(type){
+                case "boomer":return companion.AddEnemy((SpecialInfectedBoomer)special, id);
+                case "spitter": return companion.AddEnemy((SpecialInfectedSpitterClone)special, id);
+                case "tank": return companion.AddEnemy((SpecialInfected)special, id);
+                case "charger": return companion.AddEnemy((SpecialInfectedCharger)special, id);
+                default: return 0;
+
+
+            }
+    }
+
+    public void RemoveSpecialFromCompanion(string type,int id) {
+        companion.RemoveEnemy(type,id);
+    }
+
+
     public void RemoveNormalFromCompanion(int id) {
-        companion.RemoveEnemy("normal",id);
+        companion.RemoveEnemy("normal", id);
     }
 
 
@@ -380,8 +397,7 @@ public class GameManager : MonoBehaviour
         player = GameObject.Find(EngineConstants.PLAYER).GetComponent<Player>();
         hudManager = GameObject.Find(EngineConstants.HUD).GetComponent<HUDManager>();
         weaponsManager = GameObject.Find(EngineConstants.WEAPONS_MANAGER).GetComponent<WeaponsManager>();
-        Debug.Log(companionName + " NAMEEE");
-        InitializeCompanion("Louis");
+        InitializeCompanion(companionName!=null ? companionName:"Louis");
         //SetHealth(-150);
         //level = 1;
         //isPaused = false;
