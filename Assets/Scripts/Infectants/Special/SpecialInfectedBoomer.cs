@@ -17,6 +17,7 @@ public class SpecialInfectedBoomer : MonoBehaviour
     private bool isChasing = false;
     private bool isAttacking = false;
     private bool isDead = false;
+    private bool isSpitting = false;
     public GameObject bluryVision;
     public GameObject spit;
 
@@ -49,6 +50,13 @@ public class SpecialInfectedBoomer : MonoBehaviour
             Attack();
         if (isAttacking)
             RotateToPlayer();
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attacking"))
+            Invoke("Spit", 0.8f);
+        else
+        {
+            Unspit();
+            CancelInvoke("Spit");
+        }
     }
 
     public void AlternatePosition()
@@ -90,8 +98,7 @@ public class SpecialInfectedBoomer : MonoBehaviour
         agent.Stop();
         isChasing = false;
         animator.SetTrigger("Attack");
-        Invoke("ContinueChasing", 2 + attackInterval);
-        Invoke("Spit", 2.0f);
+        Invoke("ContinueChasing", 2.0f + attackInterval);
     }
 
     public bool PlayerInRange()
@@ -118,6 +125,22 @@ public class SpecialInfectedBoomer : MonoBehaviour
 
     public void Spit()
     {
+        transform.GetChild(2).gameObject.SetActive(true);
+        if (PlayerAttacked() && !isSpitting && Vector3.Angle(player.transform.forward, transform.position - player.transform.position) < 15)
+        {
+            isSpitting = true;
+            Invoke("SpitHit", 0.5f);
+        }
+
+    }
+
+    public void Unspit()
+    {
+        transform.GetChild(2).gameObject.SetActive(false);
+    }
+
+    public void SpitHit()
+    {
         bluryVision.SetActive(true);
         InvokeRepeating("Spawn", 0, 1);
         Invoke("RemoveSpit", 4);
@@ -132,6 +155,7 @@ public class SpecialInfectedBoomer : MonoBehaviour
     {
         CancelInvoke("Spawn");
         bluryVision.SetActive(false);
+        isSpitting = false;
     }
 
     public void GetShot(int damage)
