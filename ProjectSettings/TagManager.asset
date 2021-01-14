@@ -21,6 +21,7 @@ TagManager:
   - Spit
   - fps
   - weapon
+  - Fire
   layers:
   - Default
   - TransparentFX

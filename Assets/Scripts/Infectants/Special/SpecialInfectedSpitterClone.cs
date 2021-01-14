@@ -130,7 +130,6 @@ public class SpecialInfectedSpitterClone : SpecialInfectedGeneral
         HP = HP - damage;
         if (HP <= 0)
         {
-            Debug.Log("ttttttt");
             CancelInvoke();
             animator.SetTrigger("Dead");
             agent.isStopped = true;
