@@ -116,7 +116,7 @@ public class Weapon : MonoBehaviour
                    return;
              //Debugging
             }
-            Debug.Log(collided.tag);
+            Debug.Log(collided.tag + "SPECIALL");
             if(SpecialInfectantConstants.TAGS.Contains(collided.tag)){
                     Debug.Log("SHOOT SPECIAL");
                    specialInfectantInRange = collided;
@@ -148,7 +148,7 @@ public class Weapon : MonoBehaviour
         audioSource.outputAudioMixerGroup = SFXGroup;
         audioSource.clip = reload;
         audioSource.Play();
-        Destroy(gameObject, audioSource.clip.length);
+        Destroy(gameObject);
     }
     private void PlayAudio(AudioClip clip) {
         AudioSource audioSource =  gameObject.AddComponent<AudioSource>();
@@ -172,7 +172,8 @@ public class Weapon : MonoBehaviour
              PlayAudio(clip);
              if(type!= WeaponsConstants.WEAPON_TYPES["PISTOL"] && muzzle && !muzzle.active ) muzzle.SetActive(true);
              if(animator) animator.SetTrigger(WeaponsConstants.FIRE);
-             if(collided && ! collided.CompareTag(NormalInfectantConstants.TAG) ) DrawBulletHole();
+             if(collided && ! collided.CompareTag(NormalInfectantConstants.TAG) && !SpecialInfectantConstants.TAGS.Contains(collided.tag) ) 
+                    DrawBulletHole();
              if(normalInfectantInRange) {
                 int dealtDamage = gameManager.GetIsRaged() ? 2*dmg : dmg;
                 normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(dealtDamage);
@@ -196,6 +197,7 @@ public class Weapon : MonoBehaviour
     public void ShootCompanion(string type, GameObject enemy) {
         switch(type) {
             case "normal":normalInfectantInRange = enemy;break;
+            default: specialInfectantInRange = enemy;break;
         }
 
     }
@@ -236,6 +238,7 @@ public class Weapon : MonoBehaviour
         this.type = type;
         this.weapon = weapon;
         reload = Resources.Load<AudioClip>("Sounds/Weapons/reload");
+        SFXGroup = GameObject.Find("SFXManager").GetComponent<SFXManager>().SFXGroup;
         this.spawnIndex = spawnIndex;
     }
     // string TYPE,  

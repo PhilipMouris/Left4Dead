@@ -21,6 +21,14 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
     private bool isDead = false;
     private bool isPaused = false;
 
+    private string type = "charger";
+    public int companionID = 0;
+
+    private SpecialInfectedGeneral upCast;
+
+    void Awake() {
+        upCast = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -56,6 +64,18 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
         // for testing purposes
         if (Input.GetKeyDown("m"))
             GetShot(50);
+        
+        if(PlayerInRange()) {
+               if(companionID==0 && !isDead)
+                         companionID = manager.AddToCompanion(upCast,companionID,type);
+        }
+        else {
+               if(companionID!= 0){
+                    manager.RemoveEnemy(type,companionID);
+                    companionID = 0;
+            }
+        }
+        
     }
 
     public void CheckCamera()
@@ -119,7 +139,7 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
 
     public void DecreaseHealth()
     {
-        gameManager.SetHealth(gameManager.GetHealth() - dps);
+        gameManager.SetHealth(-dps);
     }
 
     public bool PlayerAtStoppingDistance()
@@ -161,6 +181,8 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
             animator.SetBool("Dead", true);
             agent.isStopped = true;
             isDead = true;
+            manager.Die();
+            manager.RemoveEnemy(type,companionID);
             manager.UpdateDeadMembers(gameObject);
         }
         else

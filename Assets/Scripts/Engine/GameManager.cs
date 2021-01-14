@@ -283,14 +283,16 @@ public class GameManager : MonoBehaviour
         HandleSwitchGrenades();
         HandleThrowGrenade();
         HandlePickUpWeapon();
-        HandlePauseScreen();
+        //HandlePauseScreen();
         HandleMusic();
         HandleActivateRage();
-        //HandleCompanionShoot();
 
-        // if(Input.GetKeyDown(KeyCode.H)){
-        //     hudManager.ChangeRage(+30);
-        // }
+        if(Input.GetKeyDown(KeyCode.H)){
+            hudManager.ChangeHealth(+30);
+        }
+           if(Input.GetKeyDown(KeyCode.J)){
+            hudManager.ChangeHealth(-30);
+        }
     }
 
     private void HandlePause()
@@ -347,14 +349,14 @@ public class GameManager : MonoBehaviour
         companion.Initialize(companionWeapon,type);
         hudManager.InitializeCompanion(type,companionWeapon);
 
-        if(type == "louis") {
+        if(type == "Louis") {
                 InvokeRepeating("IncreaseHealthBy1", 1, 1);
         }
-        if(type== "ellie") {
+        if(type== "Ellie") {
             normalRageIncrease = 2*normalRageIncrease;
             specialRageIncrease = 2*normalRageIncrease;
         }
-        if(type=="zoey") isDoubleIngredients = true;
+        if(type=="Zoey") isDoubleIngredients = true;
     }
 
     private void IncreaseHealthBy1(){
@@ -366,8 +368,25 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public int AddSpecialToCompanion(SpecialInfectedGeneral special, int id, string type) {
+            switch(type){
+                case "boomer":return companion.AddEnemy((SpecialInfectedBoomer)special, id);
+                case "spitter": return companion.AddEnemy((SpecialInfectedSpitterClone)special, id);
+                case "tank": return companion.AddEnemy((SpecialInfected)special, id);
+                case "charger": return companion.AddEnemy((SpecialInfectedCharger)special, id);
+                default: return 0;
+
+
+            }
+    }
+
+    public void RemoveSpecialFromCompanion(string type,int id) {
+        companion.RemoveEnemy(type,id);
+    }
+
+
     public void RemoveNormalFromCompanion(int id) {
-        companion.RemoveEnemy("normal",id);
+        companion.RemoveEnemy("normal", id);
     }
 
 
@@ -378,9 +397,8 @@ public class GameManager : MonoBehaviour
         player = GameObject.Find(EngineConstants.PLAYER).GetComponent<Player>();
         hudManager = GameObject.Find(EngineConstants.HUD).GetComponent<HUDManager>();
         weaponsManager = GameObject.Find(EngineConstants.WEAPONS_MANAGER).GetComponent<WeaponsManager>();
-        Debug.Log(companionName + " NAMEEE");
-        InitializeCompanion(companionName);
-        //SetHealth(-50);
+        InitializeCompanion(companionName!=null ? companionName:"Louis");
+        //SetHealth(-150);
         //level = 1;
         //isPaused = false;
         //pauseScreen = GameObject.Find(EngineConstants.PAUSE);
@@ -454,7 +472,6 @@ public class GameManager : MonoBehaviour
     }
     
     private void HandleMusic() {
-        Debug.Log(isChasing + "chasing");
         if(!isChasing) {
             if(!GameObject.Find("MusicManager").GetComponent<MusicManager>().isExplorePlaying()) {
                 PlayExplore();
