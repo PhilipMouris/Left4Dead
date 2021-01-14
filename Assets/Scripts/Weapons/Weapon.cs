@@ -116,7 +116,7 @@ public class Weapon : MonoBehaviour
                    return;
              //Debugging
             }
-            Debug.Log(collided.tag);
+            Debug.Log(collided.tag + "SPECIALL");
             if(SpecialInfectantConstants.TAGS.Contains(collided.tag)){
                     Debug.Log("SHOOT SPECIAL");
                    specialInfectantInRange = collided;
@@ -172,7 +172,8 @@ public class Weapon : MonoBehaviour
              PlayAudio(clip);
              if(type!= WeaponsConstants.WEAPON_TYPES["PISTOL"] && muzzle && !muzzle.active ) muzzle.SetActive(true);
              if(animator) animator.SetTrigger(WeaponsConstants.FIRE);
-             if(collided && ! collided.CompareTag(NormalInfectantConstants.TAG) ) DrawBulletHole();
+             if(collided && ! collided.CompareTag(NormalInfectantConstants.TAG) && !SpecialInfectantConstants.TAGS.Contains(collided.tag) ) 
+                    DrawBulletHole();
              if(normalInfectantInRange) {
                 int dealtDamage = gameManager.GetIsRaged() ? 2*dmg : dmg;
                 normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(dealtDamage);

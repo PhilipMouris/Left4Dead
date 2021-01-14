@@ -26,7 +26,7 @@ public class NormalInfectantsManager : MonoBehaviour
         // hordeLocations = GameObject.Find("HordeLocations");
         infected_members = new GameObject[locations_list.Length-1];
        
-        Spawn();
+        //Spawn();
         
     }
 

@@ -283,14 +283,16 @@ public class GameManager : MonoBehaviour
         HandleSwitchGrenades();
         HandleThrowGrenade();
         HandlePickUpWeapon();
-        HandlePauseScreen();
+        //HandlePauseScreen();
         HandleMusic();
         HandleActivateRage();
-        //HandleCompanionShoot();
 
-        // if(Input.GetKeyDown(KeyCode.H)){
-        //     hudManager.ChangeRage(+30);
-        // }
+        if(Input.GetKeyDown(KeyCode.H)){
+            hudManager.ChangeHealth(+30);
+        }
+           if(Input.GetKeyDown(KeyCode.J)){
+            hudManager.ChangeHealth(-30);
+        }
     }
 
     private void HandlePause()
@@ -347,14 +349,14 @@ public class GameManager : MonoBehaviour
         companion.Initialize(companionWeapon,type);
         hudManager.InitializeCompanion(type,companionWeapon);
 
-        if(type == "louis") {
+        if(type == "Louis") {
                 InvokeRepeating("IncreaseHealthBy1", 1, 1);
         }
-        if(type== "ellie") {
+        if(type== "Ellie") {
             normalRageIncrease = 2*normalRageIncrease;
             specialRageIncrease = 2*normalRageIncrease;
         }
-        if(type=="zoey") isDoubleIngredients = true;
+        if(type=="Zoey") isDoubleIngredients = true;
     }
 
     private void IncreaseHealthBy1(){
@@ -379,8 +381,8 @@ public class GameManager : MonoBehaviour
         hudManager = GameObject.Find(EngineConstants.HUD).GetComponent<HUDManager>();
         weaponsManager = GameObject.Find(EngineConstants.WEAPONS_MANAGER).GetComponent<WeaponsManager>();
         Debug.Log(companionName + " NAMEEE");
-        InitializeCompanion(companionName);
-        //SetHealth(-50);
+        InitializeCompanion("Louis");
+        //SetHealth(-150);
         //level = 1;
         //isPaused = false;
         //pauseScreen = GameObject.Find(EngineConstants.PAUSE);
@@ -454,7 +456,6 @@ public class GameManager : MonoBehaviour
     }
     
     private void HandleMusic() {
-        Debug.Log(isChasing + "chasing");
         if(!isChasing) {
             if(!GameObject.Find("MusicManager").GetComponent<MusicManager>().isExplorePlaying()) {
                 PlayExplore();
