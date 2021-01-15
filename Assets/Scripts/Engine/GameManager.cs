@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour
     private bool isDoubleIngredients;
     private int enemyKillCount;
     public UnityEvent setRescued;
+    public static bool isDying;
 
 
 
@@ -166,6 +167,7 @@ public class GameManager : MonoBehaviour
             if (Input.GetMouseButtonUp(1))
             {
                 player.GetComponent<Animator>().SetTrigger("throwGernade");
+                player.ResetState();
                 // Debug.Log(gernades.Count + " COUNT?????");
                 hudManager.ChangePowerBar(-100);
                 Invoke("ThrowGrenadeHelper", 0.85f);
@@ -291,6 +293,7 @@ public class GameManager : MonoBehaviour
             Weapon weapon = player.GetWeaponInRange();
             if (!weapon) return;
             player.GetComponent<Animator>().SetTrigger("pickupGernade");
+            player.ResetState();
             Weapon oldWeapon = weaponsManager.GetWeapon(weapon.GetType());
             if (!oldWeapon)
             {
@@ -532,6 +535,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void PlayerDie() {
+            GameManager.isDying = true;
+            GameObject.Find("ThirdPersonCamera").GetComponent<Camera>().enabled = true;
+            GameObject.Find("FirstPersonCharacter").GetComponent<Camera>().enabled = false;
+            GameObject.Find("WeaponCamera").GetComponent<Camera>().enabled = false;
+            player.GetComponent<Animator>().SetTrigger("dead");
+    }
+
     void Start()
     {
 
@@ -539,7 +550,8 @@ public class GameManager : MonoBehaviour
         hudManager = GameObject.Find(EngineConstants.HUD).GetComponent<HUDManager>();
         weaponsManager = GameObject.Find(EngineConstants.WEAPONS_MANAGER).GetComponent<WeaponsManager>();
         companionName = "Zoey";
-        Invoke("HandleInitializeCompanion", 1);
+        InitializeCompanion(companionName);
+        //Invoke("HandleInitializeCompanion", 1);
         //SetHealth(-50);
 
         //SetHealth(-150);
@@ -682,6 +694,9 @@ public class GameManager : MonoBehaviour
 
     public void SetHealth(int health)
     {
+        if(health < 0) {
+            GameObject.Find("SFXManager").GetComponent<SFXManager>().PlayHit();
+        }
         hudManager.ChangeHealth(health);
     }
 

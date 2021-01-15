@@ -1,5 +1,10 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Bleed.meta
+guid: 54e6143fff8a0304dbb45f21b86b9cde
+folderAsset: yes
+=======
 guid: 1a6e8eceac74bee4b952ebdee8cc7f05
+>>>>>>> 0e2cf7aab975b52a350e223f9d29da36c8b3a8d2:Assets/Scenes/Credits.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

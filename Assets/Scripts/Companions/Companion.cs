@@ -52,6 +52,7 @@ public class Companion : MonoBehaviour
 
     public int AddEnemy(NormalInfectant normal,int id) {
         if(normalInfectants.ContainsKey(id)) return id;
+        HandlePlayDetected();
         if(id == null || id ==0 ){
             this.enemyID +=1;
         }
@@ -63,6 +64,7 @@ public class Companion : MonoBehaviour
     
     public int AddEnemy(SpecialInfected tank,int id) {
          if(tanks.ContainsKey(id)) return id;
+         HandlePlayDetected();
          if(id == null || id ==0 ){
             this.enemyID +=1;
         }
@@ -73,6 +75,7 @@ public class Companion : MonoBehaviour
 
      public int AddEnemy(SpecialInfectedCharger charged,int id) {
           if(chargers.ContainsKey(id)) return id;
+          HandlePlayDetected();
         if(id == null || id ==0 ){
             this.enemyID +=1;
         }
@@ -84,6 +87,7 @@ public class Companion : MonoBehaviour
 
       public int AddEnemy(SpecialInfectedBoomer charged,int id) {
           if(boomers.ContainsKey(id)) return id;
+          HandlePlayDetected();
         if(id == null || id ==0 ){
             this.enemyID +=1;
         }
@@ -92,10 +96,15 @@ public class Companion : MonoBehaviour
         return usedId;
     }
 
-
+    private void HandlePlayDetected() {
+        if(!GameObject.Find("SpeechManager").GetComponent<SpeechManager>().isDetectedPlaying()) {
+            GameObject.Find("SpeechManager").GetComponent<SpeechManager>().PlayInfectedDetected();
+        }
+    }    
     
       public int AddEnemy(SpecialInfectedSpitterClone charged,int id) {
           if(spitters.ContainsKey(id)) return id;
+          HandlePlayDetected();
         if(id == null || id ==0 ){
             this.enemyID +=1;
         }
@@ -221,6 +230,7 @@ public class Companion : MonoBehaviour
      
     private void HandleShoot() {
         if(Input.GetKey(KeyCode.Q)){
+            GameObject.Find("SpeechManager").GetComponent<SpeechManager>().PlayCompanionFire();
             if(type!=CompanionConstants.rochelle) isShooting = true;
             weapon.SetIsShootingCompanion(true);
             weapon.ShootCompanion(enemyType,nextShotEnemy);
