@@ -692,7 +692,6 @@ GameObject:
   - component: {fileID: 2691717588786505366}
   - component: {fileID: 2691717588786505353}
   - component: {fileID: 2691717588786505352}
-  - component: {fileID: -4488044691771026135}
   m_Layer: 0
   m_Name: Spitter
   m_TagString: Spitter
@@ -771,20 +770,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spit: {fileID: 3974514535145631411, guid: 029a6c7e3818f9e4685f2c0f3b4f93b1, type: 3}
---- !u!136 &-4488044691771026135
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2691717588786505355}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2691717588787804450
 GameObject:
   m_ObjectHideFlags: 0
