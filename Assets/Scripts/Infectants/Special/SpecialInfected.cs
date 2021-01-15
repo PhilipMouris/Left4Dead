@@ -21,8 +21,10 @@ public class SpecialInfected : SpecialInfectedGeneral
     private bool isDead;
    private string type = "tank";
     public int companionID = 0;
+    private bool isAttractedToPipe = false;
 
     private SpecialInfectedGeneral upCast;
+    private bool stoppedChasing;
 
     void Awake() {
         upCast = this;
@@ -49,6 +51,10 @@ public class SpecialInfected : SpecialInfectedGeneral
     // Update is called once per frame
     void Update()
     {
+        if (!stoppedChasing) {
+
+        if (isAttractedToPipe)
+            return;
         if (!isAttacking && !isChasing)
             AlternatePosition();
         if (PlayerInRange() && !isChasing && !isAttacking)
@@ -58,14 +64,22 @@ public class SpecialInfected : SpecialInfectedGeneral
         if (PlayerOutsideStoppingDistance() && !isChasing && isAttacking)
             UnAttack();
         if (isChasing)
+            GameObject.Find("GameManager").GetComponent<GameManager>().SetChasing(isChasing);
             Chase();
+        
+        if(isChasing && HP == 0) {
+            isChasing = false;
+            stoppedChasing = true;
+            GameObject.Find("SFXManager").GetComponent<SFXManager>().PlaySpecialDead();
+            GameObject.Find("GameManager").GetComponent<GameManager>().SetChasing(isChasing);
+        }        
         // for testing purposes
         if (Input.GetKeyDown("m"))
             GetShot(50);
 
         if(PlayerInRange()) {
                if(companionID==0 && !isDead)
-                    if(gameManager.GetIsRescued())
+                    if((gameManager.GetIsRescued() && gameManager.GetRescueLevel())|| !gameManager.GetRescueLevel())
                          companionID = manager.AddToCompanion(upCast,companionID,type);
         }
         else {
@@ -74,6 +88,7 @@ public class SpecialInfected : SpecialInfectedGeneral
                     companionID = 0;
             }
         }
+    }
     }
 
     public void UnAttack()
@@ -107,7 +122,8 @@ public class SpecialInfected : SpecialInfectedGeneral
         animator.SetBool("Attack", true);
         animator.SetBool("Run", false);
         agent.Stop();
-      
+        InvokeRepeating("DecreaseHealth", attackInterval, attackInterval);
+
     }
 
     public void DecreaseHealth()
@@ -181,5 +197,23 @@ public class SpecialInfected : SpecialInfectedGeneral
     public override bool GetIsStunned()
     {
         return isStunned;
+    }
+
+    public override void GetAttracted(Transform grenadeLocation)
+    {
+        isAttractedToPipe = true;
+        isChasing = false;
+        isAttacking = false;
+        agent.ResetPath();
+        agent.destination = grenadeLocation.position;
+        agent.stoppingDistance = 1;
+        animator.SetBool("Run", true);
+        animator.SetBool("Attack", false);
+    }
+
+    public override void GetUnAttracted()
+    {
+        agent.ResetPath();
+        isAttractedToPipe = false;
     }
 }

@@ -139,7 +139,9 @@ public class Player : MonoBehaviour
         }
     }
 
-
+    public void ResetAmmo() {
+        currentWeapon.Reset();
+    }
 
     private void HandleReload() {
         if(Input.GetButtonDown(PlayerConstants.RELOAD_INPUT) && isWeaponDrawn) {

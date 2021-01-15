@@ -24,8 +24,10 @@ public class SpecialInfectedBoomer : SpecialInfectedGeneral
     public GameObject spit;
     private string type = "boomer";
     public int companionID = 0;
+    private bool stoppedChasing;
 
     private SpecialInfectedGeneral upCast;
+    private bool isAttractedToPipe = false;
 
     void Awake() {
         upCast = this;
@@ -48,16 +50,20 @@ public class SpecialInfectedBoomer : SpecialInfectedGeneral
     // Update is called once per frame
     void Update()
     {   
-        
+        if(!stoppedChasing) {
+
         if (Input.GetKeyDown("m"))
             GetShot(10);
         if (isDead)
-            return;
-        if (isStunned)
+            GameObject.Find("GameManager").GetComponent<GameManager>().SetChasing(false);
+            GameObject.Find("SFXManager").GetComponent<SFXManager>().PlaySpecialDead();
+            stoppedChasing = true;
+        if (isStunned || isAttractedToPipe)
             return;
         if (!isChasing && !isAttacking)
             AlternatePosition();
         if (PlayerInRange() && !isChasing && !isAttacking)
+            GameObject.Find("GameManager").GetComponent<GameManager>().SetChasing(true);
             StartChasing();
         if (PlayerAtStoppingDistance() && isChasing)
             Attack();
@@ -72,7 +78,7 @@ public class SpecialInfectedBoomer : SpecialInfectedGeneral
         }
         if(PlayerInRange()) {
                if(companionID==0 && !isDead)
-                    if(gameManager.GetIsRescued())
+                    if((gameManager.GetIsRescued() && gameManager.GetRescueLevel())|| !gameManager.GetRescueLevel())
                          companionID = manager.AddToCompanion(upCast,companionID,type);
         }
         else {
@@ -82,6 +88,7 @@ public class SpecialInfectedBoomer : SpecialInfectedGeneral
             }
         }
         
+        }
     }
 
     public void AlternatePosition()
@@ -235,4 +242,31 @@ public class SpecialInfectedBoomer : SpecialInfectedGeneral
     {
         return isStunned;
     }
+
+    public override void GetAttracted(Transform grenadeLocation)
+    {
+        isAttractedToPipe = true;
+        isChasing = false;
+        isAttacking = false;
+        agent.ResetPath();
+        agent.destination = grenadeLocation.position;
+        agent.stoppingDistance = 1;
+        animator.SetBool("Run", true);
+        animator.SetBool("Attack", false);
+        Unspit();
+        RemoveSpit();
+        CancelInvoke();
+    }
+
+    public override void GetUnAttracted()
+    {
+        if (isDead)
+            return;
+        agent.ResetPath();
+        agent.destination = player.transform.position;
+        agent.stoppingDistance = 10;
+        StartChasing();
+        isAttractedToPipe = false;
+    }
+
 }

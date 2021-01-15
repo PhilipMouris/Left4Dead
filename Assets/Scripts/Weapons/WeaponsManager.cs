@@ -130,6 +130,7 @@ public class WeaponsManager : MonoBehaviour
     private Weapon InitializeSpawn(string type, Vector3 position,int index) {
         GameObject weaponObject = weaponResources[type];
         GameObject weaponObjectInstance = Instantiate(weaponObject,position, Quaternion.identity);
+        SetLayerRecursively(weaponObjectInstance,10);
         weaponObjectInstance.AddComponent<Weapon>();
         Weapon weapon = weaponObjectInstance.GetComponent<Weapon>();
         weapon.Initialize(type,weaponObjectInstance,index);

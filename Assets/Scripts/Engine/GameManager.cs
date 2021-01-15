@@ -146,7 +146,8 @@ public class GameManager : MonoBehaviour
         throwingPower = 3f;
 
     }
-    public void ThrowGrenadeHelper(){
+    public void ThrowGrenadeHelper()
+    {
         player.ThrowGrenade(throwingPower);
         hudManager.RemoveCurrentGernade();
         this.ResetGrenadeInfo();
@@ -169,8 +170,8 @@ public class GameManager : MonoBehaviour
                 player.ResetState();
                 // Debug.Log(gernades.Count + " COUNT?????");
                 hudManager.ChangePowerBar(-100);
-                Invoke("ThrowGrenadeHelper",0.85f);
-                
+                Invoke("ThrowGrenadeHelper", 0.85f);
+
             }
         }
         else
@@ -217,18 +218,21 @@ public class GameManager : MonoBehaviour
 
     private void HandleCraftingScreen()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (!isPauseScreen)
         {
-            //this.gameObject.GetComponent<Craft>().SetIsDoubleIngredients(isDoubleIngredients);
-            crafting_bool = !crafting_bool;
-            FPS.enabled = false;
-            TPS.enabled = false;
-            craftingCamera.enabled = true;
-            CraftingScreen.SetActive(crafting_bool);
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                //this.gameObject.GetComponent<Craft>().SetIsDoubleIngredients(isDoubleIngredients);
+                crafting_bool = !crafting_bool;
+                FPS.enabled = false;
+                TPS.enabled = false;
+                craftingCamera.enabled = true;
+                CraftingScreen.SetActive(crafting_bool);
 
-            GameObject.Find("FPSController").GetComponent<FirstPersonController>().GetMouseLook().SetCursorLock(!crafting_bool);
-            this.craftingManager.FindObjects();
-            HandlePause();
+                GameObject.Find("FPSController").GetComponent<FirstPersonController>().GetMouseLook().SetCursorLock(!crafting_bool);
+                this.craftingManager.FindObjects();
+                HandlePause();
+            }
         }
     }
 
@@ -236,9 +240,20 @@ public class GameManager : MonoBehaviour
     {
         if (!isPauseScreen)
         {
-
-            if (Input.GetKeyDown(KeyCode.Escape))
+            
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
             {
+                if(crafting_bool){
+                    crafting_bool = !crafting_bool;
+                    FPS.enabled = false;
+                    TPS.enabled = false;
+                    craftingCamera.enabled = true;
+                    CraftingScreen.SetActive(crafting_bool);
+
+                    GameObject.Find("FPSController").GetComponent<FirstPersonController>().GetMouseLook().SetCursorLock(!crafting_bool);
+                    this.craftingManager.FindObjects();
+                    HandlePause();
+                }
                 PauseScreen.SetActive(true);
                 CraftingScreen.SetActive(false);
                 FPS.enabled = false;
@@ -346,7 +361,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            hudManager.ChangeHealth(+30);
+            hudManager.ChangeRage(+100);
         }
         if (Input.GetKeyDown(KeyCode.J))
         {
@@ -375,8 +390,8 @@ public class GameManager : MonoBehaviour
     public void ResumeGame()
     {
         PauseScreen.SetActive(false);
-        FPS.enabled = true;
         TPS.enabled = true;
+        FPS.enabled = true;
         craftingCamera.enabled = false;
         pauseCamera.enabled = false;
         isPauseScreen = false;
@@ -456,6 +471,10 @@ public class GameManager : MonoBehaviour
     {
         return isRescued;
     }
+    public bool GetRescueLevel()
+    {
+        return isRescueLevel;
+    }
     public int AddEnemyToCompanion(NormalInfectant normal, int id)
     {
         return companion.AddEnemy(normal, id);
@@ -464,7 +483,11 @@ public class GameManager : MonoBehaviour
 
 
     public int AddSpecialToCompanion(SpecialInfectedGeneral special, int id, string type)
-    {
+    {   
+        if(!special){ 
+            return 0;
+        }
+        
         switch (type)
         {
             case "boomer": return companion.AddEnemy((SpecialInfectedBoomer)special, id);
@@ -527,7 +550,8 @@ public class GameManager : MonoBehaviour
         hudManager = GameObject.Find(EngineConstants.HUD).GetComponent<HUDManager>();
         weaponsManager = GameObject.Find(EngineConstants.WEAPONS_MANAGER).GetComponent<WeaponsManager>();
         companionName = "Zoey";
-        Invoke("HandleInitializeCompanion", 1);
+        InitializeCompanion(companionName);
+        //Invoke("HandleInitializeCompanion", 1);
         //SetHealth(-50);
 
         //SetHealth(-150);
@@ -670,6 +694,9 @@ public class GameManager : MonoBehaviour
 
     public void SetHealth(int health)
     {
+        if(health < 0) {
+            GameObject.Find("SFXManager").GetComponent<SFXManager>().PlayHit();
+        }
         hudManager.ChangeHealth(health);
     }
 

@@ -136,8 +136,8 @@ public class HUDManager : MonoBehaviour
         this.player = mainPlayer;
     }
     public bool isPlayerDead(){
-        return true;
-        //return isDead;
+        //return true;
+        return isDead;
     }
 
     public Weapon SwitchWeapon()

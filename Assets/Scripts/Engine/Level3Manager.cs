@@ -133,6 +133,7 @@ public class Level3Manager : LevelManager
     void CheckLost(){
         if(timeLeft==0 && !reachedDestination && !lost){
             lost=true;
+            GameObject.Find("SFXManager").GetComponent<SFXManager>().PlayJoelDead();
             currentObjective = "Companion Killed";
             UpdateHUD();
             // Time.timeScale = 0f;
