@@ -20,6 +20,15 @@ public class SpecialInfectedSpitter : SpecialInfectedGeneral
     private bool isIdle = false;
     private bool isDead = false;
 
+    private int companionID = 0;
+
+     private string type = "spitter";
+
+    private SpecialInfectedGeneral upCast;
+
+    void Awake() {
+        upCast = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -51,6 +60,16 @@ public class SpecialInfectedSpitter : SpecialInfectedGeneral
         // for testing purposes
         if (Input.GetKeyDown("n"))
             GetShot(50);
+         if(PlayerInRange()) {
+               if(companionID==0 && !isDead)
+                         companionID = manager.AddToCompanion(upCast,companionID,type);
+        }
+        else {
+               if(companionID!= 0){
+                    manager.RemoveEnemy(type,companionID);
+                    companionID = 0;
+            }
+        }
     }
 
     public void UnAttack()
@@ -131,6 +150,9 @@ public class SpecialInfectedSpitter : SpecialInfectedGeneral
             manager.UpdateDeadMembers(gameObject);
             agent.isStopped = true;
             isDead = true;
+            manager.Die();
+            manager.RemoveEnemy(type,companionID);
+            manager.UpdateDeadMembers(gameObject);
         }
         else
         {

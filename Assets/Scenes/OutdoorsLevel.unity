@@ -148,7 +148,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 3
   m_ObstacleAvoidanceType: 4
 --- !u!114 &17302158
 MonoBehaviour:
@@ -162,6 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac55126bbd502c409549a554eacfb30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  companionID: 0
 --- !u!1001 &44890258
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -244,7 +245,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 3
   m_ObstacleAvoidanceType: 4
 --- !u!114 &93690817
 MonoBehaviour:
@@ -258,6 +259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308edf4bcbf2a2b468f9515a8edce392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  companionID: 0
 --- !u!1001 &121597063
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -322,6 +324,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2691717588786505353, guid: ce0b62822b068c04494d7b6a4cf7b88e, type: 3}
+      propertyPath: m_WalkableMask
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2691717588786505355, guid: ce0b62822b068c04494d7b6a4cf7b88e, type: 3}
       propertyPath: m_Name
       value: Spitter (1)
@@ -443,6 +449,10 @@ PrefabInstance:
       propertyPath: thirdPesronBluryVision
       value: 
       objectReference: {fileID: 455837798}
+    - target: {fileID: 8038351859977163419, guid: 0682ead80612bd04c92291bce8c0ad1b, type: 3}
+      propertyPath: m_WalkableMask
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0682ead80612bd04c92291bce8c0ad1b, type: 3}
 --- !u!1 &419627914 stripped
@@ -472,6 +482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308edf4bcbf2a2b468f9515a8edce392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  companionID: 0
 --- !u!195 &483528689
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -492,7 +503,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 3
   m_ObstacleAvoidanceType: 4
 --- !u!1 &518616672 stripped
 GameObject:
@@ -511,6 +522,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac55126bbd502c409549a554eacfb30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  companionID: 0
 --- !u!195 &518616676
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -531,7 +543,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 3
   m_ObstacleAvoidanceType: 4
 --- !u!1001 &544941988
 PrefabInstance:
@@ -600,6 +612,10 @@ PrefabInstance:
       propertyPath: thirdPesronBluryVision
       value: 
       objectReference: {fileID: 455837798}
+    - target: {fileID: 8038351859977163419, guid: 0682ead80612bd04c92291bce8c0ad1b, type: 3}
+      propertyPath: m_WalkableMask
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0682ead80612bd04c92291bce8c0ad1b, type: 3}
 --- !u!1 &553747154 stripped
@@ -1402,6 +1418,10 @@ PrefabInstance:
     - target: {fileID: 2691717588786505353, guid: ce0b62822b068c04494d7b6a4cf7b88e, type: 3}
       propertyPath: m_AutoBraking
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2691717588786505353, guid: ce0b62822b068c04494d7b6a4cf7b88e, type: 3}
+      propertyPath: m_WalkableMask
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2691717588786505353, guid: ce0b62822b068c04494d7b6a4cf7b88e, type: 3}
       propertyPath: m_AutoTraverseOffMeshLink

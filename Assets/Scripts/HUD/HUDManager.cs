@@ -97,7 +97,8 @@ public class HUDManager : MonoBehaviour
             new Color[] { textGreen, orange, red },
             2f,
             0.7f,
-            100
+            100,
+            3
         );
         animatedPowerBar.Initialize(2f, 0.7f, 0);
         //healthBarImage = healthBar.GetComponent<Image>();
