@@ -35,6 +35,12 @@ public class AnimatedBar : MonoBehaviour
 
     public int offset = 1;
 
+    private bool reachedTarget;
+
+    public bool GetReachedTarget() {
+        return reachedTarget && target !=0;
+    }
+
 
 
     void Awake() {
@@ -108,7 +114,12 @@ public class AnimatedBar : MonoBehaviour
     // Update is called once per frame
     void Update()
         {
-        if(currentPercentage == target || Math.Abs(currentPercentage-target) < 0.5) return;
+        if(currentPercentage == target || Math.Abs(currentPercentage-target) < 0.5) {
+            if(!reachedTarget)
+                reachedTarget=true;
+            return;
+        }
+
         updateAmount = step/waitTime * Time.deltaTime;
         if(currentPercentage < target) image.fillAmount += updateAmount;
         if(currentPercentage > target) image.fillAmount -= updateAmount;

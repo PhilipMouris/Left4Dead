@@ -202,7 +202,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2254856002355942802, guid: 6f6c674645835cf42b66e786afe231f9, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 2254856002355942802, guid: 6f6c674645835cf42b66e786afe231f9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -824,6 +824,10 @@ PrefabInstance:
       propertyPath: far clip plane
       value: 1000
       objectReference: {fileID: 0}
+    - target: {fileID: 5907092261779250978, guid: 85fa765fcb15ca44e9ac6712a4bb6f3c, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 1079
+      objectReference: {fileID: 0}
     - target: {fileID: 5907092261779315968, guid: 85fa765fcb15ca44e9ac6712a4bb6f3c, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -1286,7 +1290,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &976848946
 PrefabInstance:
@@ -2356,6 +2360,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5808617179392225689, guid: 53f9121861fe8564b8b4ed806041b75c, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5808617179802844865, guid: 53f9121861fe8564b8b4ed806041b75c, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5808617181015565659, guid: 53f9121861fe8564b8b4ed806041b75c, type: 3}
       propertyPath: m_Name
       value: HUD

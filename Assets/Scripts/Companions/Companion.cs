@@ -185,22 +185,22 @@ public class Companion : MonoBehaviour
                 desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
 
                 //Vector3 dir = GetDirection(transform.position,endPoint);
-                //m_MoveDir.z = transform.forward.z >= 0 ? 3f : -3f;
+                m_MoveDir.z = transform.forward.z >= 0 ? 3f : -3f;
                 
-                 m_MoveDir.x = desiredMove.z * 10;
+                 //m_MoveDir.x = desiredMove.z * 10;
                  //m_MoveDir.x = transform.forward.z * 3;
                 if (m_Jump)
                 {   
                     
                     m_CharacterController.enabled = true;
                     agent.Stop();
-                    m_MoveDir.y = m_JumpSpeed*1.4f;
+                    m_MoveDir.y = m_JumpSpeed;
                     m_Jump = false;
                     m_Jumping = true;
                 }
                 if(m_Jumping) {
                     //transform.LookAt(endPoint);
-                    m_MoveDir.z = transform.forward.z * 10;
+                    //m_MoveDir.z = transform.forward.z * 10;
 
                 }
             }

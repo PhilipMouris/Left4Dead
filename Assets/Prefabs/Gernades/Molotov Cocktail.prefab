@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1858673715199947091}
   - component: {fileID: 7848279749374799778}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 1406076991480690048}
   - component: {fileID: 827403024626659352}
   - component: {fileID: 3257431555035112072}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Molotov Cocktail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,6 +197,26 @@ PrefabInstance:
     - target: {fileID: 100000, guid: ae4665ffc44f0f04bb157c01e24292f5, type: 3}
       propertyPath: m_Name
       value: Grenade_Mk2_s
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: ae4665ffc44f0f04bb157c01e24292f5, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: ae4665ffc44f0f04bb157c01e24292f5, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 100014, guid: ae4665ffc44f0f04bb157c01e24292f5, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 100016, guid: ae4665ffc44f0f04bb157c01e24292f5, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 100018, guid: ae4665ffc44f0f04bb157c01e24292f5, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ae4665ffc44f0f04bb157c01e24292f5, type: 3}
       propertyPath: m_RootOrder
