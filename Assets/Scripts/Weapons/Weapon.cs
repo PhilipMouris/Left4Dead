@@ -337,6 +337,8 @@ public class Weapon : MonoBehaviour
         this.muzzle = muzzle;
     }
 
+    
+
     public int GetDmg(){
         return dmg;
     }

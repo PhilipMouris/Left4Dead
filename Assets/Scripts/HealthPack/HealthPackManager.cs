@@ -27,8 +27,6 @@ public class HealthPackManager : MonoBehaviour
         free_locations.Add(item);
         item.SetActive(false);
     }
-   
-
 
     public void Spawn(){
         occupied_locations = new List<GameObject>();
