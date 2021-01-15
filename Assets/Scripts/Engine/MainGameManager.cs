@@ -49,6 +49,7 @@ public class MainGameManager : MonoBehaviour
         {
             case EngineConstants.LEVEL1_NAME: LoadScene(EngineConstants.LEVEL2_NAME); break;
             case EngineConstants.LEVEL2_NAME: LoadScene(EngineConstants.LEVEL3_NAME); break;
+            case EngineConstants.LEVEL3_NAME: LoadScene("Credits"); break;
         }
     }
     void CheckSwitchLevel()
@@ -65,7 +66,7 @@ public class MainGameManager : MonoBehaviour
                 else
                 {
 
-                    Invoke("SwitchToNextLevel", 5);
+                    Invoke("SwitchToNextLevel", 3);
                 }
             }
         }
