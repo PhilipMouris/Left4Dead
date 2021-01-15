@@ -11,6 +11,7 @@ public class Gernade : MonoBehaviour
      protected GernadeManager manager;
      
   protected NormalInfectantsManager infectantManager;
+  protected SpecialInfectedManager specialInfectedManager;
   protected HUDManager hudManager;
   protected int maxCapacity;
 
@@ -27,6 +28,7 @@ protected string type;
     {
         manager = FindObjectOfType<GernadeManager>();
         infectantManager = FindObjectOfType<NormalInfectantsManager>();
+        specialInfectedManager = FindObjectOfType<SpecialInfectedManager>();
         hudManager = FindObjectOfType<HUDManager>();
         SFXGroup = GameObject.Find("SFXManager").GetComponent<SFXManager>().SFXGroup;
         

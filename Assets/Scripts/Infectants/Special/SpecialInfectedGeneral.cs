@@ -14,6 +14,19 @@ public class SpecialInfectedGeneral : MonoBehaviour
 
     // Update is called once per frame
     
+    public virtual void Stun()
+    {
 
+    }
+
+    public virtual void Unstun()
+    {
+
+    }
+
+    public virtual bool GetIsStunned()
+    {
+        return false;
+    }
     
 }

@@ -20,6 +20,7 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
     private bool isIdle = false;
     private bool isDead = false;
     private bool isPaused = false;
+    private bool isStunned = false;
 
     private string type = "charger";
     public int companionID = 0;
@@ -211,5 +212,31 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
         GameObject.Find("ThirdPersonCamera").GetComponent<Camera>().enabled = false;
         GameObject.Find("FirstPersonCharacter").GetComponent<Camera>().enabled = true;
         GameObject.Find("WeaponCamera").GetComponent<Camera>().enabled = true;
+    }
+
+    public override void Stun()
+    {
+        isStunned = true;
+        isChasing = false;
+        isAttacking = false;
+        isIdle = false;
+        agent.isStopped = true;
+        animator.speed = 0.01f;
+    }
+
+    public override void Unstun()
+    {
+        agent.isStopped = false;
+        agent.ResetPath();
+        agent.destination = player.transform.position;
+        agent.stoppingDistance = 5;
+        animator.speed = 1;
+        StartChasing();
+        isStunned = false;
+    }
+
+    public override bool GetIsStunned()
+    {
+        return isStunned;
     }
 }
