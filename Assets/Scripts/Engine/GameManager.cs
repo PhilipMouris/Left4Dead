@@ -424,14 +424,10 @@ public class GameManager : MonoBehaviour
 
 
         InitializeWeapon(WeaponsConstants.WEAPON_TYPES["PISTOL"], true);
-        
-        // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["ASSAULT_RIFLE"],false);
-        // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["SMG"],false);
-        // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["HUNTING_RIFLE"],false);
-        // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["SHOTGUN"],false);
-        //GameObject.Find("MusicManager").GetComponent<MusicManager>().PlayExplore();
+    
 
-    }
+}       
+
 
     private void onQuit()
     {

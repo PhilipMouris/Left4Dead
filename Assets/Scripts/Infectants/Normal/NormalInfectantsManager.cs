@@ -129,7 +129,6 @@ public class NormalInfectantsManager : MonoBehaviour
             NavMeshAgent agent = horde_infected_members[i].GetComponent<NavMeshAgent>();
             if (!horde_infected_members[i].GetComponent<NormalInfectant>().isDead())
             {
-                Debug.Log("ATTRACT");
                 // horde_infected_members[i].GetComponent<NormalInfectant>().StartChasing();
                  horde_infected_members[i].GetComponent<NormalInfectant>().SetHordeMemberChasing(true);
         }
