@@ -28,6 +28,7 @@ public class SpecialInfectedBoomer :  SpecialInfectedGeneral
 
     void Awake() {
         upCast = this;
+        normalInfectantsManager = GameObject.FindObjectOfType<NormalInfectantsManager>();
     }
     // Start is called before the first frame update
     void Start()
@@ -68,6 +69,7 @@ public class SpecialInfectedBoomer :  SpecialInfectedGeneral
         }
         if(PlayerInRange()) {
                if(companionID==0 && !isDead)
+                    if(gameManager.GetIsRescued())
                          companionID = manager.AddToCompanion(upCast,companionID,type);
         }
         else {
@@ -169,7 +171,7 @@ public class SpecialInfectedBoomer :  SpecialInfectedGeneral
 
     public void Spawn()
     {
-        Debug.Log("Spawn");
+        normalInfectantsManager.SpawnBoomerHorde(gameObject.transform.position);
     }
 
     public void RemoveSpit()

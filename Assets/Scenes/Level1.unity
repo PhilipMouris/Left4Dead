@@ -202,7 +202,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2254856002355942802, guid: 6f6c674645835cf42b66e786afe231f9, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 2254856002355942802, guid: 6f6c674645835cf42b66e786afe231f9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -733,6 +733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac55126bbd502c409549a554eacfb30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  companionID: 0
 --- !u!1001 &527351701
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1209,7 +1210,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &976848946
 PrefabInstance:
@@ -1293,6 +1294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308edf4bcbf2a2b468f9515a8edce392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  companionID: 0
 --- !u!195 &976848949
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1792,6 +1794,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308edf4bcbf2a2b468f9515a8edce392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  companionID: 0
 --- !u!1001 &1433080340
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1886,6 +1889,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac55126bbd502c409549a554eacfb30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  companionID: 0
 --- !u!195 &1433080343
 NavMeshAgent:
   m_ObjectHideFlags: 0
