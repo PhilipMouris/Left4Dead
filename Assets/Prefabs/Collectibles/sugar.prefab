@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2740698039608604634}
   - component: {fileID: 352589304355316937}
   - component: {fileID: 4410686101727876163}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: sugar
   m_TagString: sugar
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   - component: {fileID: 3348670870501967490}
   - component: {fileID: 481868901309087688}
   - component: {fileID: 4002093782713949020}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: default
   m_TagString: Untagged
   m_Icon: {fileID: 0}

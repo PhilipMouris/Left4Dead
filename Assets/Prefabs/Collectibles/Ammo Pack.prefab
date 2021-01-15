@@ -9,10 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8655285270911179339}
-  - component: {fileID: -1595042987532429514}
-  - component: {fileID: 7231116235906906502}
-  - component: {fileID: 6401597912972865123}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Ammo Pack
   m_TagString: AmmoPack
   m_Icon: {fileID: 0}
@@ -91,9 +88,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8655285270911179339}
     m_Modifications:
+    - target: {fileID: 170620, guid: 4656138d9606a80408030bdc231b1233, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 172688, guid: 4656138d9606a80408030bdc231b1233, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 182020, guid: 4656138d9606a80408030bdc231b1233, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 183502, guid: 4656138d9606a80408030bdc231b1233, type: 3}
       propertyPath: m_Name
       value: box_ammo
+      objectReference: {fileID: 0}
+    - target: {fileID: 183502, guid: 4656138d9606a80408030bdc231b1233, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 461146, guid: 4656138d9606a80408030bdc231b1233, type: 3}
       propertyPath: m_RootOrder

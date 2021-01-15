@@ -48,6 +48,8 @@ public class Weapon : MonoBehaviour
 
     private bool isShootingCompanion;
 
+    public int layerMask = 1 << 10;
+
 
     void Awake() {
         bulletHoles = GameObject.Find(PlayerConstants.BULLET_HOLES);
@@ -107,7 +109,7 @@ public class Weapon : MonoBehaviour
          normalInfectantInRange = null;
          specialInfectantInRange = null;
          RaycastHit hit;
-          if (Physics.Raycast(ray, out hit, range)) {
+          if (Physics.Raycast(ray, out hit, range, ~layerMask)) {
               hitPoint = hit.point;
               collided = hit.collider.gameObject;
           if(collided.CompareTag(NormalInfectantConstants.TAG)){
@@ -144,11 +146,12 @@ public class Weapon : MonoBehaviour
     }
 
     public void PlayReloadAndDestroy() {
-        AudioSource audioSource =  gameObject.AddComponent<AudioSource>();
-        audioSource.outputAudioMixerGroup = SFXGroup;
-        audioSource.clip = reload;
-        audioSource.Play();
-        Destroy(gameObject);
+        // AudioSource audioSource =  gameObject.AddComponent<AudioSource>();
+        // audioSource.outputAudioMixerGroup = SFXGroup;
+        // audioSource.clip = reload;
+        // audioSource.Play();
+        if(gameObject)
+            Destroy(gameObject);
     }
     private void PlayAudio(AudioClip clip) {
         AudioSource audioSource =  gameObject.AddComponent<AudioSource>();
