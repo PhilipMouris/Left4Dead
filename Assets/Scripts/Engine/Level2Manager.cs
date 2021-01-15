@@ -9,6 +9,7 @@ public class Level2Manager : LevelManager
     GameObject destination;
     private bool reachedDestination = false;
     private bool close = false;
+    
     void Awake()
     {
         normalInfectantsManager = FindObjectOfType<NormalInfectantsManager>();
@@ -97,6 +98,19 @@ public class Level2Manager : LevelManager
         }
 
     }
+    void CheckLost(){
+        if(hUDManager.isPlayerDead() && !lost){
+            lost=true;
+           
+            // Time.timeScale = 0f;
+            // Invoke("HandleLost",2);
+            HandleLost();
+        }
+    }
+    void HandleLost(){
+        gameManager.HandleGameOverScreen();
+        
+    }
     // Update is called once per frame
     void Update()
     {
@@ -109,6 +123,7 @@ public class Level2Manager : LevelManager
         }
         UpdateObjective();
         CheckFinishLevel();
+        CheckLost();
 
     }
 

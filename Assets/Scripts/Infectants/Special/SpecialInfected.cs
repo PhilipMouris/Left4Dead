@@ -17,6 +17,7 @@ public class SpecialInfected : SpecialInfectedGeneral
     private GameObject player;
     private bool isChasing = false;
     private bool isAttacking = false;
+    private bool isStunned = false;
     private bool isDead;
    private string type = "tank";
     public int companionID = 0;
@@ -64,6 +65,7 @@ public class SpecialInfected : SpecialInfectedGeneral
 
         if(PlayerInRange()) {
                if(companionID==0 && !isDead)
+                    if(gameManager.GetIsRescued())
                          companionID = manager.AddToCompanion(upCast,companionID,type);
         }
         else {
@@ -154,5 +156,30 @@ public class SpecialInfected : SpecialInfectedGeneral
         {
             animator.SetTrigger("GetShot");
         }
+    }
+
+    public override void Stun()
+    {
+        isStunned = true;
+        isChasing = false;
+        isAttacking = false;
+        agent.isStopped = true;
+        animator.speed = 0.01f;
+    }
+
+    public override void Unstun()
+    {
+        agent.isStopped = false;
+        agent.ResetPath();
+        agent.destination = player.transform.position;
+        agent.stoppingDistance = 5;
+        animator.speed = 1;
+        StartChasing();
+        isStunned = false;
+    }
+
+    public override bool GetIsStunned()
+    {
+        return isStunned;
     }
 }

@@ -18,6 +18,7 @@ public class SpecialInfectedSpitterClone : SpecialInfectedGeneral
     private bool isChasing = false;
     private bool isAttacking = false;
     private bool isDead = false;
+    private bool isStunned = false;
     public GameObject spit;
 
     private int companionID = 0;
@@ -52,6 +53,8 @@ public class SpecialInfectedSpitterClone : SpecialInfectedGeneral
             GetShot(20);
         if (isDead)
             return;
+        if (isStunned)
+            return;
         if (!isChasing && !isAttacking)
             AlternatePosition();
         if (PlayerInRange() && !isChasing && !isAttacking)
@@ -62,6 +65,7 @@ public class SpecialInfectedSpitterClone : SpecialInfectedGeneral
             RotateToPlayer();
         if(PlayerInRange()) {
                if(companionID==0 && !isDead)
+                    if(gameManager.GetIsRescued())
                          companionID = manager.AddToCompanion(upCast,companionID,type);
         }
         else {
@@ -163,5 +167,31 @@ public class SpecialInfectedSpitterClone : SpecialInfectedGeneral
         {
             animator.SetTrigger("GetShot");
         }
+    }
+
+    public override void Stun()
+    {
+        isStunned = true;
+        isChasing = false;
+        isAttacking = false;
+        agent.isStopped = true;
+        animator.speed = 0.01f;
+        CancelInvoke();
+    }
+
+    public override void Unstun()
+    {
+        agent.isStopped = false;
+        agent.ResetPath();
+        agent.destination = player.transform.position;
+        agent.stoppingDistance = 10;
+        animator.speed = 1;
+        StartChasing();
+        isStunned = false;
+    }
+
+    public override bool GetIsStunned()
+    {
+        return isStunned;
     }
 }

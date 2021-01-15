@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SpecialInfectedBoomer :  SpecialInfectedGeneral
+public class SpecialInfectedBoomer : SpecialInfectedGeneral
 {
     private SpecialInfectedManager manager;
     private GameManager gameManager;
@@ -18,6 +18,7 @@ public class SpecialInfectedBoomer :  SpecialInfectedGeneral
     private bool isAttacking = false;
     private bool isDead = false;
     private bool isSpitting = false;
+    private bool isStunned = false;
     public GameObject bluryVision;
     public GameObject thirdPesronBluryVision;
     public GameObject spit;
@@ -28,6 +29,7 @@ public class SpecialInfectedBoomer :  SpecialInfectedGeneral
 
     void Awake() {
         upCast = this;
+        normalInfectantsManager = GameObject.FindObjectOfType<NormalInfectantsManager>();
     }
     // Start is called before the first frame update
     void Start()
@@ -51,6 +53,8 @@ public class SpecialInfectedBoomer :  SpecialInfectedGeneral
             GetShot(10);
         if (isDead)
             return;
+        if (isStunned)
+            return;
         if (!isChasing && !isAttacking)
             AlternatePosition();
         if (PlayerInRange() && !isChasing && !isAttacking)
@@ -68,6 +72,7 @@ public class SpecialInfectedBoomer :  SpecialInfectedGeneral
         }
         if(PlayerInRange()) {
                if(companionID==0 && !isDead)
+                    if(gameManager.GetIsRescued())
                          companionID = manager.AddToCompanion(upCast,companionID,type);
         }
         else {
@@ -169,7 +174,7 @@ public class SpecialInfectedBoomer :  SpecialInfectedGeneral
 
     public void Spawn()
     {
-        Debug.Log("Spawn");
+        normalInfectantsManager.SpawnBoomerHorde(gameObject.transform.position);
     }
 
     public void RemoveSpit()
@@ -181,7 +186,7 @@ public class SpecialInfectedBoomer :  SpecialInfectedGeneral
     }
 
     public override void GetShot(int damage)
-    {   
+    {
         if (isDead)
             return;
         HP = HP - damage;
@@ -201,5 +206,33 @@ public class SpecialInfectedBoomer :  SpecialInfectedGeneral
         {
             animator.SetTrigger("GetShot");
         }
+    }
+
+    public override void Stun()
+    {
+        isStunned = true;
+        isChasing = false;
+        isAttacking = false;
+        agent.isStopped = true;
+        animator.speed = 0.01f;
+        Unspit();
+        RemoveSpit();
+        CancelInvoke();
+    }
+
+    public override void Unstun()
+    {
+        agent.isStopped = false;
+        agent.ResetPath();
+        agent.destination = player.transform.position;
+        agent.stoppingDistance = 10;
+        animator.speed = 1;
+        StartChasing();
+        isStunned = false;
+    }
+
+    public override bool GetIsStunned()
+    {
+        return isStunned;
     }
 }
