@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class MainGameManager : MonoBehaviour
 {
@@ -69,6 +70,19 @@ public class MainGameManager : MonoBehaviour
             }
         }
     }
+    public void RestartCurrentLevel(){
+        switch (currentLevel)
+        {
+            case EngineConstants.LEVEL1_NAME: LoadScene(EngineConstants.LEVEL1_NAME); break;
+            case EngineConstants.LEVEL2_NAME: LoadScene(EngineConstants.LEVEL2_NAME); break;
+            case EngineConstants.LEVEL3_NAME: LoadScene(EngineConstants.LEVEL3_NAME); break;
+        }
+        
+    }
+    public void RestartGame(){
+        GameObject.Find("FPSController").GetComponent<FirstPersonController>().GetMouseLook().SetCursorLock(false);
+        LoadScene(EngineConstants.STARTMENU_NAME);
+    }
     // Update is called once per frame
     void Update()
     {
@@ -77,6 +91,9 @@ public class MainGameManager : MonoBehaviour
     }
     public void LoadScene(string sceneName)
     {
+        Time.timeScale=1.0f;
+        AudioListener.pause = false;
+        
         SceneManager.LoadScene(sceneName);
     }
     public void StartGame()

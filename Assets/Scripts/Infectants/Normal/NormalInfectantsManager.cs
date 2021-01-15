@@ -39,7 +39,8 @@ public class NormalInfectantsManager : MonoBehaviour
     }
 
     public void RemoveNormalInfectant(int id) {
-        gameManager.RemoveNormalFromCompanion(id);
+        if(gameManager.GetIsRescued())
+            gameManager.RemoveNormalFromCompanion(id);
     }
 
     void OnTriggerEnter(Collider other){

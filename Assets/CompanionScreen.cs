@@ -16,7 +16,7 @@ public class CompanionScreen : MonoBehaviour
             Debug.Log("Start Game");
             SceneManager.LoadScene("OutdoorsLevel");
         }
-
+    
         else {
             StartCoroutine("ShowError");
         }
