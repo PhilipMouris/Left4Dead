@@ -490,7 +490,6 @@ private GameObject companionInstance;
         player = GameObject.Find(EngineConstants.PLAYER).GetComponent<Player>();
         hudManager = GameObject.Find(EngineConstants.HUD).GetComponent<HUDManager>();
         weaponsManager = GameObject.Find(EngineConstants.WEAPONS_MANAGER).GetComponent<WeaponsManager>();
-        Debug.Log(companionName + " NAMEEE");
         companionName = "Zoey";
         Invoke("HandleInitializeCompanion",2);
         //SetHealth(-50);
@@ -527,8 +526,8 @@ private GameObject companionInstance;
         // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["HUNTING_RIFLE"],false);
         // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["SHOTGUN"],false);
         //GameObject.Find("MusicManager").GetComponent<MusicManager>().PlayExplore();
-
     }
+
 
     private void onQuit()
     {
