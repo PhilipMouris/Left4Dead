@@ -235,7 +235,7 @@ public class GameManager : MonoBehaviour
         if (!isPauseScreen)
         {
 
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape)||Input.GetKeyDown(KeyCode.P))
             {
                 PauseScreen.SetActive(true);
                 CraftingScreen.SetActive(false);
@@ -452,6 +452,10 @@ public class GameManager : MonoBehaviour
     public bool GetIsRescued()
     {
         return isRescued;
+    }
+    public bool GetRescueLevel()
+    {
+        return isRescueLevel;
     }
     public int AddEnemyToCompanion(NormalInfectant normal, int id)
     {
