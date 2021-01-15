@@ -709,6 +709,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GlowParticles (1) 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2829600960697799186, guid: c8a44904df66ef44ba36b23f0f88e564, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3720443500227085660, guid: c8a44904df66ef44ba36b23f0f88e564, type: 3}
       propertyPath: m_RootOrder
       value: 3

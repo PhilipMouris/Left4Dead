@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SpecialInfected : MonoBehaviour
+public class SpecialInfected : SpecialInfectedGeneral
 {
     private SpecialInfectedManager manager;
     private GameManager gameManager;
@@ -17,6 +17,16 @@ public class SpecialInfected : MonoBehaviour
     private GameObject player;
     private bool isChasing = false;
     private bool isAttacking = false;
+    private bool isStunned = false;
+    private bool isDead;
+   private string type = "tank";
+    public int companionID = 0;
+
+    private SpecialInfectedGeneral upCast;
+
+    void Awake() {
+        upCast = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -52,6 +62,18 @@ public class SpecialInfected : MonoBehaviour
         // for testing purposes
         if (Input.GetKeyDown("m"))
             GetShot(50);
+
+        if(PlayerInRange()) {
+               if(companionID==0 && !isDead)
+                    if(gameManager.GetIsRescued())
+                         companionID = manager.AddToCompanion(upCast,companionID,type);
+        }
+        else {
+               if(companionID!= 0){
+                    manager.RemoveEnemy(type,companionID);
+                    companionID = 0;
+            }
+        }
     }
 
     public void UnAttack()
@@ -85,12 +107,12 @@ public class SpecialInfected : MonoBehaviour
         animator.SetBool("Attack", true);
         animator.SetBool("Run", false);
         agent.Stop();
-        InvokeRepeating("DecreaseHealth", attackInterval, attackInterval);
+      
     }
 
     public void DecreaseHealth()
-    {
-        gameManager.SetHealth(gameManager.GetHealth() - dps);
+    {   
+        gameManager.SetHealth(-dps);
     }
 
     public bool PlayerAtStoppingDistance()
@@ -116,8 +138,8 @@ public class SpecialInfected : MonoBehaviour
         if (transform.position.z >= walkingUpperBound)
             agent.destination = new Vector3(transform.position.x, transform.position.y, walkingLowerBound);
     }
-
-    public void GetShot(int damage)
+    
+    public override void GetShot(int damage)
     {
         HP = HP - damage;
         if (HP <= 0)
@@ -125,10 +147,39 @@ public class SpecialInfected : MonoBehaviour
             animator.SetBool("Dead", true);
             agent.isStopped = true;
             manager.UpdateDeadMembers(gameObject);
+            isDead = true;
+            manager.Die();
+            manager.RemoveEnemy(type,companionID);
+            manager.UpdateDeadMembers(gameObject);
         }
         else
         {
             animator.SetTrigger("GetShot");
         }
+    }
+
+    public override void Stun()
+    {
+        isStunned = true;
+        isChasing = false;
+        isAttacking = false;
+        agent.isStopped = true;
+        animator.speed = 0.01f;
+    }
+
+    public override void Unstun()
+    {
+        agent.isStopped = false;
+        agent.ResetPath();
+        agent.destination = player.transform.position;
+        agent.stoppingDistance = 5;
+        animator.speed = 1;
+        StartChasing();
+        isStunned = false;
+    }
+
+    public override bool GetIsStunned()
+    {
+        return isStunned;
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SpecialInfectedCharger : MonoBehaviour
+public class SpecialInfectedCharger : SpecialInfectedGeneral
 {
     private SpecialInfectedManager manager;
     private GameManager gameManager;
@@ -19,7 +19,17 @@ public class SpecialInfectedCharger : MonoBehaviour
     private bool isAttacking = false;
     private bool isIdle = false;
     private bool isDead = false;
+    private bool isPaused = false;
+    private bool isStunned = false;
 
+    private string type = "charger";
+    public int companionID = 0;
+
+    private SpecialInfectedGeneral upCast;
+
+    void Awake() {
+        upCast = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +43,7 @@ public class SpecialInfectedCharger : MonoBehaviour
         HP = 600;
         dps = 75;
         attackInterval = 5;
+        //isPaused = GameObject.Find("GameManager").GetComponent<GameManager>().isGamePaused()
     }
 
     // Update is called once per frame
@@ -54,11 +65,26 @@ public class SpecialInfectedCharger : MonoBehaviour
         // for testing purposes
         if (Input.GetKeyDown("m"))
             GetShot(50);
+        
+        if(PlayerInRange()) {
+               if(companionID==0 && !isDead)
+                    if(gameManager.GetIsRescued())
+                         companionID = manager.AddToCompanion(upCast,companionID,type);
+        }
+        else {
+               if(companionID!= 0){
+                    manager.RemoveEnemy(type,companionID);
+                    companionID = 0;
+            }
+        }
+        
     }
 
     public void CheckCamera()
     {   
         if(GameManager.crafting_bool) return;
+        if(GameManager.isPauseScreen) return;
+        
         if (player.gameObject.transform.GetChild(1).GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Fall"))
         {
             SwitchToThirdPerson();
@@ -115,7 +141,7 @@ public class SpecialInfectedCharger : MonoBehaviour
 
     public void DecreaseHealth()
     {
-        gameManager.SetHealth(gameManager.GetHealth() - dps);
+        gameManager.SetHealth(-dps);
     }
 
     public bool PlayerAtStoppingDistance()
@@ -149,7 +175,7 @@ public class SpecialInfectedCharger : MonoBehaviour
             agent.destination = new Vector3(transform.position.x, transform.position.y, walkingLowerBound);
     }
 
-    public void GetShot(int damage)
+    public override void GetShot(int damage)
     {
         HP = HP - damage;
         if (HP <= 0)
@@ -157,6 +183,8 @@ public class SpecialInfectedCharger : MonoBehaviour
             animator.SetBool("Dead", true);
             agent.isStopped = true;
             isDead = true;
+            manager.Die();
+            manager.RemoveEnemy(type,companionID);
             manager.UpdateDeadMembers(gameObject);
         }
         else
@@ -184,5 +212,31 @@ public class SpecialInfectedCharger : MonoBehaviour
         GameObject.Find("ThirdPersonCamera").GetComponent<Camera>().enabled = false;
         GameObject.Find("FirstPersonCharacter").GetComponent<Camera>().enabled = true;
         GameObject.Find("WeaponCamera").GetComponent<Camera>().enabled = true;
+    }
+
+    public override void Stun()
+    {
+        isStunned = true;
+        isChasing = false;
+        isAttacking = false;
+        isIdle = false;
+        agent.isStopped = true;
+        animator.speed = 0.01f;
+    }
+
+    public override void Unstun()
+    {
+        agent.isStopped = false;
+        agent.ResetPath();
+        agent.destination = player.transform.position;
+        agent.stoppingDistance = 5;
+        animator.speed = 1;
+        StartChasing();
+        isStunned = false;
+    }
+
+    public override bool GetIsStunned()
+    {
+        return isStunned;
     }
 }

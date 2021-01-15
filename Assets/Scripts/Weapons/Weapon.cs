@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Weapon : MonoBehaviour
 {
@@ -40,7 +41,12 @@ public class Weapon : MonoBehaviour
     private GameObject specialInfectantInRange;
     private GameManager gameManager;
 
+    private AudioMixerGroup SFXGroup;
     private Vector3 cameraPosition;
+
+    private bool isCompanion;
+
+    private bool isShootingCompanion;
 
 
     void Awake() {
@@ -90,7 +96,7 @@ public class Weapon : MonoBehaviour
         }
 
     }
-
+    
     private void HandleRayCast() {
         if(!isDrawn) return;
         Ray ray; 
@@ -110,10 +116,13 @@ public class Weapon : MonoBehaviour
                    return;
              //Debugging
             }
-            // if(collided.CompareTag("SPECIAL TAG GOES HERE")){
-            //        specialInfectantInRange = collided;
-            //        SetCrossHairRed();
-            // }
+            Debug.Log(collided.tag + "SPECIALL");
+            if(SpecialInfectantConstants.TAGS.Contains(collided.tag)){
+                    Debug.Log("SHOOT SPECIAL");
+                   specialInfectantInRange = collided;
+                   SetCrossHairRed();
+                   return;
+            }
 
           }
              //Debug.DrawLine(ray.origin, hit.point);
@@ -123,7 +132,8 @@ public class Weapon : MonoBehaviour
     
 
     void FixedUpdate(){
-        HandleRayCast();
+        if(!isCompanion)
+             HandleRayCast();
     }
 
 
@@ -135,12 +145,14 @@ public class Weapon : MonoBehaviour
 
     public void PlayReloadAndDestroy() {
         AudioSource audioSource =  gameObject.AddComponent<AudioSource>();
+        audioSource.outputAudioMixerGroup = SFXGroup;
         audioSource.clip = reload;
         audioSource.Play();
-        Destroy(gameObject, audioSource.clip.length);
+        Destroy(gameObject);
     }
     private void PlayAudio(AudioClip clip) {
         AudioSource audioSource =  gameObject.AddComponent<AudioSource>();
+        audioSource.outputAudioMixerGroup = SFXGroup;
         audioSource.clip = clip;
         audioSource.Play();
         Destroy(audioSource, audioSource.clip.length);
@@ -148,18 +160,20 @@ public class Weapon : MonoBehaviour
 
 
     public void HandleFire() {
-         if(Input.GetButton("Fire1") && isDrawn){
+         if( (Input.GetButton("Fire1") && isDrawn && !this.isCompanion) || this.isShootingCompanion){
              if(currentAmmo<=0) {
                  if(!outOfAmmo.isPlaying) {
+                    outOfAmmo.outputAudioMixerGroup = SFXGroup; 
                     outOfAmmo.clip = dryFire;
                     outOfAmmo.Play();
                  }
                  return;
              }
              PlayAudio(clip);
-             if(type!= WeaponsConstants.WEAPON_TYPES["PISTOL"] && !muzzle.active) muzzle.SetActive(true);
+             if(type!= WeaponsConstants.WEAPON_TYPES["PISTOL"] && muzzle && !muzzle.active ) muzzle.SetActive(true);
              if(animator) animator.SetTrigger(WeaponsConstants.FIRE);
-             if(collided && ! collided.CompareTag(NormalInfectantConstants.TAG) ) DrawBulletHole();
+             if(collided && ! collided.CompareTag(NormalInfectantConstants.TAG) && !SpecialInfectantConstants.TAGS.Contains(collided.tag) ) 
+                    DrawBulletHole();
              if(normalInfectantInRange) {
                 int dealtDamage = gameManager.GetIsRaged() ? 2*dmg : dmg;
                 normalInfectantInRange.GetComponent<NormalInfectant>().GetShot(dealtDamage);
@@ -167,8 +181,8 @@ public class Weapon : MonoBehaviour
              }
              else {
                 if(specialInfectantInRange){
-                 //isDead = GetShot(dmg)
-                 //if(isDead) gameManager.EnemyDead("special");
+                    specialInfectantInRange.GetComponent<SpecialInfectedGeneral>().GetShot(dmg);
+                //  if(isDead) gameManager.EnemyDead("special");
                 } 
              }  
 
@@ -178,7 +192,21 @@ public class Weapon : MonoBehaviour
           
         }
     
-}
+    }
+
+    public void ShootCompanion(string type, GameObject enemy) {
+        switch(type) {
+            case "normal":normalInfectantInRange = enemy;break;
+            default: specialInfectantInRange = enemy;break;
+        }
+
+    }
+
+    public void SetIsShootingCompanion(bool isShooting){
+        this.isShootingCompanion = isShooting;
+    }
+
+
 
 
     public void Initialize(string type, int dmg, int clipCapacity,int rateOfFire, int maxAmmo, GameObject weapon, int range,(Vector3,Vector3) cameraData, Vector3 aim) {
@@ -196,9 +224,13 @@ public class Weapon : MonoBehaviour
         this.aim = aim;
         outOfAmmo =  gameObject.AddComponent<AudioSource>();
         outOfAmmo.playOnAwake = false;
-        clip =  Resources.Load<AudioClip>($"Sounds/Weapons/{type}");
-        reload = Resources.Load<AudioClip>("Sounds/Weapons/reload");
-        dryFire = Resources.Load<AudioClip>("Sounds/Weapons/dryFire");
+        clip =  Resources.Load<AudioClip>($"Audio/SFX/{type}");
+        reload = Resources.Load<AudioClip>("Audio/SFX/reload");
+        dryFire = Resources.Load<AudioClip>("Audio/SFX/dryFire");
+        SFXGroup = GameObject.Find("SFXManager").GetComponent<SFXManager>().SFXGroup;
+        //clip =  Resources.Load<AudioClip>($"Sounds/Weapons/{type}");
+        //reload = Resources.Load<AudioClip>("Sounds/Weapons/reload");
+        //dryFire = Resources.Load<AudioClip>("Sounds/Weapons/dryFire");
         gameManager = GameObject.FindObjectOfType<GameManager>();
     }
 
@@ -206,7 +238,43 @@ public class Weapon : MonoBehaviour
         this.type = type;
         this.weapon = weapon;
         reload = Resources.Load<AudioClip>("Sounds/Weapons/reload");
+        SFXGroup = GameObject.Find("SFXManager").GetComponent<SFXManager>().SFXGroup;
         this.spawnIndex = spawnIndex;
+    }
+    // string TYPE,  
+    //             int RANGE, 
+    //             int DAMAGE, 
+    //             int RATE_OF_FIRE, 
+    //             int CLIP_CAPACITY, 
+    //             int MAX_AMMO, 
+    //             string PATH 
+    public void InitializeCompanionWeapon((string TYPE,  
+                int RANGE, 
+                int DAMAGE, 
+                int RATE_OF_FIRE, 
+                int CLIP_CAPACITY, 
+                int MAX_AMMO, 
+                string PATH) data) {
+        var (TYPE,RANGE,DAMAGE,RATE_OF_FIRE,CLIP_CAPACITY,MAX_AMMO,PATH) = data;
+        this.type = TYPE;
+        this.dmg = DAMAGE;
+        this.clipCapacity = CLIP_CAPACITY;
+        this.rateOfFire = RATE_OF_FIRE;
+        this.range = CLIP_CAPACITY;
+        this.maxAmmo = MAX_AMMO;
+        this.currentAmmo = clipCapacity;
+        if(type != "pistol")
+            Destroy( this.gameObject.GetComponentInChildren<ParticleSystem>() );
+        isDrawn = true;
+        this.animator = this.gameObject.GetComponentsInChildren<Animator>().Length == 0 ? null : this.gameObject.GetComponentsInChildren<Animator>()[0] ;
+        clip =  Resources.Load<AudioClip>($"Audio/SFX/{type}");
+        reload = Resources.Load<AudioClip>("Audio/SFX/reload");
+        dryFire = Resources.Load<AudioClip>("Audio/SFX/dryFire");
+        isCompanion = true;
+        outOfAmmo =  gameObject.AddComponent<AudioSource>();
+        gameManager = GameObject.FindObjectOfType<GameManager>();
+        outOfAmmo.playOnAwake = false;
+        SFXGroup = GameObject.Find("SFXManager").GetComponent<SFXManager>().SFXGroup;
     }
 
     public bool Reload() {
@@ -228,6 +296,16 @@ public class Weapon : MonoBehaviour
         this.currentAmmo = clipCapacity;
         this.totalAmmo = maxAmmo;
     }
+
+
+    public void SetExtraClip() {
+        int newAmmo = this.currentAmmo + this.clipCapacity;
+        if(newAmmo <= maxAmmo) {
+            this.currentAmmo = newAmmo;
+        }
+    }
+
+
     
 
     private void SetCrossHairGreen(){
@@ -328,7 +406,6 @@ public class Weapon : MonoBehaviour
         if (collidedPlayer.gameObject.CompareTag("Player"))
         {   
             collidedPlayer.gameObject.GetComponentInChildren<Player>().SetWeaponInRange(null);
-            Debug.Log("HEREEEE");
          
         }
     }

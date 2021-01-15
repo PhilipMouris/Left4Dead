@@ -38,7 +38,7 @@ public class HUDManager : MonoBehaviour
 
     private GameObject healthBar;
 
-    private Color textGreen = new Color(0.08627450980392157f,0.5098039215686274f,.058823529411764705f,1f);
+    private Color textGreen = new Color(0.08627450980392157f, 0.5098039215686274f, .058823529411764705f, 1f);
 
     private Color healthGreen = new Color(0.147f, 0.566f, 0.142f, 1.000f);
 
@@ -47,9 +47,18 @@ public class HUDManager : MonoBehaviour
 
     private Color red = new Color(134, 0, 0, 255);
 
-    private  AnimatedBar animatedHealthBar;
+    private AnimatedBar animatedHealthBar;
     private AnimatedBar animatedPowerBar;
+
+    private GameObject levelInfo;
     private List<Gernade> gernades = new List<Gernade>();
+
+    private Weapon companionWeapon;
+    private RawImage companionImage;
+    private TextMeshProUGUI companionCurrentAmmo;
+    private TextMeshProUGUI companionName;
+    private bool isDead = false;
+
     public static IDictionary<string, List<Gernade>> all_gernades = new Dictionary<string, List<Gernade>>(){
         {"molotov", new List<Gernade>()},
         {"pipe",new List<Gernade>()},
@@ -59,14 +68,16 @@ public class HUDManager : MonoBehaviour
 
 
 
-
+    private void CheckDead(){
+        isDead =  animatedHealthBar.GetPercentage()==0;
+    }
 
 
     // Start is called before the first frame update
 
 
     void Awake()
-    {   
+    {
         rageMeter = gameObject.AddComponent<RageMeter>();
         rageMeter.SetRageBar(GameObject.Find(HUDConstants.RAGE_BAR));
         weaponUI = Resources.Load(HUDConstants.WEAPON_UI_PATH) as GameObject;
@@ -74,6 +85,7 @@ public class HUDManager : MonoBehaviour
         equipmentContainer = GameObject.Find(HUDConstants.EQUIPMENT_CONTAINER);
         TextMeshProUGUI health = GameObject.Find(HUDConstants.HEALTH).GetComponent<TextMeshProUGUI>();
         healthBar = GameObject.Find(HUDConstants.HEALTH_BAR);
+        levelInfo = GameObject.Find("LevelInfo");
         GameObject powerBar = GameObject.Find(HUDConstants.POWER_BAR);
         healthBar.AddComponent<AnimatedBar>();
         animatedPowerBar = powerBar.AddComponent<AnimatedBar>();
@@ -81,24 +93,48 @@ public class HUDManager : MonoBehaviour
         animatedPowerBar.SetSwitchColor(true);
         animatedHealthBar.Initialize(
             health,
-            new Color[] {healthGreen,orange,red},
-            new Color[] {textGreen,orange,red},
+            new Color[] { healthGreen, orange, red },
+            new Color[] { textGreen, orange, red },
             2f,
             0.7f,
-            100
+            100,
+            3
         );
-        animatedPowerBar.Initialize(2f,0.7f,0);
+        animatedPowerBar.Initialize(2f, 0.7f, 0);
         //healthBarImage = healthBar.GetComponent<Image>();
         isLastAddedRight = false;
         rightAddedCount = 0;
         leftAddedCount = 0;
 
     }
+    // private Weapon companionWeapon;
+    // private RawImage companionImage;
+    // private TextMeshProUGUI companionCurrentAmmo;
+    // private TextMeshProUGUI companionName;
+
+    public void InitializeCompanion(string type, Weapon weapon)
+    {
+        Texture2D img = Resources.Load($"HUD Icons/{type}") as Texture2D;
+        TextMeshProUGUI name = GameObject.Find("/HUD/CompanionPanel/AmmoAndNamePanel/Name/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        this.companionWeapon = weapon;
+        companionCurrentAmmo = GameObject.Find("/HUD/CompanionPanel/AmmoAndNamePanel/AmmoBar/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        companionCurrentAmmo.text = $"{weapon.GetCurrentAmmo()}";
+        RawImage rawImage = GameObject.Find("/HUD/CompanionPanel/PlayerPortrait/").GetComponent<RawImage>();
+        rawImage.texture = img;
+        //Debug.Log(name + "OKK????");
+        name.text = type;
+
+
+    }
 
 
 
-        public void SetPlayer(Player mainPlayer){
+    public void SetPlayer(Player mainPlayer)
+    {
         this.player = mainPlayer;
+    }
+    public bool isPlayerDead(){
+        return isDead;
     }
 
     public Weapon SwitchWeapon()
@@ -143,6 +179,18 @@ public class HUDManager : MonoBehaviour
         return currentlySelectedWeapon.GetWeapon();
 
     }
+    public void SetCurrentLevel(int level)
+    {
+        levelInfo.GetComponentsInChildren<TextMeshProUGUI>()[0].text = "Level " + level.ToString();
+    }
+    public void SetCurrentObjective(string objective)
+    {
+        levelInfo.GetComponentsInChildren<TextMeshProUGUI>()[1].text = objective;
+    }
+    public void SetExtraObjective(string extra)
+    {
+        levelInfo.GetComponentsInChildren<TextMeshProUGUI>()[2].text = extra;
+    }
     public bool CheckAllEmptyGrenades()
     {
         foreach (var g in all_gernades)
@@ -170,24 +218,29 @@ public class HUDManager : MonoBehaviour
                 new_index = (new_index + 1) % gernadeUIs.Count;
                 currentType = gernadeUIs[new_index].GetGernadeType();
             }
-            
-            UpdateCurrentGrenade(all_gernades[currentType][0],currentType);
+
+            UpdateCurrentGrenade(all_gernades[currentType][0], currentType);
             return all_gernades[currentType][0];
-        }else{
-            UpdateCurrentGrenade(null,null);
+        }
+        else
+        {
+            UpdateCurrentGrenade(null, null);
             UnSelectAllGrenades();
             return null;
         }
-        
+
 
     }
     public void RemoveCurrentGernade()
     {
         all_gernades[currentHeldGernadeType].Remove(currentHeldGernade);
-        if(all_gernades[currentHeldGernadeType].Count==0){
+        if (all_gernades[currentHeldGernadeType].Count == 0)
+        {
             SwitchGrenade();
-        }else{
-            UpdateCurrentGrenade(all_gernades[currentHeldGernadeType][0],currentHeldGernadeType);
+        }
+        else
+        {
+            UpdateCurrentGrenade(all_gernades[currentHeldGernadeType][0], currentHeldGernadeType);
         }
         UpdateGrenadeUICounts();
     }
@@ -252,12 +305,13 @@ public class HUDManager : MonoBehaviour
 
     }
 
-    public void ChangeHealth(int health) {
+    public void ChangeHealth(int health)
+    {
         animatedHealthBar.Change(health);
     }
 
     public int GetHealth()
-    {   
+    {
         return 0;
         //return currentHealth;
     }
@@ -269,7 +323,7 @@ public class HUDManager : MonoBehaviour
             {
                 g.SetIsSelected(true);
                 currentSelectedGernadeUI = g;
-                
+
             }
             else
             {
@@ -277,18 +331,20 @@ public class HUDManager : MonoBehaviour
             }
         }
     }
-    public void UnSelectAllGrenades(){
+    public void UnSelectAllGrenades()
+    {
         foreach (var g in gernadeUIs)
         {
-           g.SetIsSelected(false);
+            g.SetIsSelected(false);
         }
 
     }
-    public void UpdateCurrentGrenade(Gernade gernade,string type){
-            SelectGrenadeUI(type);
-            player.SetGrenade(gernade);
-            currentHeldGernade = gernade;
-            currentHeldGernadeType = type;
+    public void UpdateCurrentGrenade(Gernade gernade, string type)
+    {
+        SelectGrenadeUI(type);
+        player.SetGrenade(gernade);
+        currentHeldGernade = gernade;
+        currentHeldGernadeType = type;
     }
     public bool CollectGernade(Gernade gernade)
     {
@@ -297,15 +353,15 @@ public class HUDManager : MonoBehaviour
         if (ExceededMax(gernade, all_gernades[type].Count))
             return false;
 
-        
+
         if (CheckAllEmptyGrenades())
         {
-            UpdateCurrentGrenade(gernade,type);
+            UpdateCurrentGrenade(gernade, type);
             Debug.Log("Set Player Grenade Initially");
         }
         all_gernades[type].Add(gernade);
         UpdateGrenadeUICounts();
-        
+
         return true;
     }
     public bool ExceededMax(Gernade gernade, int count)
@@ -317,15 +373,18 @@ public class HUDManager : MonoBehaviour
         return false;
     }
 
-    public void ChangeRage(int amount) {
+    public void ChangeRage(int amount)
+    {
         rageMeter.ChangeRage(amount);
     }
 
-    public bool ActivateRage() {
+    public bool ActivateRage()
+    {
         return rageMeter.ActivateRage();
-    } 
+    }
 
-    public void ChangePowerBar(int amount) {
+    public void ChangePowerBar(int amount)
+    {
         animatedPowerBar.Change(amount);
     }
 
@@ -335,7 +394,11 @@ public class HUDManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {   
-      //HandleHealthBar();
+    {
+        if (companionWeapon)
+        {
+            companionCurrentAmmo.text = $"{companionWeapon.GetCurrentAmmo()}";
+        }
+        CheckDead();
     }
 }

@@ -18,7 +18,7 @@ public class Craft : MonoBehaviour
     private GameObject PipeObject;
     private GameObject HealthPackObject;
     private GameObject CraftingCanvas;
-
+    private bool isDoubleIngredients=false;
     public GameObject button;
 
     private GameObject molotovButton;
@@ -101,6 +101,11 @@ public class Craft : MonoBehaviour
         button.SetActive(false); // Disable the text so it is hidden
     }
 
+    public void SetIsDoubleIngredients(bool isDouble) {
+        this.isDoubleIngredients = isDouble;
+
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -111,33 +116,34 @@ public class Craft : MonoBehaviour
     {
 
         string tag = ingredient.tag;
-        Debug.Log(tag);
+        
+        int increaseAmount = isDoubleIngredients ? 2 :1;
 
         switch (tag)
         {
             case "alcohol":
-                alcohol++;
-                // AlcoholObject.GetComponentInChildren<Text>().text = alcohol.ToString();
+                alcohol+=increaseAmount;
+                //GameObject.Find("AlcoholImage").GetComponentInChildren<Text>().text = alcohol.ToString();
                 break;
 
             case "canister":
-                canister++;
-                // CanisterObject.GetComponentInChildren<Text>().text = canister.ToString();
+                canister+=increaseAmount;
+                //GameObject.Find("CanisterImage").GetComponentInChildren<Text>().text = canister.ToString();
                 break;
 
             case "gunpowder":
-                gunpowder++;
-                // GunpowderObject.GetComponentInChildren<Text>().text = gunpowder.ToString();
+                gunpowder+=increaseAmount;
+                //GameObject.Find("GunpowderImage").GetComponentInChildren<Text>().text = gunpowder.ToString();
                 break;
 
             case "cloth":
-                cloth++;
-                // ClothObject.GetComponentInChildren<Text>().text = cloth.ToString();
+                cloth+=increaseAmount;
+                //GameObject.Find("ClothImage").GetComponentInChildren<Text>().text = cloth.ToString();
                 break;
 
             case "sugar":
-                sugar++;
-                // SugarObject.GetComponentInChildren<Text>().text = sugar.ToString();
+                sugar+=increaseAmount;
+                //GameObject.Find("SugarImage").GetComponentInChildren<Text>().text = sugar.ToString();
                 break;
 
             default:

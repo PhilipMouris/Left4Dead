@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SpecialInfectedSpitter : MonoBehaviour
+public class SpecialInfectedSpitter : SpecialInfectedGeneral
 {
     private SpecialInfectedManager manager;
     private GameManager gameManager;
@@ -20,6 +20,15 @@ public class SpecialInfectedSpitter : MonoBehaviour
     private bool isIdle = false;
     private bool isDead = false;
 
+    private int companionID = 0;
+
+     private string type = "spitter";
+
+    private SpecialInfectedGeneral upCast;
+
+    void Awake() {
+        upCast = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -51,6 +60,17 @@ public class SpecialInfectedSpitter : MonoBehaviour
         // for testing purposes
         if (Input.GetKeyDown("n"))
             GetShot(50);
+         if(PlayerInRange()) {
+               if(companionID==0 && !isDead)
+                    if(gameManager.GetIsRescued())
+                         companionID = manager.AddToCompanion(upCast,companionID,type);
+        }
+        else {
+               if(companionID!= 0){
+                    manager.RemoveEnemy(type,companionID);
+                    companionID = 0;
+            }
+        }
     }
 
     public void UnAttack()
@@ -122,7 +142,7 @@ public class SpecialInfectedSpitter : MonoBehaviour
             agent.destination = new Vector3(transform.position.x, transform.position.y, walkingLowerBound);
     }
 
-    public void GetShot(int damage)
+    public override void GetShot(int damage)
     {
         HP = HP - damage;
         if (HP <= 0)
@@ -131,6 +151,9 @@ public class SpecialInfectedSpitter : MonoBehaviour
             manager.UpdateDeadMembers(gameObject);
             agent.isStopped = true;
             isDead = true;
+            manager.Die();
+            manager.RemoveEnemy(type,companionID);
+            manager.UpdateDeadMembers(gameObject);
         }
         else
         {

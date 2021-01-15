@@ -33,21 +33,25 @@ public class AnimatedBar : MonoBehaviour
 
     private Color[] defaultColors;
 
+    public int offset = 1;
+
 
 
     void Awake() {
         this.defaultColors =  new Color[] { red,orange,green};
     }
-    public void Initialize(TextMeshProUGUI textReference, Color[] barColors, Color[] textColors, float waitTime, float step, int startingPercentage) {
+    public void Initialize(TextMeshProUGUI textReference, Color[] barColors, Color[] textColors, float waitTime, float step, int startingPercentage,int offset) {
         this.switchColors = true;
         this.textReference = textReference;
         this.barColors = barColors;
         this.textColors = textColors;
         image = this.gameObject.GetComponent<Image>();
-        this.currentPercentage = startingPercentage;
+        this.currentPercentage = startingPercentage * offset;
         this.target = currentPercentage;
+        if(this.textReference)textReference.text = $"+{target}";
         this.waitTime = waitTime;
         this.step = step;
+        this.offset = offset;
     }
 
     public void Initialize( float waitTime, float step, int startingPercentage) {
@@ -61,9 +65,10 @@ public class AnimatedBar : MonoBehaviour
     }
 
     public void Change(int amount) {
+        int max = 100 * offset;
         target += amount;
         if(target<0) target = 0;
-        if(target>100) target = 100;
+        if(target>max) target = max;
         if(textReference) textReference.text = $"+{target}";
     }
     // Start is called before the first frame update
@@ -107,7 +112,7 @@ public class AnimatedBar : MonoBehaviour
         updateAmount = step/waitTime * Time.deltaTime;
         if(currentPercentage < target) image.fillAmount += updateAmount;
         if(currentPercentage > target) image.fillAmount -= updateAmount;
-        currentPercentage = (int) (image.fillAmount * 100);
+        currentPercentage = (int) ((image.fillAmount * 100)*offset);
         if(switchColors) HandleColor();
         
     }
