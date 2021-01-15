@@ -26,6 +26,9 @@ public class PipeBomb : Gernade
          this.maxCapacity = WeaponsConstants.PIPE_MAX;
          type = "pipe";
     }
+    void UpdateLocations(){
+        manager.UpdateLocations(gameObject);
+    }
 
     void Update()
 
@@ -35,11 +38,12 @@ public class PipeBomb : Gernade
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
+                player.GetComponent<Animator>().SetTrigger("pickupGernade");
                  GameObject copy = Instantiate(gameObject);
                 copy.SetActive(false);
                 bool collected= this.hudManager.CollectGernade(copy.GetComponent<Gernade>());
                 if(collected)
-                    manager.UpdateLocations(gameObject);
+                    Invoke("UpdateLocations",1);
             }
         }
         if (isCollided == true & SecondDelay > 0f && !isExploded)

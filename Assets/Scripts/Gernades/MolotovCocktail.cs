@@ -26,7 +26,9 @@ public class MolotovCocktail : Gernade
          type = "molotov";
     }
 
-
+    void UpdateLocations(){
+        manager.UpdateLocations(gameObject);
+    }
     
     void Update()
     {
@@ -35,11 +37,12 @@ public class MolotovCocktail : Gernade
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
+                player.GetComponent<Animator>().SetTrigger("pickupGernade");
                GameObject copy = Instantiate(gameObject);
                 copy.SetActive(false);
                 bool collected= this.hudManager.CollectGernade(copy.GetComponent<Gernade>());
                 if(collected)
-                    manager.UpdateLocations(gameObject);
+                    Invoke("UpdateLocations",1);
                  
             }
         }
