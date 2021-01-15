@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 361930092964995812}
   - component: {fileID: 187338983738853184}
   - component: {fileID: 2104208032124342577}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: canister
   m_TagString: canister
   m_Icon: {fileID: 0}
@@ -82,7 +82,7 @@ GameObject:
   - component: {fileID: 842245437151079721}
   - component: {fileID: 2551129344788878435}
   - component: {fileID: 1315847955576811767}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: default
   m_TagString: Untagged
   m_Icon: {fileID: 0}

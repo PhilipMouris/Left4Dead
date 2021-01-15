@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6886969774209189400}
   - component: {fileID: 45547603189091037}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 660374132631378743}
   - component: {fileID: 3260555324064262817}
   - component: {fileID: 2888604350290464459}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: StunGrenade_s
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 3495633441417458904}
   - component: {fileID: 3495633441416656120}
   - component: {fileID: 3495633441415558712}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Stun_pin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -258,7 +258,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3495633441417458906}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Stun_pin_ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -292,7 +292,7 @@ GameObject:
   - component: {fileID: 3495633441417458908}
   - component: {fileID: 3495633441416656122}
   - component: {fileID: 3495633441415558714}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Stun_ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -373,7 +373,7 @@ GameObject:
   - component: {fileID: 3495633441417458910}
   - component: {fileID: 3495633441416656124}
   - component: {fileID: 3495633441415558716}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: StunGrenade1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -453,7 +453,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3017392500352572992}
   - component: {fileID: 7371700124865925639}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Grenade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -503,7 +503,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2605376447471758546}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}

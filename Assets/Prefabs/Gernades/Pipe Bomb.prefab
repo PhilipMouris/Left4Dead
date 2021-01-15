@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7040902110744142626}
   - component: {fileID: 7627481088892499084}
   - component: {fileID: -9185214811762730747}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Pipe Bomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 852644773599430579}
   - component: {fileID: 852644773596006289}
   - component: {fileID: 852644773597136209}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: M26_body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 852644773599430581}
   - component: {fileID: 852644773596006291}
   - component: {fileID: 852644773597136211}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: M26_pin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -248,7 +248,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 852644773599430583}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: M26_Pin_Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -282,7 +282,7 @@ GameObject:
   - component: {fileID: 852644773599430585}
   - component: {fileID: 852644773596006293}
   - component: {fileID: 852644773597136213}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: M26_ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -362,7 +362,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2913952010040813285}
   - component: {fileID: 2103785474173705502}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -455,7 +455,7 @@ GameObject:
   - component: {fileID: 4167716949016666208}
   - component: {fileID: 5086583565438713472}
   - component: {fileID: 8318454784721276921}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -566,7 +566,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7895724527789862048}
   - component: {fileID: 4187633041063159944}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
