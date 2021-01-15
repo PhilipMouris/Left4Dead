@@ -1580,9 +1580,10 @@ GameObject:
   - component: {fileID: 4532701245662175330}
   - component: {fileID: 8038351859977163396}
   - component: {fileID: 8038351859977163419}
+  - component: {fileID: 7027782175735922309}
   m_Layer: 0
   m_Name: Boomer
-  m_TagString: Untagged
+  m_TagString: Boomer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1636,6 +1637,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bluryVision: {fileID: 6106977613445330985, guid: 3c6fd92c2cc124d4ebf8e65d8279f2e4, type: 3}
+  thirdPesronBluryVision: {fileID: 0}
   spit: {fileID: 0}
 --- !u!195 &8038351859977163419
 NavMeshAgent:
@@ -1659,6 +1661,20 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!136 &7027782175735922309
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7155269540394803362}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7272910706319572112
 GameObject:
   m_ObjectHideFlags: 0
