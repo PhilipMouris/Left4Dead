@@ -164,6 +164,9 @@ public class NormalInfectant : MonoBehaviour
             manager.Die();
             manager.RemoveNormalInfectant(companionID);
             companionID = 0;
+            CapsuleCollider collider = gameObject.GetComponent<CapsuleCollider>();
+            if(collider)
+                Destroy(collider);
             return true;
         }
         else
