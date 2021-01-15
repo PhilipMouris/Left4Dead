@@ -358,7 +358,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            hudManager.ChangeHealth(+30);
+            hudManager.ChangeRage(+100);
         }
         if (Input.GetKeyDown(KeyCode.J))
         {
@@ -480,7 +480,11 @@ public class GameManager : MonoBehaviour
 
 
     public int AddSpecialToCompanion(SpecialInfectedGeneral special, int id, string type)
-    {
+    {   
+        if(!special){ 
+            return 0;
+        }
+        
         switch (type)
         {
             case "boomer": return companion.AddEnemy((SpecialInfectedBoomer)special, id);

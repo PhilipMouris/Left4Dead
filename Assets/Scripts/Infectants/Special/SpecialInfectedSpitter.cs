@@ -23,6 +23,7 @@ public class SpecialInfectedSpitter : SpecialInfectedGeneral
     private int companionID = 0;
 
      private string type = "spitter";
+    private bool isAttractedToPipe = false;
 
     private SpecialInfectedGeneral upCast;
 
@@ -47,6 +48,8 @@ public class SpecialInfectedSpitter : SpecialInfectedGeneral
     // Update is called once per frame
     void Update()
     {
+        if (isAttractedToPipe)
+            return;
         if (!isAttacking && !isChasing)
             AlternatePosition();
         if (PlayerInRange() && !isChasing && !isAttacking)

@@ -24,6 +24,7 @@ public class SpecialInfectedSpitterClone : SpecialInfectedGeneral
     private int companionID = 0;
 
      private string type = "spitter";
+    private bool isAttractedToPipe = false;
 
     private SpecialInfectedGeneral upCast;
 
@@ -53,7 +54,7 @@ public class SpecialInfectedSpitterClone : SpecialInfectedGeneral
             GetShot(20);
         if (isDead)
             return;
-        if (isStunned)
+        if (isStunned || isAttractedToPipe)
             return;
         if (!isChasing && !isAttacking)
             AlternatePosition();
@@ -193,5 +194,29 @@ public class SpecialInfectedSpitterClone : SpecialInfectedGeneral
     public override bool GetIsStunned()
     {
         return isStunned;
+    }
+
+    public override void GetAttracted(Transform grenadeLocation)
+    {
+        isAttractedToPipe = true;
+        isChasing = false;
+        isAttacking = false;
+        agent.ResetPath();
+        agent.destination = grenadeLocation.position;
+        agent.stoppingDistance = 1;
+        animator.SetBool("Run", true);
+        animator.SetBool("Attack", false);
+        CancelInvoke();
+    }
+
+    public override void GetUnAttracted()
+    {
+        if (isDead)
+            return;
+        agent.ResetPath();
+        agent.destination = player.transform.position;
+        agent.stoppingDistance = 10;
+        StartChasing();
+        isAttractedToPipe = false;
     }
 }

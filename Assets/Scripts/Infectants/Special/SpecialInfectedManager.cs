@@ -75,4 +75,30 @@ public class SpecialInfectedManager : MonoBehaviour
                 specials[i].Unstun();
         }
     }
+
+    public void AttractAll(Transform grenadeLocation)
+    {
+        SpecialInfectedGeneral[] specials = GameObject.FindObjectsOfType<SpecialInfectedGeneral>();
+        for (int i = 0; i < specials.Length; i++)
+        {
+            Animator animator = specials[i].GetComponent<Animator>();
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Dead"))
+            {
+                specials[i].GetAttracted(grenadeLocation);
+            }
+        }
+    }
+
+    public void UnAttractAll()
+    {
+        SpecialInfectedGeneral[] specials = GameObject.FindObjectsOfType<SpecialInfectedGeneral>();
+        for (int i = 0; i < specials.Length; i++)
+        {
+            Animator animator = specials[i].GetComponent<Animator>();
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Dead"))
+            {
+                specials[i].GetUnAttracted();
+            }
+        }
+    }
 }
