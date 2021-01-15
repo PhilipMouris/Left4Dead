@@ -327,7 +327,7 @@ private GameObject companionInstance;
         HandleSwitchGrenades();
         HandleThrowGrenade();
         HandlePickUpWeapon();
-        //HandlePauseScreen();
+        HandlePauseScreen();
         HandleMusic();
         HandleActivateRage();
 
