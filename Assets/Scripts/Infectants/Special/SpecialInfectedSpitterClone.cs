@@ -20,6 +20,7 @@ public class SpecialInfectedSpitterClone : SpecialInfectedGeneral
     private bool isDead = false;
     private bool isStunned = false;
     public GameObject spit;
+    private bool stoppedChasing;
 
     private int companionID = 0;
 
@@ -50,15 +51,20 @@ public class SpecialInfectedSpitterClone : SpecialInfectedGeneral
     // Update is called once per frame
     void Update()
     {
+        if(!stoppedChasing) {
+
         if (Input.GetKeyDown("m"))
             GetShot(20);
         if (isDead)
-            return;
+            GameObject.Find("GameManager").GetComponent<GameManager>().SetChasing(false);
+            GameObject.Find("SFXManager").GetComponent<SFXManager>().PlaySpecialDead();
+            stoppedChasing = true;
         if (isStunned || isAttractedToPipe)
             return;
         if (!isChasing && !isAttacking)
             AlternatePosition();
         if (PlayerInRange() && !isChasing && !isAttacking)
+            GameObject.Find("GameManager").GetComponent<GameManager>().SetChasing(true);
             StartChasing();
         if (PlayerAtStoppingDistance() && isChasing)
             Attack();
@@ -75,6 +81,7 @@ public class SpecialInfectedSpitterClone : SpecialInfectedGeneral
                     companionID = 0;
             }
         }
+    }
     }
 
     public void AlternatePosition()

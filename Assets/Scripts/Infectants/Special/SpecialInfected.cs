@@ -24,6 +24,7 @@ public class SpecialInfected : SpecialInfectedGeneral
     private bool isAttractedToPipe = false;
 
     private SpecialInfectedGeneral upCast;
+    private bool stoppedChasing;
 
     void Awake() {
         upCast = this;
@@ -50,6 +51,8 @@ public class SpecialInfected : SpecialInfectedGeneral
     // Update is called once per frame
     void Update()
     {
+        if (!stoppedChasing) {
+
         if (isAttractedToPipe)
             return;
         if (!isAttacking && !isChasing)
@@ -61,7 +64,15 @@ public class SpecialInfected : SpecialInfectedGeneral
         if (PlayerOutsideStoppingDistance() && !isChasing && isAttacking)
             UnAttack();
         if (isChasing)
+            GameObject.Find("GameManager").GetComponent<GameManager>().SetChasing(isChasing);
             Chase();
+        
+        if(isChasing && HP == 0) {
+            isChasing = false;
+            stoppedChasing = true;
+            GameObject.Find("SFXManager").GetComponent<SFXManager>().PlaySpecialDead();
+            GameObject.Find("GameManager").GetComponent<GameManager>().SetChasing(isChasing);
+        }        
         // for testing purposes
         if (Input.GetKeyDown("m"))
             GetShot(50);
@@ -77,6 +88,7 @@ public class SpecialInfected : SpecialInfectedGeneral
                     companionID = 0;
             }
         }
+    }
     }
 
     public void UnAttack()

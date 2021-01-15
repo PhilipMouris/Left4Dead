@@ -27,6 +27,7 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
 
     private SpecialInfectedGeneral upCast;
     private bool isAttractedToPipe = false;
+    private bool stoppedChasing;
 
     void Awake() {
         upCast = this;
@@ -50,8 +51,14 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
     // Update is called once per frame
     void Update()
     {
+        if(!stoppedChasing) {
+
         if (isDead || isAttractedToPipe)
             return;
+        if (isDead)
+            GameObject.Find("GameManager").GetComponent<GameManager>().SetChasing(false);
+            GameObject.Find("SFXManager").GetComponent<SFXManager>().PlaySpecialDead();
+            stoppedChasing = true;    
         if (!isAttacking && !isChasing && !isIdle)
             AlternatePosition();
         if (PlayerInRange() && !isChasing && !isAttacking && !isIdle)
@@ -59,6 +66,7 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
         if (PlayerAtStoppingDistance() && isChasing && !isAttacking && !isIdle)
             Attack();
         if (isChasing)
+            GameObject.Find("GameManager").GetComponent<GameManager>().SetChasing(isChasing);
             Chase();
         if (isAttacking)
             RotateToPlayer();
@@ -79,6 +87,7 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
             }
         }
         
+    }
     }
 
     public void CheckCamera()

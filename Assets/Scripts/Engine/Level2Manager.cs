@@ -101,7 +101,7 @@ public class Level2Manager : LevelManager
     void CheckLost(){
         if(hUDManager.isPlayerDead() && !lost){
             lost=true;
-           
+            GameObject.Find("SFXManager").GetComponent<SFXManager>().PlayJoelDead();
             // Time.timeScale = 0f;
             // Invoke("HandleLost",2);
             HandleLost();
