@@ -42,6 +42,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_NextStep;
         private bool m_Jumping;
         private AudioSource m_AudioSource;
+        private bool isEvading;
         
         private bool isCrafting;
 
@@ -80,6 +81,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 {
                     m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
                 }
+                if(!isEvading){
+                    isEvading = Input.GetKeyDown(KeyCode.LeftControl);
+                }
 
                 if (!m_PreviouslyGrounded && m_CharacterController.isGrounded)
                 {
@@ -87,6 +91,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                     PlayLandingSound();
                     m_MoveDir.y = 0f;
                     m_Jumping = false;
+                    isEvading = false;
                 }
                 if (!m_CharacterController.isGrounded && !m_Jumping && m_PreviouslyGrounded)
                 {
@@ -136,6 +141,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
                     PlayJumpSound();
                     m_Jump = false;
                     m_Jumping = true;
+                }
+                if(isEvading) {
+                    m_MoveDir.y = 5f;
+                    m_MoveDir.x  = m_MoveDir.x * 20;
+                    m_MoveDir.z = m_MoveDir.z * 20; 
                 }
             }
             else
@@ -230,7 +240,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             // Read input
             float horizontal = CrossPlatformInputManager.GetAxis("Horizontal");
             float vertical = CrossPlatformInputManager.GetAxis("Vertical");
-
+            
             bool waswalking = m_IsWalking;
 
 #if !MOBILE_INPUT

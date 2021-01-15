@@ -37,6 +37,7 @@ public class StunGernade : Gernade
             if (Input.GetKeyDown(KeyCode.E))
             {
                 player.GetComponent<Animator>().SetTrigger("pickupGernade");
+                player.ResetState();
                 GameObject copy = Instantiate(gameObject);
                 copy.SetActive(false);
                 bool collected= this.hudManager.CollectGernade(copy.GetComponent<Gernade>());

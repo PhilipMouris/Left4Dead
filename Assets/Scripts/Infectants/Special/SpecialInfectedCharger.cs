@@ -94,6 +94,7 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
     {   
         if(GameManager.crafting_bool) return;
         if(GameManager.isPauseScreen) return;
+        if(GameManager.isDying) return;
         
         if (player.gameObject.transform.GetChild(1).GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Fall"))
         {
@@ -115,7 +116,9 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
         {
             DecreaseHealth();
             player.gameObject.transform.GetChild(1).GetComponent<Animator>().SetTrigger("Fall");
-            player.gameObject.transform.GetChild(1).GetComponent<Player>().SetIsWeaponDrawn(false);
+            Player playerScript = player.gameObject.transform.GetChild(1).GetComponent<Player>();
+            //player.SetIsWeaponDrawn(false);
+            playerScript.ResetState();
         }
         Invoke("ContinueChasing", attackInterval);
     }
