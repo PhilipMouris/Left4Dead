@@ -18,13 +18,6 @@ public class SpecialInfectedManager : MonoBehaviour
         count = special1+special2+special3+special4;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown("p"))
-            UnstunAll();
-    }
-
      
     public void Die() {
         gameManager.EnemyDead("special");
