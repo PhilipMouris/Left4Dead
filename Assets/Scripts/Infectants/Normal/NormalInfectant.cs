@@ -98,6 +98,11 @@ public class NormalInfectant : MonoBehaviour
                 }
                 if (!hordeMemberChase && isHordeMember && !unchased)
                 {
+                    if (companionID != 0)
+                    {
+                        manager.RemoveNormalInfectant(companionID);
+                        companionID = 0;
+                    }
                     UnChase();
                     UnAttack();
                     GameObject.Find("GameManager").GetComponent<GameManager>().SetChasing(chasing);
