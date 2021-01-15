@@ -15,6 +15,15 @@ public class SFXManager : MonoBehaviour
     private AudioClip chasingClip;
     private AudioSource chasingSource;
     public AudioMixerGroup SFXGroup;
+
+    private AudioClip deadClip;
+    private AudioSource deadSource;
+
+    private AudioClip specialDeadClip;
+    private AudioSource specialDeadSource;
+
+    private AudioClip hitClip;
+    private AudioSource hitSource;
     void Start()
     {
         rageSource = gameObject.AddComponent<AudioSource>();
@@ -32,8 +41,20 @@ public class SFXManager : MonoBehaviour
         chasingSource.outputAudioMixerGroup = SFXGroup;
         chasingSource.clip = chasingClip;
 
+        deadSource = gameObject.AddComponent<AudioSource>();
+        deadClip = Resources.Load<AudioClip>("Audio/SFX/joel_dead");
+        deadSource.outputAudioMixerGroup = SFXGroup;
+        deadSource.clip = deadClip;
         
-
+        specialDeadSource = gameObject.AddComponent<AudioSource>();
+        specialDeadClip = Resources.Load<AudioClip>("Audio/SFX/special_dead");
+        specialDeadSource.outputAudioMixerGroup = SFXGroup;
+        specialDeadSource.clip = specialDeadClip;
+        
+        hitSource = gameObject.AddComponent<AudioSource>();
+        hitClip = Resources.Load<AudioClip>("Audio/SFX/joel_hit");
+        hitSource.outputAudioMixerGroup = SFXGroup;
+        hitSource.clip = hitClip;
 
 
     }
@@ -49,6 +70,18 @@ public class SFXManager : MonoBehaviour
 
     public void PlayChasing() {
         chasingSource.PlayOneShot(chasingSource.clip);
+    }
+
+    public void PlayJoelDead() {
+        deadSource.PlayOneShot(deadSource.clip);
+    }
+
+    public void PlaySpecialDead() {
+        specialDeadSource.PlayOneShot(specialDeadSource.clip);
+    }
+
+    public void PlayHit() {
+        hitSource.PlayOneShot(hitSource.clip);
     }
 
     public void StopChasing() {

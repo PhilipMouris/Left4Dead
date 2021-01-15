@@ -35,6 +35,10 @@ public class SpeechManager : MonoBehaviour
     public void PlayCompanionFire() {
         companionSource.PlayOneShot(companionSource.clip);
     }
+
+    public bool isDetectedPlaying() {
+        return infectedSource.isPlaying;
+    }
     // Update is called once per frame
     void Update()
     {

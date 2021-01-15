@@ -682,6 +682,9 @@ public class GameManager : MonoBehaviour
 
     public void SetHealth(int health)
     {
+        if(health < 0) {
+            GameObject.Find("SFXManager").GetComponent<SFXManager>().PlayHit();
+        }
         hudManager.ChangeHealth(health);
     }
 

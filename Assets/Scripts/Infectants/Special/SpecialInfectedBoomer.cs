@@ -24,6 +24,7 @@ public class SpecialInfectedBoomer : SpecialInfectedGeneral
     public GameObject spit;
     private string type = "boomer";
     public int companionID = 0;
+    private bool stoppedChasing;
 
     private SpecialInfectedGeneral upCast;
     private bool isAttractedToPipe = false;
@@ -49,16 +50,20 @@ public class SpecialInfectedBoomer : SpecialInfectedGeneral
     // Update is called once per frame
     void Update()
     {   
-        
+        if(!stoppedChasing) {
+
         if (Input.GetKeyDown("m"))
             GetShot(10);
         if (isDead)
-            return;
+            GameObject.Find("GameManager").GetComponent<GameManager>().SetChasing(false);
+            GameObject.Find("SFXManager").GetComponent<SFXManager>().PlaySpecialDead();
+            stoppedChasing = true;
         if (isStunned || isAttractedToPipe)
             return;
         if (!isChasing && !isAttacking)
             AlternatePosition();
         if (PlayerInRange() && !isChasing && !isAttacking)
+            GameObject.Find("GameManager").GetComponent<GameManager>().SetChasing(true);
             StartChasing();
         if (PlayerAtStoppingDistance() && isChasing)
             Attack();
@@ -83,6 +88,7 @@ public class SpecialInfectedBoomer : SpecialInfectedGeneral
             }
         }
         
+        }
     }
 
     public void AlternatePosition()
