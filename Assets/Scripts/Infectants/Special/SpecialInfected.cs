@@ -18,6 +18,15 @@ public class SpecialInfected : SpecialInfectedGeneral
     private bool isChasing = false;
     private bool isAttacking = false;
     private bool isStunned = false;
+    private bool isDead;
+   private string type = "tank";
+    public int companionID = 0;
+
+    private SpecialInfectedGeneral upCast;
+
+    void Awake() {
+        upCast = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -53,6 +62,17 @@ public class SpecialInfected : SpecialInfectedGeneral
         // for testing purposes
         if (Input.GetKeyDown("m"))
             GetShot(50);
+
+        if(PlayerInRange()) {
+               if(companionID==0 && !isDead)
+                         companionID = manager.AddToCompanion(upCast,companionID,type);
+        }
+        else {
+               if(companionID!= 0){
+                    manager.RemoveEnemy(type,companionID);
+                    companionID = 0;
+            }
+        }
     }
 
     public void UnAttack()
@@ -90,8 +110,8 @@ public class SpecialInfected : SpecialInfectedGeneral
     }
 
     public void DecreaseHealth()
-    {
-        gameManager.SetHealth(gameManager.GetHealth() - dps);
+    {   
+        gameManager.SetHealth(-dps);
     }
 
     public bool PlayerAtStoppingDistance()
@@ -125,6 +145,10 @@ public class SpecialInfected : SpecialInfectedGeneral
         {
             animator.SetBool("Dead", true);
             agent.isStopped = true;
+            manager.UpdateDeadMembers(gameObject);
+            isDead = true;
+            manager.Die();
+            manager.RemoveEnemy(type,companionID);
             manager.UpdateDeadMembers(gameObject);
         }
         else

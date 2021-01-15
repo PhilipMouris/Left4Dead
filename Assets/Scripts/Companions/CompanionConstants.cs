@@ -16,7 +16,11 @@ public class CompanionConstants
        new Vector3(60.6318398f,4.08599997f,19.9802818f),
        new Vector3(0f,187.903458f,0f)
    );
-
+public static (Vector3,Vector3) KIDNAPPED_TRANSFORMATION = (
+       //new Vector3(60.7964401f,4.08500004f,21.1779518f),
+       new Vector3(-17.6599998f,2.09600163f,20.3007679f),
+       new Vector3(0,90,0)
+   );
   public static (Vector3,Vector3) LOUIS_TRANSFORMATION_DATA = (
        //new Vector3(60.7964401f,4.08500004f,21.1779518f),
        new Vector3(57f,4.57299995f,20.2399998f),

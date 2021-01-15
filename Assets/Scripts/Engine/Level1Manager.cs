@@ -60,13 +60,30 @@ public class Level1Manager : LevelManager
     {
         hUDManager.SetCurrentLevel(1);
     }
+     void CheckLost(){
+        if(hUDManager.isPlayerDead() && !lost){
+            lost=true;
+           
+            // Time.timeScale = 0f;
+            // Invoke("HandleLost",2);
+            HandleLost();
+        }
+    }
+    void HandleLost(){
+        gameManager.HandleGameOverScreen();
+        
+    }
+
 
     // Update is called once per frame
     void Update()
     {
+        if(!lost){
         UpdateTotalRemainingMembers();
         UpdateObjective();
         CheckFinishLevel();
+        }
+        CheckLost();
     }
 
     

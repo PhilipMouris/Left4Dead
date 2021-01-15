@@ -21,6 +21,16 @@ public class SpecialInfectedSpitterClone : SpecialInfectedGeneral
     private bool isStunned = false;
     public GameObject spit;
 
+    private int companionID = 0;
+
+     private string type = "spitter";
+
+    private SpecialInfectedGeneral upCast;
+
+    void Awake() {
+        upCast = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,6 +63,16 @@ public class SpecialInfectedSpitterClone : SpecialInfectedGeneral
             Attack();
         if (isAttacking)
             RotateToPlayer();
+        if(PlayerInRange()) {
+               if(companionID==0 && !isDead)
+                         companionID = manager.AddToCompanion(upCast,companionID,type);
+        }
+        else {
+               if(companionID!= 0){
+                    manager.RemoveEnemy(type,companionID);
+                    companionID = 0;
+            }
+        }
     }
 
     public void AlternatePosition()
@@ -137,6 +157,9 @@ public class SpecialInfectedSpitterClone : SpecialInfectedGeneral
             animator.SetTrigger("Dead");
             agent.isStopped = true;
             isDead = true;
+            manager.UpdateDeadMembers(gameObject);
+            manager.Die();
+            manager.RemoveEnemy(type,companionID);
             manager.UpdateDeadMembers(gameObject);
         }
         else

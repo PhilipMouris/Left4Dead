@@ -22,7 +22,14 @@ public class SpecialInfectedBoomer : SpecialInfectedGeneral
     public GameObject bluryVision;
     public GameObject thirdPesronBluryVision;
     public GameObject spit;
+    private string type = "boomer";
+    public int companionID = 0;
 
+    private SpecialInfectedGeneral upCast;
+
+    void Awake() {
+        upCast = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -39,7 +46,8 @@ public class SpecialInfectedBoomer : SpecialInfectedGeneral
 
     // Update is called once per frame
     void Update()
-    {
+    {   
+        
         if (Input.GetKeyDown("m"))
             GetShot(10);
         if (isDead)
@@ -61,6 +69,17 @@ public class SpecialInfectedBoomer : SpecialInfectedGeneral
             Unspit();
             CancelInvoke("Spit");
         }
+        if(PlayerInRange()) {
+               if(companionID==0 && !isDead)
+                         companionID = manager.AddToCompanion(upCast,companionID,type);
+        }
+        else {
+               if(companionID!= 0){
+                    manager.RemoveEnemy(type,companionID);
+                    companionID = 0;
+            }
+        }
+        
     }
 
     public void AlternatePosition()
@@ -177,6 +196,8 @@ public class SpecialInfectedBoomer : SpecialInfectedGeneral
             animator.SetTrigger("Dead");
             agent.isStopped = true;
             isDead = true;
+            manager.Die();
+            manager.RemoveEnemy(type,companionID);
             manager.UpdateDeadMembers(gameObject);
         }
         else
