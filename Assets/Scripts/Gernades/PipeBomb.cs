@@ -40,6 +40,7 @@ public class PipeBomb : Gernade
             {
                 player.GetComponent<Animator>().SetTrigger("pickupGernade");
                  GameObject copy = Instantiate(gameObject);
+                player.ResetState();
                 copy.SetActive(false);
                 bool collected= this.hudManager.CollectGernade(copy.GetComponent<Gernade>());
                 if(collected)

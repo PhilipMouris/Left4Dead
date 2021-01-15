@@ -105,7 +105,9 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
         {
             DecreaseHealth();
             player.gameObject.transform.GetChild(1).GetComponent<Animator>().SetTrigger("Fall");
-            player.gameObject.transform.GetChild(1).GetComponent<Player>().SetIsWeaponDrawn(false);
+            Player playerScript = player.gameObject.transform.GetChild(1).GetComponent<Player>();
+            //player.SetIsWeaponDrawn(false);
+            playerScript.ResetState();
         }
         Invoke("ContinueChasing", attackInterval);
     }

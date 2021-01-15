@@ -165,6 +165,7 @@ public class GameManager : MonoBehaviour
             if (Input.GetMouseButtonUp(1))
             {
                 player.GetComponent<Animator>().SetTrigger("throwGernade");
+                player.ResetState();
                 // Debug.Log(gernades.Count + " COUNT?????");
                 hudManager.ChangePowerBar(-100);
                 Invoke("ThrowGrenadeHelper",0.85f);
@@ -276,6 +277,7 @@ public class GameManager : MonoBehaviour
             Weapon weapon = player.GetWeaponInRange();
             if (!weapon) return;
             player.GetComponent<Animator>().SetTrigger("pickupGernade");
+            player.ResetState();
             Weapon oldWeapon = weaponsManager.GetWeapon(weapon.GetType());
             if (!oldWeapon)
             {

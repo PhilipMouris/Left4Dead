@@ -34,6 +34,10 @@ public class Player : MonoBehaviour
 
     private float reloadTime = 0.4f;
 
+    private bool wasInResetState = false;
+
+    private string previousTrigger;
+
 
     private Gernade currentGernade;
 
@@ -118,12 +122,14 @@ public class Player : MonoBehaviour
             this.isWeaponDrawn = true;
             //animator.SetBool(WeaponsConstants.DRAW_PISTOL, isWeaponDrawn);
             currentWeapon.SetIsDrawn(isWeaponDrawn);
-            animator.SetTrigger($"draw{currentWeapon.GetType()}");
+            previousTrigger = $"draw{currentWeapon.GetType()}";
+            animator.SetTrigger(previousTrigger);
         }
     
 
     private void PutDown() {
         this.isWeaponDrawn = false;
+        previousTrigger = null;
         currentWeapon.SetIsDrawn(false);
     }
     public void HandlePutDownWeapon() {
@@ -237,6 +243,25 @@ public class Player : MonoBehaviour
     void HandleLift() {
         if(Input.GetKeyDown(KeyCode.E)){
             animator.SetTrigger("lift");
+            wasInResetState = true;
+        }
+    }
+
+    public void ResetState() {
+        wasInResetState = true;
+    }
+
+    private void HandleGoBackToState() {
+        Debug.Log(wasInResetState + "RESETTT");
+        if(!wasInResetState) return;
+        Debug.Log(animator.GetCurrentAnimatorStateInfo(0) + "STATE");
+        //Debug.Log(name + " NAMEEE");
+        if(animator.GetCurrentAnimatorStateInfo(0).IsName("idleWait")){
+            Debug.Log("OOKKKK HEREEEE");
+            wasInResetState = false;
+            if(previousTrigger!=null) {
+                animator.SetTrigger(previousTrigger);
+            }
         }
     }
 
@@ -245,6 +270,7 @@ public class Player : MonoBehaviour
         HandleReload();
         HandlePutDownWeapon();
         HandleReloadTime();
+        HandleGoBackToState();
         // HandleGrenade();
         //HandleLift();
         
@@ -259,10 +285,6 @@ public class Player : MonoBehaviour
         return isWeaponDrawn;
     }
 
-    // public void CraftGrenade(Gernade grenade){
-    //     Debug.Log("A7a");
-    //     gernades.Add(grenade);
-    // }
 
     public void SetIsWeaponDrawn(bool isWeaponDrawn)
     {
