@@ -254,10 +254,9 @@ public class Player : MonoBehaviour
     private void HandleGoBackToState() {
         Debug.Log(wasInResetState + "RESETTT");
         if(!wasInResetState) return;
-        Debug.Log(animator.GetCurrentAnimatorStateInfo(0) + "STATE");
+        animator.GetCurrentAnimatorStateInfo(0);
         //Debug.Log(name + " NAMEEE");
         if(animator.GetCurrentAnimatorStateInfo(0).IsName("idleWait")){
-            Debug.Log("OOKKKK HEREEEE");
             wasInResetState = false;
             if(previousTrigger!=null) {
                 animator.SetTrigger(previousTrigger);

@@ -144,11 +144,12 @@ public class Weapon : MonoBehaviour
     }
 
     public void PlayReloadAndDestroy() {
-        AudioSource audioSource =  gameObject.AddComponent<AudioSource>();
-        audioSource.outputAudioMixerGroup = SFXGroup;
-        audioSource.clip = reload;
-        audioSource.Play();
-        Destroy(gameObject);
+        // AudioSource audioSource =  gameObject.AddComponent<AudioSource>();
+        // audioSource.outputAudioMixerGroup = SFXGroup;
+        // audioSource.clip = reload;
+        // audioSource.Play();
+        if(gameObject)
+            Destroy(gameObject);
     }
     private void PlayAudio(AudioClip clip) {
         AudioSource audioSource =  gameObject.AddComponent<AudioSource>();

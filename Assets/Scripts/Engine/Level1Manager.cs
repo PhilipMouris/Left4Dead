@@ -63,11 +63,17 @@ public class Level1Manager : LevelManager
      void CheckLost(){
         if(hUDManager.isPlayerDead() && !lost){
             lost=true;
-           
+            gameManager.PlayerDie();
             // Time.timeScale = 0f;
-            // Invoke("HandleLost",2);
-            HandleLost();
+            Invoke("HandleLost",4);
+            //
         }
+
+        // if(lost && !isDying){
+        //      if(!GameObject.FindObjectOfType<Player>().GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("die"))
+        //        HandleLost();
+             
+        // }
     }
     void HandleLost(){
         gameManager.HandleGameOverScreen();

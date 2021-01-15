@@ -58,6 +58,7 @@ public class HUDManager : MonoBehaviour
     private TextMeshProUGUI companionCurrentAmmo;
     private TextMeshProUGUI companionName;
     private bool isDead = false;
+    public SimplePlayer bloodEffect;
 
     public static IDictionary<string, List<Gernade>> all_gernades = new Dictionary<string, List<Gernade>>(){
         {"molotov", new List<Gernade>()},
@@ -77,7 +78,8 @@ public class HUDManager : MonoBehaviour
 
 
     void Awake()
-    {
+    {   
+        bloodEffect = GameObject.FindObjectOfType<SimplePlayer>();
         rageMeter = gameObject.AddComponent<RageMeter>();
         rageMeter.SetRageBar(GameObject.Find(HUDConstants.RAGE_BAR));
         weaponUI = Resources.Load(HUDConstants.WEAPON_UI_PATH) as GameObject;
@@ -134,7 +136,8 @@ public class HUDManager : MonoBehaviour
         this.player = mainPlayer;
     }
     public bool isPlayerDead(){
-        return isDead;
+        return true;
+        //return isDead;
     }
 
     public Weapon SwitchWeapon()
@@ -306,8 +309,12 @@ public class HUDManager : MonoBehaviour
     }
 
     public void ChangeHealth(int health)
-    {
-        animatedHealthBar.Change(health);
+    {   
+        if(health<0) {
+            bloodEffect.Damage(5);
+        }
+      
+        isDead = animatedHealthBar.Change(health,true);
     }
 
     public int GetHealth()
@@ -392,6 +399,11 @@ public class HUDManager : MonoBehaviour
     {
     }
 
+    void HandleHitAnimation() {
+
+
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -399,6 +411,5 @@ public class HUDManager : MonoBehaviour
         {
             companionCurrentAmmo.text = $"{companionWeapon.GetCurrentAmmo()}";
         }
-        CheckDead();
     }
 }

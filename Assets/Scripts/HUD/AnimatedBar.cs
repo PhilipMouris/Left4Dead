@@ -103,6 +103,11 @@ public class AnimatedBar : MonoBehaviour
     public void SetSwitchColor(bool switchColors) {
         this.switchColors = switchColors;
     }
+
+    public bool Change(int amount,bool returnDead){
+        Change(amount);
+        return target == 0;
+    }
     
 
     // Update is called once per frame

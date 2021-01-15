@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour
     private bool isDoubleIngredients;
     private int enemyKillCount;
     public UnityEvent setRescued;
+    public static bool isDying;
 
 
 
@@ -509,6 +510,14 @@ public class GameManager : MonoBehaviour
         {
             InitializeCompanion(companionName != null ? companionName : "Louis");
         }
+    }
+
+    public void PlayerDie() {
+            GameManager.isDying = true;
+            GameObject.Find("ThirdPersonCamera").GetComponent<Camera>().enabled = true;
+            GameObject.Find("FirstPersonCharacter").GetComponent<Camera>().enabled = false;
+            GameObject.Find("WeaponCamera").GetComponent<Camera>().enabled = false;
+            player.GetComponent<Animator>().SetTrigger("dead");
     }
 
     void Start()

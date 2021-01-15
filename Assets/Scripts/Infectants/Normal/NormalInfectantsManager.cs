@@ -27,7 +27,7 @@ public class NormalInfectantsManager : MonoBehaviour
         // infected_members = new GameObject[locations_list.Length-1];
         infected_members = new List<GameObject>();
 
-        //Spawn();
+        Spawn();
 
     }
 
