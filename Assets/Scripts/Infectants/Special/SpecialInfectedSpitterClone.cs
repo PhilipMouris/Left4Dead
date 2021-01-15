@@ -65,6 +65,7 @@ public class SpecialInfectedSpitterClone : SpecialInfectedGeneral
             RotateToPlayer();
         if(PlayerInRange()) {
                if(companionID==0 && !isDead)
+                    if(gameManager.GetIsRescued())
                          companionID = manager.AddToCompanion(upCast,companionID,type);
         }
         else {

@@ -62,6 +62,7 @@ public class SpecialInfectedSpitter : SpecialInfectedGeneral
             GetShot(50);
          if(PlayerInRange()) {
                if(companionID==0 && !isDead)
+                    if(gameManager.GetIsRescued())
                          companionID = manager.AddToCompanion(upCast,companionID,type);
         }
         else {
