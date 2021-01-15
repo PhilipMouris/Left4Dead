@@ -22,5 +22,15 @@ public class SpecialInfectedGeneral : MonoBehaviour
     {
         return false;
     }
-    
+
+    public virtual void GetAttracted(Transform grenadeLocation)
+    {
+
+    }
+
+    public virtual void GetUnAttracted()
+    {
+
+    }
+
 }

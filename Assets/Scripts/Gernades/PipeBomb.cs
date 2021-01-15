@@ -93,9 +93,11 @@ public class PipeBomb : Gernade
         }
     }
     void AttractAll(){
+        specialInfectedManager.AttractAll(gameObject.GetComponent<Rigidbody>().transform);
         infectantManager.AttractAll(gameObject.GetComponent<Rigidbody>().transform);
     }
     void UnAttractAll(){
+        specialInfectedManager.UnAttractAll();
         infectantManager.UnAttractAll();
     }
     public void UnBurnAll(){
@@ -134,6 +136,12 @@ public class PipeBomb : Gernade
                 target.GetBurned(DamageRate);
                 Destroy(rigidbody,2.1f);
 
+            }
+            if (SpecialInfectantConstants.TAGS.Contains(touchedObject.tag))
+            {
+                var target = touchedObject.gameObject.GetComponent<SpecialInfectedGeneral>();
+
+                target.GetShot(DamageRate);
             }
 
         }
