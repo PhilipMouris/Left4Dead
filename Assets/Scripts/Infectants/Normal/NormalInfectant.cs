@@ -86,15 +86,19 @@ public class NormalInfectant : MonoBehaviour
                     }
                     UnChase();
                     UnAttack();
+                    GameObject.Find("GameManager").GetComponent<GameManager>().SetChasing(chasing);
                 }
                 if (!hordeMemberChase && isHordeMember && !unchased)
                 {
                     UnChase();
                     UnAttack();
                 }
-
-
             }
+            if(isDead()){
+                UnAttack();
+                UnChase();
+            }
+            
         }
     }
 

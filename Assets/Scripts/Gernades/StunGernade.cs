@@ -24,7 +24,9 @@ public class StunGernade : Gernade
         this.maxCapacity = WeaponsConstants.STUN_MAX;
         type = "stun";
     }
-
+    void UpdateLocations(){
+        manager.UpdateLocations(gameObject);
+    }
   
     void Update()
     {
@@ -34,11 +36,12 @@ public class StunGernade : Gernade
             // Debug.Log("INSIDEEe2");
             if (Input.GetKeyDown(KeyCode.E))
             {
+                player.GetComponent<Animator>().SetTrigger("pickupGernade");
                 GameObject copy = Instantiate(gameObject);
                 copy.SetActive(false);
                 bool collected= this.hudManager.CollectGernade(copy.GetComponent<Gernade>());
                 if(collected)
-                    manager.UpdateLocations(gameObject);
+                    Invoke("UpdateLocations",1);
             }
         }
         if (isExploded == true & SecondDelay > 0f)
