@@ -164,7 +164,7 @@ public class SpecialInfectedBoomer : SpecialInfectedGeneral
         isSpitting = false;
     }
 
-    public void GetShot(int damage)
+    public override void GetShot(int damage)
     {
         if (isDead)
             return;
