@@ -21,6 +21,7 @@ public class SpecialInfected : SpecialInfectedGeneral
     private bool isDead;
    private string type = "tank";
     public int companionID = 0;
+    private bool isAttractedToPipe = false;
 
     private SpecialInfectedGeneral upCast;
 
@@ -49,6 +50,8 @@ public class SpecialInfected : SpecialInfectedGeneral
     // Update is called once per frame
     void Update()
     {
+        if (isAttractedToPipe)
+            return;
         if (!isAttacking && !isChasing)
             AlternatePosition();
         if (PlayerInRange() && !isChasing && !isAttacking)
@@ -181,5 +184,23 @@ public class SpecialInfected : SpecialInfectedGeneral
     public override bool GetIsStunned()
     {
         return isStunned;
+    }
+
+    public override void GetAttracted(Transform grenadeLocation)
+    {
+        isAttractedToPipe = true;
+        isChasing = false;
+        isAttacking = false;
+        agent.ResetPath();
+        agent.destination = grenadeLocation.position;
+        agent.stoppingDistance = 1;
+        animator.SetBool("Run", true);
+        animator.SetBool("Attack", false);
+    }
+
+    public override void GetUnAttracted()
+    {
+        agent.ResetPath();
+        isAttractedToPipe = false;
     }
 }
