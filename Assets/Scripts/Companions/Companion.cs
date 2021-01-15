@@ -35,8 +35,15 @@ public class Companion : MonoBehaviour
     private IDictionary<int,NormalInfectant> normalInfectants = new Dictionary<int,NormalInfectant>();
     private IDictionary<int,SpecialInfected> tanks = new Dictionary<int,SpecialInfected>();
     private IDictionary<int,SpecialInfectedCharger> chargers = new Dictionary<int, SpecialInfectedCharger>();
+
+    private IDictionary<int,SpecialInfectedBoomer> boomers = new Dictionary<int, SpecialInfectedBoomer>();
+
+    private IDictionary<int,SpecialInfectedSpitterClone> spitters = new Dictionary<int, SpecialInfectedSpitterClone>(); 
+
     private string enemyType;
     private GameObject nextShotEnemy;
+
+
 
     
 
@@ -75,14 +82,38 @@ public class Companion : MonoBehaviour
     }
 
 
+      public int AddEnemy(SpecialInfectedBoomer charged,int id) {
+          if(boomers.ContainsKey(id)) return id;
+        if(id == null || id ==0 ){
+            this.enemyID +=1;
+        }
+        int usedId = id==null || id==0?  enemyID :id;
+        boomers.Add(usedId, charged);
+        return usedId;
+    }
+
+
+    
+      public int AddEnemy(SpecialInfectedSpitterClone charged,int id) {
+          if(spitters.ContainsKey(id)) return id;
+        if(id == null || id ==0 ){
+            this.enemyID +=1;
+        }
+        int usedId = id==null || id==0?  enemyID :id;
+        spitters.Add(usedId, charged);
+        return usedId;
+    }
+
+
 
 
     public void RemoveEnemy(string type,int id) {
-        //Debug.Log(id + "REMOVEDDDD");
         switch(type){
             case "normal": normalInfectants.Remove(id);break;
             case "tank": tanks.Remove(id);break;
             case "charger": chargers.Remove(id);break;
+            case "boomer": boomers.Remove(id);break;
+            case "spitter": spitters.Remove(id);break;
         }
     }
 
@@ -98,25 +129,32 @@ public class Companion : MonoBehaviour
 
     public void PrepareShoot() {
         nextShotEnemy = null;
-        enemyType ="";
+        enemyType = "special";
         //Debug.Log(normalInfectants.Count + " COUNT");
         if(chargers.Count > 0){
             nextShotEnemy =  chargers.First().Value.gameObject;
+            return;
         }
-        else {
-            if(tanks.Count>0) {
-            nextShotEnemy =  chargers.First().Value.gameObject;
+          if(tanks.Count>0) {
+            nextShotEnemy =  tanks.First().Value.gameObject;
+            return;
+          }
+
+          if(spitters.Count>0) {
+            nextShotEnemy =  spitters.First().Value.gameObject;
+            return;
+          }
+        if(boomers.Count>0) {
+            nextShotEnemy =  boomers.First().Value.gameObject;
+            return;
         }
         else {
             if(normalInfectants.Count>0){
-            enemyType ="normal";
+             enemyType ="normal";
             nextShotEnemy = normalInfectants.First().Value.gameObject;
             }
         }
-        }
-        RotateToEnemy(nextShotEnemy);
-        
-    }
+    }  
 
    
 
@@ -147,22 +185,22 @@ public class Companion : MonoBehaviour
                 desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
 
                 //Vector3 dir = GetDirection(transform.position,endPoint);
-                //m_MoveDir.z = transform.forward.z >= 0 ? 3f : -3f;
+                m_MoveDir.z = transform.forward.z >= 0 ? 3f : -3f;
                 
-                 m_MoveDir.x = desiredMove.z * 10;
+                 //m_MoveDir.x = desiredMove.z * 10;
                  //m_MoveDir.x = transform.forward.z * 3;
                 if (m_Jump)
                 {   
                     
                     m_CharacterController.enabled = true;
                     agent.Stop();
-                    m_MoveDir.y = m_JumpSpeed*1.4f;
+                    m_MoveDir.y = m_JumpSpeed;
                     m_Jump = false;
                     m_Jumping = true;
                 }
                 if(m_Jumping) {
                     //transform.LookAt(endPoint);
-                    m_MoveDir.z = transform.forward.z * 10;
+                    //m_MoveDir.z = transform.forward.z * 10;
 
                 }
             }
@@ -222,6 +260,7 @@ public class Companion : MonoBehaviour
        
           if(!m_Jumping && !m_Jump) {
             PrepareShoot();
+            RotateToEnemy(nextShotEnemy);
             HandleShoot();
             HandleAnimation();
         }

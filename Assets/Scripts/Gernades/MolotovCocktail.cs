@@ -26,7 +26,9 @@ public class MolotovCocktail : Gernade
          type = "molotov";
     }
 
-
+    void UpdateLocations(){
+        manager.UpdateLocations(gameObject);
+    }
     
     void Update()
     {
@@ -35,11 +37,12 @@ public class MolotovCocktail : Gernade
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
+                player.GetComponent<Animator>().SetTrigger("pickupGernade");
                GameObject copy = Instantiate(gameObject);
                 copy.SetActive(false);
                 bool collected= this.hudManager.CollectGernade(copy.GetComponent<Gernade>());
                 if(collected)
-                    manager.UpdateLocations(gameObject);
+                    Invoke("UpdateLocations",1);
                  
             }
         }
@@ -103,11 +106,16 @@ public class MolotovCocktail : Gernade
             if (touchedObject.CompareTag("NormalInfected"))
             {
 
-
                 var target = touchedObject.gameObject.GetComponent<NormalInfectant>();
 
                 target.GetBurned(DamageRate);
 
+            }
+            if (SpecialInfectantConstants.TAGS.Contains(touchedObject.tag))
+            {
+                var target = touchedObject.gameObject.GetComponent<SpecialInfectedGeneral>();
+
+                target.GetShot(DamageRate);
             }
         }
     }
@@ -115,7 +123,6 @@ public class MolotovCocktail : Gernade
     {
         Debug.Log("INSIDEExplode");
         isExploded = true;
-
         GameObject explosion = Instantiate(particleEffect, transform.position, transform.rotation);
         explosionSource = GetAudioSource();
         explosionSource.outputAudioMixerGroup = GetAudioMixerGroup();
@@ -139,6 +146,12 @@ public class MolotovCocktail : Gernade
                 target.GetBurned(DamageRate);
                 Destroy(rigidbody,2.1f);
 
+            }
+            if (SpecialInfectantConstants.TAGS.Contains(touchedObject.tag))
+            {
+                var target = touchedObject.gameObject.GetComponent<SpecialInfectedGeneral>();
+
+                target.GetShot(DamageRate);
             }
 
         }

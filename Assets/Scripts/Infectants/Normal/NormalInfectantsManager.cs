@@ -11,7 +11,7 @@ public class NormalInfectantsManager : MonoBehaviour
     public GameObject player;
     private Transform[] locations_list;
     private Transform[] horde_locations_list;
-    private GameObject[] infected_members;
+    private List<GameObject> infected_members;
     private GameObject[] horde_infected_members;
     private List<GameObject> dead_members = new List<GameObject>();
     private GameManager gameManager;
@@ -20,44 +20,55 @@ public class NormalInfectantsManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {   
+    {
         gameManager = GameObject.FindObjectOfType<GameManager>();
         locations_list = locations.GetComponentsInChildren<Transform>();
         // hordeLocations = GameObject.Find("HordeLocations");
-        infected_members = new GameObject[locations_list.Length-1];
-       
+        // infected_members = new GameObject[locations_list.Length-1];
+        infected_members = new List<GameObject>();
+
         Spawn();
-        
+
     }
 
-    public void Die() {
+    public void Die()
+    {
         gameManager.EnemyDead("normal");
     }
 
-    public int AddNormalInfectantToCompanion(NormalInfectant normal){
+    public int AddNormalInfectantToCompanion(NormalInfectant normal)
+    {
         return gameManager.AddEnemyToCompanion(normal, normal.companionID);
     }
 
-    public void RemoveNormalInfectant(int id) {
-        gameManager.RemoveNormalFromCompanion(id);
+    public void RemoveNormalInfectant(int id)
+    {
+        if (gameManager.GetIsRescued())
+            gameManager.RemoveNormalFromCompanion(id);
     }
 
-    void OnTriggerEnter(Collider other){
-        if(other.gameObject.CompareTag("Player")){
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
             AttractHorde();
-            insideDanger=true;
+            insideDanger = true;
         }
     }
-    void OnTriggerExit(Collider other){
-        if(other.gameObject.CompareTag("Player")){
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
             UnAttractHorde();
-            insideDanger=false;
+            insideDanger = false;
         }
     }
-    public void SetHordeLocations(GameObject locations){
+    public void SetHordeLocations(GameObject locations)
+    {
         hordeLocations = locations;
     }
-    public bool isInsideDanger(){
+    public bool isInsideDanger()
+    {
         return insideDanger;
     }
     // Update is called once per frame
@@ -79,23 +90,24 @@ public class NormalInfectantsManager : MonoBehaviour
     {
         return dead_members.Count;
     }
-    public int GetRemainingNormalInfected(){
-        return infected_members.Length+horde_infected_members.Length-dead_members.Count;
+    public int GetRemainingNormalInfected()
+    {
+        return infected_members.Count + horde_infected_members.Length - dead_members.Count;
     }
     public void UnBurnAll()
     {
-        for (int i = 0; i < infected_members.Length; i++)
+        for (int i = 0; i < infected_members.Count; i++)
         {
             infected_members[i].GetComponent<Animator>().SetBool("Burn", false);
         }
-         for (int i = 0; i < horde_infected_members.Length; i++)
+        for (int i = 0; i < horde_infected_members.Length; i++)
         {
             horde_infected_members[i].GetComponent<Animator>().SetBool("Burn", false);
         }
     }
     public void UnStunAll()
     {
-        for (int i = 0; i < infected_members.Length; i++)
+        for (int i = 0; i < infected_members.Count; i++)
         {
             infected_members[i].GetComponent<Animator>().SetBool("Stun", false);
         }
@@ -106,12 +118,12 @@ public class NormalInfectantsManager : MonoBehaviour
     }
     public void StunAll()
     {
-        for (int i = 0; i < infected_members.Length; i++)
+        for (int i = 0; i < infected_members.Count; i++)
         {
             Animator currentAnimator = infected_members[i].GetComponent<Animator>();
             bool attacking = currentAnimator.GetBool("Attack");
             bool chasing = currentAnimator.GetBool("Chase");
-            if(attacking || chasing)
+            if (attacking || chasing)
                 currentAnimator.SetBool("Stun", true);
         }
         for (int i = 0; i < horde_infected_members.Length; i++)
@@ -119,25 +131,25 @@ public class NormalInfectantsManager : MonoBehaviour
             Animator currentAnimator = horde_infected_members[i].GetComponent<Animator>();
             bool attacking = currentAnimator.GetBool("Attack");
             bool chasing = currentAnimator.GetBool("Chase");
-            if(attacking || chasing)
+            if (attacking || chasing)
                 currentAnimator.SetBool("Stun", true);
         }
     }
-    public void AttractHorde(){
+    public void AttractHorde()
+    {
         for (int i = 0; i < horde_infected_members.Length; i++)
         {
             NavMeshAgent agent = horde_infected_members[i].GetComponent<NavMeshAgent>();
             if (!horde_infected_members[i].GetComponent<NormalInfectant>().isDead())
             {
-                Debug.Log("ATTRACT");
                 // horde_infected_members[i].GetComponent<NormalInfectant>().StartChasing();
-                 horde_infected_members[i].GetComponent<NormalInfectant>().SetHordeMemberChasing(true);
-        }
+                horde_infected_members[i].GetComponent<NormalInfectant>().SetHordeMemberChasing(true);
+            }
         }
     }
     public void AttractAll(Transform grenadeLocation)
     {
-        for (int i = 0; i < infected_members.Length; i++)
+        for (int i = 0; i < infected_members.Count; i++)
         {
             NavMeshAgent agent = infected_members[i].GetComponent<NavMeshAgent>();
             if (!infected_members[i].GetComponent<NormalInfectant>().isDead())
@@ -146,7 +158,7 @@ public class NormalInfectantsManager : MonoBehaviour
                 infected_members[i].GetComponent<NormalInfectant>().GetAttracted(grenadeLocation);
             }
         }
-         for (int i = 0; i < horde_infected_members.Length; i++)
+        for (int i = 0; i < horde_infected_members.Length; i++)
         {
             NavMeshAgent agent = horde_infected_members[i].GetComponent<NavMeshAgent>();
             if (!horde_infected_members[i].GetComponent<NormalInfectant>().isDead())
@@ -158,16 +170,16 @@ public class NormalInfectantsManager : MonoBehaviour
     }
     public void UnAttractAll()
     {
-        for (int i = 0; i < infected_members.Length; i++)
+        for (int i = 0; i < infected_members.Count; i++)
         {
             NavMeshAgent agent = infected_members[i].GetComponent<NavMeshAgent>();
             if (!infected_members[i].GetComponent<NormalInfectant>().isDead())
             {
-                
+
                 infected_members[i].GetComponent<NormalInfectant>().GetUnAttracted();
             }
         }
-         for (int i = 0; i < horde_infected_members.Length; i++)
+        for (int i = 0; i < horde_infected_members.Length; i++)
         {
             NavMeshAgent agent = horde_infected_members[i].GetComponent<NavMeshAgent>();
             if (!horde_infected_members[i].GetComponent<NormalInfectant>().isDead())
@@ -177,41 +189,51 @@ public class NormalInfectantsManager : MonoBehaviour
             }
         }
     }
-      public void UnAttractHorde()
+    public void UnAttractHorde()
     {
         for (int i = 0; i < horde_infected_members.Length; i++)
         {
             NavMeshAgent agent = horde_infected_members[i].GetComponent<NavMeshAgent>();
             if (!horde_infected_members[i].GetComponent<NormalInfectant>().isDead())
             {
-                
+
                 horde_infected_members[i].GetComponent<NormalInfectant>().SetHordeMemberChasing(false);
-              
+
             }
         }
     }
     public void Spawn()
     {
-        for (int i = 0; i < infected_members.Length; i++)
+        for (int i = 0; i < locations_list.Length - 1; i++)
         {
             GameObject instantiated = Instantiate(model, locations_list[i].position, Quaternion.identity);
             NormalInfectant infectant = instantiated.GetComponent<NormalInfectant>();
-            infectant.initialize(50, 5, locations_list, player,false);
-            infected_members[i] = instantiated;
-
+            infectant.initialize(50, 5, locations_list, player, false);
+            infected_members.Add(instantiated);
 
         }
     }
     public void SpawnHorde()
     {
         horde_locations_list = hordeLocations.GetComponentsInChildren<Transform>();
-        horde_infected_members = new GameObject[horde_locations_list.Length-1];
+        horde_infected_members = new GameObject[horde_locations_list.Length - 1];
         for (int i = 0; i < horde_infected_members.Length; i++)
         {
             GameObject instantiated = Instantiate(model, horde_locations_list[i].position, Quaternion.identity);
             NormalInfectant infectant = instantiated.GetComponent<NormalInfectant>();
-            infectant.initialize(50, 5, horde_locations_list, player,true);
+            infectant.initialize(50, 5, horde_locations_list, player, true);
             horde_infected_members[i] = instantiated;
+        }
+    }
+    public void SpawnBoomerHorde(Vector3 position)
+    {
+        int[] offsets = { -6, -3, 3, 6 };
+        for (int i = 0; i < 4; i++)
+        {
+            GameObject instantiated = Instantiate(model, position + new Vector3(offsets[i], 0, 0), Quaternion.identity);
+            NormalInfectant infectant = instantiated.GetComponent<NormalInfectant>();
+            infectant.initialize(50, 5, locations_list, player, false);
+            infected_members.Add(instantiated);
         }
     }
 }

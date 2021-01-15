@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     protected bool isLevelFinished = false;
     protected string currentObjective;
+    protected string extraObjective;
     protected NormalInfectantsManager normalInfectantsManager;
 
     protected SpecialInfectedManager specialInfectedManager;
@@ -15,6 +16,7 @@ public class LevelManager : MonoBehaviour
 
     protected HUDManager hUDManager;
     protected Player player;
+    protected bool lost = false;
 
 
     

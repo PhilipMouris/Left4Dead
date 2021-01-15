@@ -24,7 +24,9 @@ public class StunGernade : Gernade
         this.maxCapacity = WeaponsConstants.STUN_MAX;
         type = "stun";
     }
-
+    void UpdateLocations(){
+        manager.UpdateLocations(gameObject);
+    }
   
     void Update()
     {
@@ -34,11 +36,12 @@ public class StunGernade : Gernade
             // Debug.Log("INSIDEEe2");
             if (Input.GetKeyDown(KeyCode.E))
             {
+                player.GetComponent<Animator>().SetTrigger("pickupGernade");
                 GameObject copy = Instantiate(gameObject);
                 copy.SetActive(false);
                 bool collected= this.hudManager.CollectGernade(copy.GetComponent<Gernade>());
                 if(collected)
-                    manager.UpdateLocations(gameObject);
+                    Invoke("UpdateLocations",1);
             }
         }
         if (isExploded == true & SecondDelay > 0f)
@@ -48,6 +51,7 @@ public class StunGernade : Gernade
         }
         else if (isExploded == true & SecondDelay <= 0f)
         {
+            specialInfectedManager.StunAll();
             infectantManager.StunAll();
             SecondDelay = 1f;
             Delay--;
@@ -92,6 +96,7 @@ public class StunGernade : Gernade
         infectantManager.UnBurnAll();
     }
      public void UnStunAll(){
+        specialInfectedManager.UnstunAll();
         infectantManager.UnStunAll();
     }
     
@@ -105,6 +110,7 @@ public class StunGernade : Gernade
         explosionSource.outputAudioMixerGroup = GetAudioMixerGroup();
         explosionSource.PlayOneShot(explosionSound);
         createdFire = Instantiate(fire, transform.position, transform.rotation);
+        specialInfectedManager.StunAll();
         infectantManager.StunAll();
 
         float totalExplosionDelay = explosion.GetComponent<ParticleSystem>().main.duration + explosion.GetComponent<ParticleSystem>().startLifetime;

@@ -20,7 +20,16 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
     private bool isIdle = false;
     private bool isDead = false;
     private bool isPaused = false;
+    private bool isStunned = false;
 
+    private string type = "charger";
+    public int companionID = 0;
+
+    private SpecialInfectedGeneral upCast;
+
+    void Awake() {
+        upCast = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -56,6 +65,19 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
         // for testing purposes
         if (Input.GetKeyDown("m"))
             GetShot(50);
+        
+        if(PlayerInRange()) {
+               if(companionID==0 && !isDead)
+                    if(gameManager.GetIsRescued())
+                         companionID = manager.AddToCompanion(upCast,companionID,type);
+        }
+        else {
+               if(companionID!= 0){
+                    manager.RemoveEnemy(type,companionID);
+                    companionID = 0;
+            }
+        }
+        
     }
 
     public void CheckCamera()
@@ -119,7 +141,7 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
 
     public void DecreaseHealth()
     {
-        gameManager.SetHealth(gameManager.GetHealth() - dps);
+        gameManager.SetHealth(-dps);
     }
 
     public bool PlayerAtStoppingDistance()
@@ -161,6 +183,8 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
             animator.SetBool("Dead", true);
             agent.isStopped = true;
             isDead = true;
+            manager.Die();
+            manager.RemoveEnemy(type,companionID);
             manager.UpdateDeadMembers(gameObject);
         }
         else
@@ -188,5 +212,31 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
         GameObject.Find("ThirdPersonCamera").GetComponent<Camera>().enabled = false;
         GameObject.Find("FirstPersonCharacter").GetComponent<Camera>().enabled = true;
         GameObject.Find("WeaponCamera").GetComponent<Camera>().enabled = true;
+    }
+
+    public override void Stun()
+    {
+        isStunned = true;
+        isChasing = false;
+        isAttacking = false;
+        isIdle = false;
+        agent.isStopped = true;
+        animator.speed = 0.01f;
+    }
+
+    public override void Unstun()
+    {
+        agent.isStopped = false;
+        agent.ResetPath();
+        agent.destination = player.transform.position;
+        agent.stoppingDistance = 5;
+        animator.speed = 1;
+        StartChasing();
+        isStunned = false;
+    }
+
+    public override bool GetIsStunned()
+    {
+        return isStunned;
     }
 }

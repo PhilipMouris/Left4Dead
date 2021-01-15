@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SpecialInfectedBoomer : MonoBehaviour
+public class SpecialInfectedBoomer : SpecialInfectedGeneral
 {
     private SpecialInfectedManager manager;
     private GameManager gameManager;
@@ -18,10 +18,19 @@ public class SpecialInfectedBoomer : MonoBehaviour
     private bool isAttacking = false;
     private bool isDead = false;
     private bool isSpitting = false;
+    private bool isStunned = false;
     public GameObject bluryVision;
     public GameObject thirdPesronBluryVision;
     public GameObject spit;
+    private string type = "boomer";
+    public int companionID = 0;
 
+    private SpecialInfectedGeneral upCast;
+
+    void Awake() {
+        upCast = this;
+        normalInfectantsManager = GameObject.FindObjectOfType<NormalInfectantsManager>();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -38,10 +47,13 @@ public class SpecialInfectedBoomer : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {   
+        
         if (Input.GetKeyDown("m"))
             GetShot(10);
         if (isDead)
+            return;
+        if (isStunned)
             return;
         if (!isChasing && !isAttacking)
             AlternatePosition();
@@ -58,6 +70,18 @@ public class SpecialInfectedBoomer : MonoBehaviour
             Unspit();
             CancelInvoke("Spit");
         }
+        if(PlayerInRange()) {
+               if(companionID==0 && !isDead)
+                    if(gameManager.GetIsRescued())
+                         companionID = manager.AddToCompanion(upCast,companionID,type);
+        }
+        else {
+               if(companionID!= 0){
+                    manager.RemoveEnemy(type,companionID);
+                    companionID = 0;
+            }
+        }
+        
     }
 
     public void AlternatePosition()
@@ -150,7 +174,7 @@ public class SpecialInfectedBoomer : MonoBehaviour
 
     public void Spawn()
     {
-        Debug.Log("Spawn");
+        normalInfectantsManager.SpawnBoomerHorde(gameObject.transform.position);
     }
 
     public void RemoveSpit()
@@ -161,7 +185,7 @@ public class SpecialInfectedBoomer : MonoBehaviour
         isSpitting = false;
     }
 
-    public void GetShot(int damage)
+    public override void GetShot(int damage)
     {
         if (isDead)
             return;
@@ -174,11 +198,41 @@ public class SpecialInfectedBoomer : MonoBehaviour
             animator.SetTrigger("Dead");
             agent.isStopped = true;
             isDead = true;
+            manager.Die();
+            manager.RemoveEnemy(type,companionID);
             manager.UpdateDeadMembers(gameObject);
         }
         else
         {
             animator.SetTrigger("GetShot");
         }
+    }
+
+    public override void Stun()
+    {
+        isStunned = true;
+        isChasing = false;
+        isAttacking = false;
+        agent.isStopped = true;
+        animator.speed = 0.01f;
+        Unspit();
+        RemoveSpit();
+        CancelInvoke();
+    }
+
+    public override void Unstun()
+    {
+        agent.isStopped = false;
+        agent.ResetPath();
+        agent.destination = player.transform.position;
+        agent.stoppingDistance = 10;
+        animator.speed = 1;
+        StartChasing();
+        isStunned = false;
+    }
+
+    public override bool GetIsStunned()
+    {
+        return isStunned;
     }
 }

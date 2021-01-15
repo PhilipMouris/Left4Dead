@@ -23,7 +23,7 @@ TagManager:
   - fps
   - weapon
   - Fire
-
+  - Boomer
   layers:
   - Default
   - TransparentFX
