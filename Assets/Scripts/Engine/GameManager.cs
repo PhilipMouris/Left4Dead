@@ -145,7 +145,8 @@ public class GameManager : MonoBehaviour
         throwingPower = 3f;
 
     }
-    public void ThrowGrenadeHelper(){
+    public void ThrowGrenadeHelper()
+    {
         player.ThrowGrenade(throwingPower);
         hudManager.RemoveCurrentGernade();
         this.ResetGrenadeInfo();
@@ -167,8 +168,8 @@ public class GameManager : MonoBehaviour
                 player.GetComponent<Animator>().SetTrigger("throwGernade");
                 // Debug.Log(gernades.Count + " COUNT?????");
                 hudManager.ChangePowerBar(-100);
-                Invoke("ThrowGrenadeHelper",0.85f);
-                
+                Invoke("ThrowGrenadeHelper", 0.85f);
+
             }
         }
         else
@@ -215,18 +216,21 @@ public class GameManager : MonoBehaviour
 
     private void HandleCraftingScreen()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (!isPauseScreen)
         {
-            //this.gameObject.GetComponent<Craft>().SetIsDoubleIngredients(isDoubleIngredients);
-            crafting_bool = !crafting_bool;
-            FPS.enabled = false;
-            TPS.enabled = false;
-            craftingCamera.enabled = true;
-            CraftingScreen.SetActive(crafting_bool);
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                //this.gameObject.GetComponent<Craft>().SetIsDoubleIngredients(isDoubleIngredients);
+                crafting_bool = !crafting_bool;
+                FPS.enabled = false;
+                TPS.enabled = false;
+                craftingCamera.enabled = true;
+                CraftingScreen.SetActive(crafting_bool);
 
-            GameObject.Find("FPSController").GetComponent<FirstPersonController>().GetMouseLook().SetCursorLock(!crafting_bool);
-            this.craftingManager.FindObjects();
-            HandlePause();
+                GameObject.Find("FPSController").GetComponent<FirstPersonController>().GetMouseLook().SetCursorLock(!crafting_bool);
+                this.craftingManager.FindObjects();
+                HandlePause();
+            }
         }
     }
 
@@ -234,9 +238,20 @@ public class GameManager : MonoBehaviour
     {
         if (!isPauseScreen)
         {
-
-            if (Input.GetKeyDown(KeyCode.Escape))
+            
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
             {
+                if(crafting_bool){
+                    crafting_bool = !crafting_bool;
+                    FPS.enabled = false;
+                    TPS.enabled = false;
+                    craftingCamera.enabled = true;
+                    CraftingScreen.SetActive(crafting_bool);
+
+                    GameObject.Find("FPSController").GetComponent<FirstPersonController>().GetMouseLook().SetCursorLock(!crafting_bool);
+                    this.craftingManager.FindObjects();
+                    HandlePause();
+                }
                 PauseScreen.SetActive(true);
                 CraftingScreen.SetActive(false);
                 FPS.enabled = false;
@@ -372,8 +387,8 @@ public class GameManager : MonoBehaviour
     public void ResumeGame()
     {
         PauseScreen.SetActive(false);
-        FPS.enabled = true;
         TPS.enabled = true;
+        FPS.enabled = true;
         craftingCamera.enabled = false;
         pauseCamera.enabled = false;
         isPauseScreen = false;
@@ -452,6 +467,10 @@ public class GameManager : MonoBehaviour
     public bool GetIsRescued()
     {
         return isRescued;
+    }
+    public bool GetRescueLevel()
+    {
+        return isRescueLevel;
     }
     public int AddEnemyToCompanion(NormalInfectant normal, int id)
     {

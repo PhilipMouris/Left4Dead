@@ -69,7 +69,7 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
         
         if(PlayerInRange()) {
                if(companionID==0 && !isDead)
-                    if(gameManager.GetIsRescued())
+                    if((gameManager.GetIsRescued() && gameManager.GetRescueLevel())|| !gameManager.GetRescueLevel())
                          companionID = manager.AddToCompanion(upCast,companionID,type);
         }
         else {
