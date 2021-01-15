@@ -51,7 +51,7 @@ public class Level1Manager : LevelManager
 
     }
     void CheckFinishLevel(){
-        if(remainingMembers<=60){
+        if(remainingMembers<=0){
             isLevelFinished=true;
         }
     }

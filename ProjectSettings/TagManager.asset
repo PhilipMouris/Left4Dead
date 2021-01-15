@@ -8,6 +8,7 @@ TagManager:
   - NormalInfected
   - Ground
   - WeaponCamera
+  - AmmoPack
   - SpecialInfected
   - Tank
   - alcohol
@@ -34,7 +35,7 @@ TagManager:
   - 
   - HandWeapon
   - Hidden
-  - 
+  - IgnoreFire
   - 
   - 
   - 

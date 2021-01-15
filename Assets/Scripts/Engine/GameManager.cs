@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     private GameObject pauseScreen;
 
     private SoundManager soundManager;
-private GameObject companionInstance;
+    private GameObject companionInstance;
     private Craft craftingManager;
 
     private bool isPaused;
@@ -86,8 +86,8 @@ private GameObject companionInstance;
         craftingManager = GameObject.Find("CraftingManager").GetComponent<Craft>();
         FPS.enabled = true;
         TPS.enabled = true;
-        isPaused=false;
-        isPauseScreen=false;
+        isPaused = false;
+        isPauseScreen = false;
         AudioListener.pause = false;
         setRescued.AddListener(SetRescued);
         craftingCamera.enabled = false;
@@ -145,6 +145,12 @@ private GameObject companionInstance;
         throwingPower = 3f;
 
     }
+    public void ThrowGrenadeHelper()
+    {
+        player.ThrowGrenade(throwingPower);
+        hudManager.RemoveCurrentGernade();
+        this.ResetGrenadeInfo();
+    }
     private void HandleThrowGrenade()
     {
         if (!hudManager.CheckAllEmptyGrenades())
@@ -159,11 +165,11 @@ private GameObject companionInstance;
             }
             if (Input.GetMouseButtonUp(1))
             {
+                player.GetComponent<Animator>().SetTrigger("throwGernade");
                 // Debug.Log(gernades.Count + " COUNT?????");
                 hudManager.ChangePowerBar(-100);
-                player.ThrowGrenade(throwingPower);
-                hudManager.RemoveCurrentGernade();
-                this.ResetGrenadeInfo();
+                Invoke("ThrowGrenadeHelper", 0.85f);
+
             }
         }
         else
@@ -179,7 +185,7 @@ private GameObject companionInstance;
         GameManager.companionName = companionName;
         //Debug.Log(companion);
     }
-    public  string GetCompanionName()
+    public string GetCompanionName()
     {
         return companionName;
         //Debug.Log(companion);
@@ -210,18 +216,21 @@ private GameObject companionInstance;
 
     private void HandleCraftingScreen()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (!isPauseScreen)
         {
-            //this.gameObject.GetComponent<Craft>().SetIsDoubleIngredients(isDoubleIngredients);
-            crafting_bool = !crafting_bool;
-            FPS.enabled = false;
-            TPS.enabled = false;
-            craftingCamera.enabled = true;
-            CraftingScreen.SetActive(crafting_bool);
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                //this.gameObject.GetComponent<Craft>().SetIsDoubleIngredients(isDoubleIngredients);
+                crafting_bool = !crafting_bool;
+                FPS.enabled = false;
+                TPS.enabled = false;
+                craftingCamera.enabled = true;
+                CraftingScreen.SetActive(crafting_bool);
 
-            GameObject.Find("FPSController").GetComponent<FirstPersonController>().GetMouseLook().SetCursorLock(!crafting_bool);
-            this.craftingManager.FindObjects();
-            HandlePause();
+                GameObject.Find("FPSController").GetComponent<FirstPersonController>().GetMouseLook().SetCursorLock(!crafting_bool);
+                this.craftingManager.FindObjects();
+                HandlePause();
+            }
         }
     }
 
@@ -229,9 +238,20 @@ private GameObject companionInstance;
     {
         if (!isPauseScreen)
         {
-
-            if (Input.GetKeyDown(KeyCode.Escape))
+            
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
             {
+                if(crafting_bool){
+                    crafting_bool = !crafting_bool;
+                    FPS.enabled = false;
+                    TPS.enabled = false;
+                    craftingCamera.enabled = true;
+                    CraftingScreen.SetActive(crafting_bool);
+
+                    GameObject.Find("FPSController").GetComponent<FirstPersonController>().GetMouseLook().SetCursorLock(!crafting_bool);
+                    this.craftingManager.FindObjects();
+                    HandlePause();
+                }
                 PauseScreen.SetActive(true);
                 CraftingScreen.SetActive(false);
                 FPS.enabled = false;
@@ -254,28 +274,33 @@ private GameObject companionInstance;
         TPS.enabled = false;
         craftingCamera.enabled = false;
         pauseCamera.enabled = true;
-        isPauseScreen=true;
+        isPauseScreen = true;
         //GameObject.Find("FPSController").GetComponent<FirstPersonController>().GetMouseLook().SetCursorLock(false);
         HandlePause();
-         
-    }
 
+    }
+    IEnumerator PickUpWeaon(Weapon weapon, bool status, float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        weaponsManager.PickUp(weapon, status);
+    }
     private void HandlePickUpWeapon()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
             Weapon weapon = player.GetWeaponInRange();
             if (!weapon) return;
+            player.GetComponent<Animator>().SetTrigger("pickupGernade");
             Weapon oldWeapon = weaponsManager.GetWeapon(weapon.GetType());
             if (!oldWeapon)
             {
                 InitializeWeapon(weapon.GetType(), false);
-                weaponsManager.PickUp(weapon, false);
+                StartCoroutine(PickUpWeaon(weapon, false, 1f));
             }
             else
             {
                 oldWeapon.Reset();
-                weaponsManager.PickUp(weapon, true);
+                StartCoroutine(PickUpWeaon(weapon, true, 1f));
             }
 
         }
@@ -331,10 +356,12 @@ private GameObject companionInstance;
         HandleMusic();
         HandleActivateRage();
 
-        if(Input.GetKeyDown(KeyCode.H)){
-            hudManager.ChangeHealth(+30);
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            hudManager.ChangeRage(+100);
         }
-           if(Input.GetKeyDown(KeyCode.J)){
+        if (Input.GetKeyDown(KeyCode.J))
+        {
             hudManager.ChangeHealth(-30);
         }
     }
@@ -360,8 +387,8 @@ private GameObject companionInstance;
     public void ResumeGame()
     {
         PauseScreen.SetActive(false);
-        FPS.enabled = true;
         TPS.enabled = true;
+        FPS.enabled = true;
         craftingCamera.enabled = false;
         pauseCamera.enabled = false;
         isPauseScreen = false;
@@ -402,7 +429,9 @@ private GameObject companionInstance;
             companionInstance = Instantiate(companionLoad, transformations.Item1, Quaternion.identity);
             companionInstance.transform.localRotation = Quaternion.Euler(transformations.Item2);
             companionWeapon = GameObject.Find("WeaponEQCompanion").transform.GetChild(0).gameObject.AddComponent<Weapon>();
-        }else{
+        }
+        else
+        {
             GameObject.Find("WeaponEQCompanion").transform.GetChild(0).gameObject.SetActive(true);
         }
         companionWeapon = GameObject.Find("WeaponEQCompanion").transform.GetChild(0).gameObject.AddComponent<Weapon>();
@@ -419,22 +448,29 @@ private GameObject companionInstance;
         companion.Initialize(companionWeapon, type);
         hudManager.InitializeCompanion(type, companionWeapon);
 
-        if(type == "Louis") {
-                InvokeRepeating("IncreaseHealthBy1", 1, 1);
+        if (type == "Louis")
+        {
+            InvokeRepeating("IncreaseHealthBy1", 1, 1);
         }
-        if(type== "Ellie") {
-            normalRageIncrease = 2*normalRageIncrease;
-            specialRageIncrease = 2*normalRageIncrease;
+        if (type == "Ellie")
+        {
+            normalRageIncrease = 2 * normalRageIncrease;
+            specialRageIncrease = 2 * normalRageIncrease;
         }
-        if(type=="Zoey") isDoubleIngredients = true;
+        if (type == "Zoey") isDoubleIngredients = true;
     }
 
     private void IncreaseHealthBy1()
     {
         SetHealth(1);
     }
-    public bool GetIsRescued(){
+    public bool GetIsRescued()
+    {
         return isRescued;
+    }
+    public bool GetRescueLevel()
+    {
+        return isRescueLevel;
     }
     public int AddEnemyToCompanion(NormalInfectant normal, int id)
     {
@@ -442,25 +478,33 @@ private GameObject companionInstance;
 
     }
 
-    
-    public int AddSpecialToCompanion(SpecialInfectedGeneral special, int id, string type) {
-            switch(type){
-                case "boomer":return companion.AddEnemy((SpecialInfectedBoomer)special, id);
-                case "spitter": return companion.AddEnemy((SpecialInfectedSpitterClone)special, id);
-                case "tank": return companion.AddEnemy((SpecialInfected)special, id);
-                case "charger": return companion.AddEnemy((SpecialInfectedCharger)special, id);
-                default: return 0;
+
+    public int AddSpecialToCompanion(SpecialInfectedGeneral special, int id, string type)
+    {   
+        if(!special){ 
+            return 0;
+        }
+        
+        switch (type)
+        {
+            case "boomer": return companion.AddEnemy((SpecialInfectedBoomer)special, id);
+            case "spitter": return companion.AddEnemy((SpecialInfectedSpitterClone)special, id);
+            case "tank": return companion.AddEnemy((SpecialInfected)special, id);
+            case "charger": return companion.AddEnemy((SpecialInfectedCharger)special, id);
+            default: return 0;
 
 
-            }
+        }
     }
 
-    public void RemoveSpecialFromCompanion(string type,int id) {
-        companion.RemoveEnemy(type,id);
+    public void RemoveSpecialFromCompanion(string type, int id)
+    {
+        companion.RemoveEnemy(type, id);
     }
 
 
-    public void RemoveNormalFromCompanion(int id) {
+    public void RemoveNormalFromCompanion(int id)
+    {
         companion.RemoveEnemy("normal", id);
     }
 
@@ -476,25 +520,28 @@ private GameObject companionInstance;
         isRescued = true;
         InitializeCompanion(companionName);
     }
-    public void HandleInitializeCompanion(){
-        if(isRescueLevel){
+    public void HandleInitializeCompanion()
+    {
+        if (isRescueLevel)
+        {
             InitializeCompanionKidnapped(companionName);
-        }else{
-            InitializeCompanion(companionName!=null ? companionName:"Louis");
+        }
+        else
+        {
+            InitializeCompanion(companionName != null ? companionName : "Louis");
         }
     }
-    
+
     void Start()
     {
 
         player = GameObject.Find(EngineConstants.PLAYER).GetComponent<Player>();
         hudManager = GameObject.Find(EngineConstants.HUD).GetComponent<HUDManager>();
         weaponsManager = GameObject.Find(EngineConstants.WEAPONS_MANAGER).GetComponent<WeaponsManager>();
-        Debug.Log(companionName + " NAMEEE");
         companionName = "Zoey";
-        Invoke("HandleInitializeCompanion",2);
+        Invoke("HandleInitializeCompanion", 1);
         //SetHealth(-50);
-        
+
         //SetHealth(-150);
         //level = 1;
         //isPaused = false;
@@ -527,8 +574,8 @@ private GameObject companionInstance;
         // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["HUNTING_RIFLE"],false);
         // InitializeWeapon(WeaponsConstants.WEAPON_TYPES["SHOTGUN"],false);
         //GameObject.Find("MusicManager").GetComponent<MusicManager>().PlayExplore();
-
     }
+
 
     private void onQuit()
     {
@@ -575,10 +622,13 @@ private GameObject companionInstance;
     {
         GameObject.Find("SFXManager").GetComponent<SFXManager>().StopChasing();
     }
-    
-    private void HandleMusic() {
-        if(!isChasing) {
-            if(!GameObject.Find("MusicManager").GetComponent<MusicManager>().isExplorePlaying()) {
+
+    private void HandleMusic()
+    {
+        if (!isChasing)
+        {
+            if (!GameObject.Find("MusicManager").GetComponent<MusicManager>().isExplorePlaying())
+            {
                 PlayExplore();
                 StopFight();
             }

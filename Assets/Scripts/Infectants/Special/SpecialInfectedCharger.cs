@@ -26,6 +26,7 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
     public int companionID = 0;
 
     private SpecialInfectedGeneral upCast;
+    private bool isAttractedToPipe = false;
 
     void Awake() {
         upCast = this;
@@ -49,7 +50,7 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
     // Update is called once per frame
     void Update()
     {
-        if (isDead)
+        if (isDead || isAttractedToPipe)
             return;
         if (!isAttacking && !isChasing && !isIdle)
             AlternatePosition();
@@ -68,7 +69,7 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
         
         if(PlayerInRange()) {
                if(companionID==0 && !isDead)
-                    if(gameManager.GetIsRescued())
+                    if((gameManager.GetIsRescued() && gameManager.GetRescueLevel())|| !gameManager.GetRescueLevel())
                          companionID = manager.AddToCompanion(upCast,companionID,type);
         }
         else {
@@ -239,4 +240,30 @@ public class SpecialInfectedCharger : SpecialInfectedGeneral
     {
         return isStunned;
     }
+
+    public override void GetAttracted(Transform grenadeLocation)
+    {
+        isAttractedToPipe = true;
+        isChasing = false;
+        isAttacking = false;
+        isIdle = false;
+        agent.ResetPath();
+        agent.destination = grenadeLocation.position;
+        agent.stoppingDistance = 1;
+        animator.SetBool("Run", true);
+        animator.SetBool("Attack", false);
+        animator.SetBool("Idle", false);
+    }
+
+    public override void GetUnAttracted()
+    {
+        if (isDead)
+            return;
+        agent.ResetPath();
+        agent.destination = player.transform.position;
+        agent.stoppingDistance = 5;
+        ContinueChasing();
+        isAttractedToPipe = false;
+    }
+
 }

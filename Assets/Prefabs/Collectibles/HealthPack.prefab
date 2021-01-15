@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3623389927630886876}
   - component: {fileID: 3529001294473234598}
   - component: {fileID: 3495942820917699478}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GlowParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4785,7 +4785,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3623389930114148428}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: bottle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4818,7 +4818,7 @@ GameObject:
   - component: {fileID: 3623389927859870274}
   - component: {fileID: 3529001291619938908}
   - component: {fileID: 3495942822319256236}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: StarsParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9595,7 +9595,7 @@ GameObject:
   - component: {fileID: 3617469507012976816}
   - component: {fileID: 3609457458419358686}
   - component: {fileID: 3681527829539073142}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: bottle_red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9697,7 +9697,7 @@ GameObject:
   - component: {fileID: 3623389927551508986}
   - component: {fileID: 3667510328412576339}
   - component: {fileID: 6868535336735248338}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: HealthPack
   m_TagString: health_pack
   m_Icon: {fileID: 0}
@@ -9799,6 +9799,10 @@ PrefabInstance:
     - target: {fileID: 1650250265366138384, guid: 34d979cf72c5c6748aeaa312233179a9, type: 3}
       propertyPath: m_Name
       value: GlowParticles (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1650250265366138384, guid: 34d979cf72c5c6748aeaa312233179a9, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34d979cf72c5c6748aeaa312233179a9, type: 3}

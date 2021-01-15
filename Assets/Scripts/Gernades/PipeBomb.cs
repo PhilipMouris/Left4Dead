@@ -26,6 +26,9 @@ public class PipeBomb : Gernade
          this.maxCapacity = WeaponsConstants.PIPE_MAX;
          type = "pipe";
     }
+    void UpdateLocations(){
+        manager.UpdateLocations(gameObject);
+    }
 
     void Update()
 
@@ -35,11 +38,12 @@ public class PipeBomb : Gernade
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
+                player.GetComponent<Animator>().SetTrigger("pickupGernade");
                  GameObject copy = Instantiate(gameObject);
                 copy.SetActive(false);
                 bool collected= this.hudManager.CollectGernade(copy.GetComponent<Gernade>());
                 if(collected)
-                    manager.UpdateLocations(gameObject);
+                    Invoke("UpdateLocations",1);
             }
         }
         if (isCollided == true & SecondDelay > 0f && !isExploded)
@@ -93,9 +97,11 @@ public class PipeBomb : Gernade
         }
     }
     void AttractAll(){
+        specialInfectedManager.AttractAll(gameObject.GetComponent<Rigidbody>().transform);
         infectantManager.AttractAll(gameObject.GetComponent<Rigidbody>().transform);
     }
     void UnAttractAll(){
+        specialInfectedManager.UnAttractAll();
         infectantManager.UnAttractAll();
     }
     public void UnBurnAll(){
@@ -134,6 +140,12 @@ public class PipeBomb : Gernade
                 target.GetBurned(DamageRate);
                 Destroy(rigidbody,2.1f);
 
+            }
+            if (SpecialInfectantConstants.TAGS.Contains(touchedObject.tag))
+            {
+                var target = touchedObject.gameObject.GetComponent<SpecialInfectedGeneral>();
+
+                target.GetShot(DamageRate);
             }
 
         }

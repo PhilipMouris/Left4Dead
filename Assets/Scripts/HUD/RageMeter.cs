@@ -18,6 +18,8 @@ public class RageMeter : MonoBehaviour
 
     private Color original;
 
+    private bool startMoving = false;
+
     void Awake() {
         rageBar = null;
         gameManager = GameObject.FindObjectOfType<GameManager>();
@@ -26,6 +28,7 @@ public class RageMeter : MonoBehaviour
     }
 
     public void ChangeRage(int amount) {
+        startMoving = true;
         if(gameManager.GetIsRaged()) return;
         rageBar.Change(amount);
         ResetTimer();
@@ -68,6 +71,11 @@ public class RageMeter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
+        if(rageBar.GetReachedTarget()&&startMoving) { 
+            ResetTimer();
+            startMoving = false;
+        }
+
         if(resetBarTimer<0){
             resetBar();
             ResetTimer();
