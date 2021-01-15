@@ -110,7 +110,8 @@ public class SpecialInfected : SpecialInfectedGeneral
         animator.SetBool("Attack", true);
         animator.SetBool("Run", false);
         agent.Stop();
-      
+        InvokeRepeating("DecreaseHealth", attackInterval, attackInterval);
+
     }
 
     public void DecreaseHealth()
