@@ -1,2 +1,2 @@
-# left-4-dead
+# left-4-dead-game
 A first person shooter game developed using unity.
